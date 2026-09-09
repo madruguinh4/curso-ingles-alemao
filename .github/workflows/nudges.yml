@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 * * * *'   # de hora em hora (UTC); o script decide pelo fuso de cada aluno
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Teste: enviar a 1ª mensagem para todos agora'
+        type: boolean
+        default: false
 
 jobs:
   send:
@@ -24,3 +29,4 @@ jobs:
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           VAPID_SUBJECT: ${{ secrets.VAPID_SUBJECT }}
           APP_URL: ${{ vars.APP_URL }}
+          FORCE: ${{ inputs.force == true && '1' || '' }}

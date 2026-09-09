@@ -6,6 +6,8 @@
 import webpush from 'web-push'
 
 const { SUPABASE_URL, SUPABASE_SERVICE_KEY, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT, APP_URL = '/' } = process.env
+// FORCE=1: modo de teste — manda a 1ª mensagem para todos agora, sem olhar hora nem estudo, e não conta como aviso do dia.
+const FORCE = process.env.FORCE === '1'
 const missing = ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'VAPID_PUBLIC_KEY', 'VAPID_PRIVATE_KEY', 'VAPID_SUBJECT'].filter((k) => !process.env[k])
 if (missing.length) { console.log(`lembretes ainda não configurados (faltam: ${missing.join(', ')}). Nada enviado.`); process.exit(0) }
 webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY)
@@ -38,15 +40,18 @@ if (!Array.isArray(rows)) { console.error('resposta inesperada', rows); process.
 let sent = 0, skipped = 0, removed = 0
 for (const row of rows) {
   const { date, hour } = localParts(row.tz)
-  if (row.last_study === date) { skipped++; continue }
-  const stage = row.nudge_date === date ? row.nudges ?? 0 : 0
-  if (stage >= THRESHOLDS.length || hour < THRESHOLDS[stage]) { skipped++; continue }
+  let stage = row.nudge_date === date ? row.nudges ?? 0 : 0
+  if (FORCE) stage = 0
+  else {
+    if (row.last_study === date) { skipped++; continue }
+    if (stage >= THRESHOLDS.length || hour < THRESHOLDS[stage]) { skipped++; continue }
+  }
   const msg = MESSAGES[stage](row.name?.trim(), LANG[row.lang] ?? 'idiomas')
-  const payload = JSON.stringify({ ...msg, url: APP_URL, tag: `nudge-${date}-${stage}` })
+  const payload = JSON.stringify({ ...(FORCE ? { title: 'Teste de lembrete ✅', body: `${msg.title} — ${msg.body}` } : msg), url: APP_URL, tag: FORCE ? `test-${Date.now()}` : `nudge-${date}-${stage}` })
   const patch = (body) => fetch(`${table}?endpoint=eq.${encodeURIComponent(row.endpoint)}`, { method: 'PATCH', headers: { ...headers, Prefer: 'return=minimal' }, body: JSON.stringify(body) })
   try {
     await webpush.sendNotification(row.subscription, payload, { TTL: 3 * 3600 })
-    await patch({ nudge_date: date, nudges: stage + 1 })
+    if (!FORCE) await patch({ nudge_date: date, nudges: stage + 1 })
     sent++
   } catch (err) {
     if (err.statusCode === 404 || err.statusCode === 410) {

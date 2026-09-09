@@ -46,19 +46,28 @@ function urlBase64ToUint8Array(b64: string): Uint8Array<ArrayBuffer> {
   return out
 }
 
-const headers = () => ({ apikey: KEY!, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' })
-const table = () => `${URL}/rest/v1/push_subscriptions`
+const headers = () => ({ apikey: KEY!, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' })
+const rpc = (fn: string) => `${URL}/rest/v1/rpc/${fn}`
 
-/** Substitui a linha desta inscrição (delete + insert: dispensa política de SELECT para anônimos). */
-async function saveRow(sub: PushSubscription, fields: Record<string, unknown>) {
-  const endpoint = encodeURIComponent(sub.endpoint)
-  await fetch(`${table()}?endpoint=eq.${endpoint}`, { method: 'DELETE', headers: headers() })
-  const res = await fetch(table(), {
+/** Grava/atualiza a inscrição por uma função do banco (o app anônimo não enxerga a tabela). */
+async function saveRow(sub: PushSubscription, fields: { lang?: Language; name?: string; last_study?: string | null }) {
+  const res = await fetch(rpc('save_push_subscription'), {
     method: 'POST',
     headers: headers(),
-    body: JSON.stringify({ endpoint: sub.endpoint, subscription: sub.toJSON(), tz: Intl.DateTimeFormat().resolvedOptions().timeZone, ...fields }),
+    body: JSON.stringify({
+      p_endpoint: sub.endpoint,
+      p_subscription: sub.toJSON(),
+      p_tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      p_lang: fields.lang ?? null,
+      p_name: fields.name ?? null,
+      p_last_study: fields.last_study ?? null,
+    }),
   })
   if (!res.ok) throw new Error(`Supabase ${res.status}`)
+}
+
+async function deleteRow(endpoint: string) {
+  await fetch(rpc('delete_push_subscription'), { method: 'POST', headers: headers(), body: JSON.stringify({ p_endpoint: endpoint }) })
 }
 
 export async function enableReminders(info: { name: string; lang: Language; lastStudy: string | null }): Promise<'ok' | 'denied' | 'unsupported' | 'error'> {
@@ -78,7 +87,7 @@ export async function enableReminders(info: { name: string; lang: Language; last
 export async function disableReminders(): Promise<void> {
   const sub = await currentSubscription()
   if (!sub) return
-  try { await fetch(`${table()}?endpoint=eq.${encodeURIComponent(sub.endpoint)}`, { method: 'DELETE', headers: headers() }) } catch { /* offline: a linha some no próximo 410 */ }
+  try { await deleteRow(sub.endpoint) } catch { /* offline: a linha some no próximo 410 */ }
   await sub.unsubscribe()
 }
 
