@@ -22,3 +22,6 @@ export function contentStats(language: Language) {
   const ls = lessonsFor(language)
   return { lessons: ls.length, weeksWithLessons: new Set(ls.map((l) => l.weekId)).size }
 }
+
+const vocabById = new Map(LESSONS.flatMap((l) => l.vocabulary.map((v) => [v.id, { ...v, lessonId: l.id, language: l.language }] as const)))
+export const getVocab = (id: string) => vocabById.get(id)

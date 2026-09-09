@@ -18,11 +18,13 @@ export interface ExerciseResult { exerciseId: string; skill: Skill; correct: boo
 
 export interface SubmitInfo { given: string; correct: boolean; expected: string; skill?: Skill }
 
-export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, mode, onFinish }: {
+export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, lessonIdOf, mode, onFinish }: {
   exercises: Exercise[]
   lang: Language
   enrollmentId: number
   lessonId: string
+  /** Na verificação semanal os exercícios vêm de várias aulas. */
+  lessonIdOf?: (ex: Exercise) => string
   mode: 'lesson' | 'assessment'
   onFinish: (results: ExerciseResult[]) => void
 }) {
@@ -37,11 +39,12 @@ export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, mode, 
     const skill = info.skill ?? ex.skill
     if (attemptNo === 0) {
       const at = new Date().toISOString()
-      await db.attempts.add({ enrollmentId, lessonId, exerciseId: ex.id, skill, correct: info.correct, answer: info.given, at })
+      const lid = lessonIdOf?.(ex) ?? lessonId
+      await db.attempts.add({ enrollmentId, lessonId: lid, exerciseId: ex.id, skill, correct: info.correct, answer: info.given, at })
       if (!info.correct) {
         const prompt = 'prompt' in ex ? ex.prompt : 'text' in ex ? 'Ditado' : ''
         const explanation = 'explanation' in ex ? ex.explanation : ''
-        await db.errors.add({ enrollmentId, lessonId, exerciseId: ex.id, prompt, given: info.given, expected: info.expected, explanation, at })
+        await db.errors.add({ enrollmentId, lessonId: lid, exerciseId: ex.id, prompt, given: info.given, expected: info.expected, explanation, at })
       }
       setResults((r) => [...r, { exerciseId: ex.id, skill, correct: info.correct }])
     }

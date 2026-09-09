@@ -7,6 +7,12 @@ import { Plan } from './screens/Plan'
 import { Home } from './screens/Home'
 import { CourseMap } from './screens/CourseMap'
 import { LessonScreen } from './screens/Lesson'
+import { Review } from './screens/Review'
+import { Assessment } from './screens/Assessment'
+import { Progress } from './screens/Progress'
+import { Library } from './screens/Library'
+import { Talk } from './screens/Talk'
+import { Finish } from './screens/Finish'
 import { Settings } from './screens/Settings'
 import { More } from './screens/More'
 import { Screen, Notice } from './components/ui'
@@ -30,6 +36,12 @@ export default function App() {
         <Route path="/plan/:enrollmentId?" element={<Plan />} />
         <Route path="/map/:enrollmentId?" element={<CourseMap />} />
         <Route path="/lesson/:enrollmentId/:lessonId" element={<LessonScreen />} />
+        <Route path="/review/:enrollmentId?" element={<Review />} />
+        <Route path="/assessment/:enrollmentId/:weekNumber" element={<Assessment />} />
+        <Route path="/progress/:enrollmentId?" element={<Progress />} />
+        <Route path="/library/:enrollmentId?" element={<Library />} />
+        <Route path="/talk/:enrollmentId?" element={<Talk />} />
+        <Route path="/finish/:enrollmentId?" element={<Finish />} />
         <Route path="/more" element={<More />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<NotFound />} />
