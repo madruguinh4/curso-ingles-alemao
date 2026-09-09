@@ -87,8 +87,8 @@ export function Onboarding() {
         <StepBox title="Qual idioma você quer aprender agora?">
           <Choice legend="Idioma" value={language} onChange={(v) => setLanguage(v)}
             options={[
-              { value: 'en' as Language, label: '🇬🇧 Inglês', description: '26 semanas, do zero ao A2 com transição para B1.' },
-              { value: 'de' as Language, label: '🇩🇪 Alemão', description: '26 semanas, do zero ao A2 com transição para B1. Casos e artigos trabalhados desde o início.' },
+              { value: 'en' as Language, label: 'Inglês (EN)', description: '26 semanas, do zero ao A2 com transição para B1.' },
+              { value: 'de' as Language, label: 'Alemão (DE)', description: '26 semanas, do zero ao A2 com transição para B1. Casos e artigos trabalhados desde o início.' },
             ]} />
           <Notice>Um idioma por vez. Se quiser estudar os dois, você adiciona o outro depois — cada um com plano, tempo e progresso próprios. O app nunca mistura os dois na mesma tela.</Notice>
           <Button block disabled={!language} onClick={next}>Continuar</Button>

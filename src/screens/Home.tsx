@@ -22,7 +22,7 @@ export function Home() {
   return (
     <Screen title={p.name ? `Olá, ${p.name}` : 'Hoje'}>
       <div className="flex items-center justify-between mb-3">
-        <span className="chip text-base" style={{ borderColor: 'var(--accent)', color: 'var(--accent)' }}>{e.language === 'en' ? '🇬🇧' : '🇩🇪'} {LANGUAGE_NAMES[e.language]}</span>
+        <span className="chip text-base" style={{ borderColor: 'var(--accent)', color: 'var(--accent)' }}><span className="font-mono font-bold mr-1" aria-hidden="true">{e.language.toUpperCase()}</span>{LANGUAGE_NAMES[e.language]}</span>
         <Button variant="ghost" to="/language">{all.length > 1 ? 'Trocar idioma' : 'Adicionar idioma'}</Button>
       </div>
       <EnrollmentToday e={e} />

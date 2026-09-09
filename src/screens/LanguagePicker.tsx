@@ -8,7 +8,8 @@ import { Screen, Spinner } from '../components/ui'
 // Um idioma por vez. Esta tela é a única em que os dois aparecem juntos —
 // e só para escolher qual estudar agora. Nada de conteúdo misturado.
 
-const FLAG: Record<Language, string> = { en: '🇬🇧', de: '🇩🇪' }
+const CODE: Record<Language, string> = { en: 'EN', de: 'DE' }
+const Badge = ({ l }: { l: Language }) => <span className="chip font-mono font-bold mr-2 align-middle" aria-hidden="true">{CODE[l]}</span>
 
 export function LanguagePicker() {
   const all = useEnrollments()
@@ -28,7 +29,7 @@ export function LanguagePicker() {
           return (
             <button key={e.id} type="button" className="choice text-left" data-lang={e.language}
               onClick={() => { setActiveEnrollment(e.id!); markLanguageChosen(); nav('/', { replace: true }) }}>
-              <span className="text-2xl mr-2" aria-hidden="true">{FLAG[e.language]}</span>
+              <Badge l={e.language} />
               <span className="text-xl font-bold">{LANGUAGE_NAMES[e.language]}</span>
               <span className="block text-sm muted mt-1">{w <= 26 ? `Semana ${w} de 26 · ${e.minutesPerDay} min por dia` : 'Plano concluído'}</span>
             </button>
@@ -36,7 +37,7 @@ export function LanguagePicker() {
         })}
         {missing.map((l) => (
           <button key={l} type="button" className="choice text-left" style={{ borderStyle: 'dashed' }} onClick={() => nav(`/onboarding?add=${l}`)}>
-            <span className="text-2xl mr-2" aria-hidden="true">{FLAG[l]}</span>
+            <Badge l={l} />
             <span className="text-xl font-bold">Adicionar {LANGUAGE_NAMES[l]}</span>
             <span className="block text-sm muted mt-1">Plano, tempo e progresso próprios — separados do outro idioma.</span>
           </button>
