@@ -1,68 +1,70 @@
 # Curso de Inglês e Alemão — PWA
 
-Curso estruturado de ~6 meses (26 semanas) de inglês e alemão para falantes de português brasileiro, como **app web instalável (PWA)**: roda em Android e iPhone, funciona offline, sem conta e sem servidor. O princípio do produto: ao terminar, o aluno continua sozinho — o app exporta um kit e não tenta reter ninguém.
+Curso de **um ano (52 semanas)** de inglês e alemão para falantes de português brasileiro, como **app web instalável (PWA)**: roda em Android e iPhone, funciona offline, sem conta e sem servidor. O aluno estuda **um idioma por vez**, no ritmo dele; o app registra os dias de estudo e, no fim, exporta um kit para continuar sozinho.
 
 ## Rodar
 
 ```bash
 npm install
 npm run dev        # http://localhost:5173
-npm test           # 68 testes (Vitest)
+npm test           # Vitest
 npm run build      # gera dist/ com service worker e manifest
-npm run preview    # serve dist/ localmente para testar como PWA
+npm run preview    # serve dist/ para testar como PWA
 ```
 
 Para testar no celular na mesma rede Wi-Fi: `npm run dev -- --host` e abra o endereço IP mostrado.
 
 ## Publicar
 
-`npm run build` gera a pasta `dist/`. Qualquer hospedagem de arquivos estáticos serve (Vercel, Netlify, GitHub Pages, Hostinger…). O PWA exige **HTTPS** para instalar e funcionar offline.
+`npm run build` gera `dist/`. Qualquer hospedagem estática serve (Vercel, Netlify, GitHub Pages, Hostinger…). PWA exige **HTTPS**.
 
-- **Android (Chrome):** menu ⋮ → *Instalar app* (ou o banner automático).
-- **iPhone (Safari apenas):** *Compartilhar* → *Adicionar à Tela de Início*. Outros navegadores no iOS não instalam PWA.
+- **Android (Chrome):** menu ⋮ → *Instalar app*.
+- **iPhone (Safari apenas):** *Compartilhar* → *Adicionar à Tela de Início*.
+
+## Decisões de produto
+
+- **Um idioma por vez.** Onboarding escolhe um; o segundo é adicionado depois com plano e progresso próprios. A única tela com os dois é a de escolha.
+- **Sem perguntas de tempo ou dias.** O aluno faz o que pode, quando pode. O app registra automaticamente cada dia de estudo (calendário, total, sequência) — sem punição.
+- **Próximas aulas sempre disponíveis.** Nada fica bloqueado por data.
+- **Todo termo de gramática é explicado.** O texto marca `[[termo]]`; o app mostra a definição ao toque (glossário em `src/content/glossary.ts`). O teste falha se um termo usado não existir.
+- **Regras antes dos exercícios.** Cada explicação traz "Regra 1, 2…" explícitas.
+- **Nada de explicação longa no início.** "Sobre o curso" fica em Mais → Sobre.
+- **Cor por idioma:** inglês azul, alemão âmbar.
+
+## Áudio
+
+Usa a **Web Speech API** do navegador e escolhe automaticamente a melhor voz instalada (neurais primeiro: "Natural", "Neural", "Google", "Premium"). Em Configurações há um seletor de voz por idioma com teste. A qualidade depende do aparelho:
+
+| Onde | Vozes disponíveis |
+|---|---|
+| Edge no Windows | "Microsoft … Online (Natural)" — muito humanas |
+| Chrome no Windows | vozes Google (boas) ou vozes de sistema (robóticas) |
+| Android | vozes Google; baixe a versão de alta qualidade em Configurações → Conversão de texto em voz |
+| iPhone | vozes Siri/aprimoradas em Ajustes → Acessibilidade → Conteúdo falado |
+
+Para áudio humano garantido em qualquer aparelho seria preciso **pré-gerar arquivos** com um serviço neural (Azure, Google Cloud TTS, ElevenLabs) e embarcá-los — tem custo e exige licença de distribuição. Não está nesta versão.
 
 ## Estado real do projeto
 
 | Área | Situação |
 |---|---|
-| Onboarding (idiomas, nível, objetivo, tempo, dias, microfone), diagnóstico opcional | **Implementado** |
-| Plano de 26 semanas gerado por disponibilidade; reorganização de atrasos sem punição | **Implementado** |
-| Mapa curricular completo: 26 semanas × 2 idiomas com objetivo, gramática e vocabulário | **Implementado** (`src/content/curriculum.ts`) |
-| Aulas com os 8 blocos (objetivo, revisão, diálogo, explicação, exercícios, produção, correções, tarefa) | **Implementado**; conteúdo real: **semana 1 de cada idioma (3 aulas cada)** |
-| Semanas 2–26 | **Mapeadas, aulas em produção** — o app mostra isso, não finge |
-| 6 tipos de exercício (escolha, lacuna, ordenação, transformação, ditado, produção livre) | **Implementado** |
-| Revisão espaçada (FSRS, o algoritmo do Anki) | **Implementado** |
-| Verificação semanal; progresso por habilidade; objetivos demonstrados; recuperação sugerida | **Implementado** |
-| Biblioteca (vocabulário e gramática com busca) | **Implementado** |
-| Kit de encerramento: HTML autocontido (8 seções) + CSV para Anki | **Implementado** |
-| Tema claro/escuro, texto ajustável, foco visível, rótulos ARIA | **Implementado** |
-| Áudio de pronúncia | **Web Speech API do navegador** — depende das vozes instaladas no aparelho; sem voz, o app esconde o botão e explica |
-| Tutor de IA para conversação | **Não implementado** — exige servidor com chaves protegidas |
-| Reconhecimento de voz / avaliação de pronúncia | **Não implementado** — o app informa; produção oral é autoavaliada |
-| Login, sincronização entre aparelhos, área administrativa | **Não implementado** — sem backend nesta etapa |
-| Notificações | **Não implementado** — sem servidor não há push; lembretes locais são instáveis no iOS |
-| Áudio para download | **Não implementado** — sem direitos de distribuição de vozes |
-| Avaliação mensal e final com tarefas novas | **Parcial** — a verificação semanal existe; mensal/final dependem de conteúdo das semanas seguintes |
+| Onboarding (nome, idioma, nível com diagnóstico opcional, objetivo, microfone) | **Implementado** |
+| Mapa curricular de 52 semanas × 2 idiomas (A1 semanas 1–13, A2 14–35, B1 36–52) | **Implementado** (`src/content/curriculum.ts`) |
+| Aulas com 8 blocos (aquecer, diálogo, regras, praticar, produzir, erros comuns, missão) | **Implementado**; conteúdo real: **semana 1 de cada idioma (3 aulas cada)** |
+| Semanas 2–52 | **Mapeadas, aulas em produção** — o app mostra isso |
+| Glossário de termos gramaticais com definição ao toque | **Implementado** (36 termos) |
+| 6 tipos de exercício; revisão espaçada (FSRS); verificação semanal | **Implementado** |
+| Dias de estudo (calendário, sequência, total) | **Implementado** |
+| Progresso por habilidade, objetivos demonstrados, recuperação sugerida | **Implementado** |
+| Biblioteca (vocabulário, gramática, termos) | **Implementado** |
+| Kit de encerramento: HTML (8 seções + glossário) + CSV para Anki | **Implementado** |
+| Tema claro/escuro, texto ajustável, ARIA | **Implementado** |
+| Tutor de IA, reconhecimento de voz, login/sync, notificações, áudio para download | **Não implementado** — o app informa onde faria diferença |
 
-**O que exige produção pedagógica:** ~250 aulas (semanas 2–26 × 2 idiomas) no formato de `src/content/en/w01-l1.json`. Cada aula nova é validada automaticamente (Zod) — um JSON fora do formato quebra os testes com a mensagem apontando arquivo e campo. Substantivos alemães sem artigo e plural são rejeitados.
-
-## Estrutura
-
-```
-src/content/curriculum.ts   mapa das 26 semanas por idioma
-src/content/en|de/*.json    aulas (8 blocos)
-src/content/continuity.ts   plano de 90 dias e orientações do kit
-src/content/diagnostic.ts   diagnóstico inicial
-src/lib/                    lógica pura e testada: schema, plan, srs, progress, export, tts, answers
-src/screens/                14 telas
-src/components/exercises/   motor de exercícios
-tests/                      Vitest (conteúdo, cronograma, FSRS, progresso, exportação…)
-docs/superpowers/           spec e plano de implementação
-```
+**O que exige produção pedagógica:** ~300 aulas (semanas 2–52 × 2 idiomas) no formato de `src/content/en/w01-l1.json`. Cada aula nova é validada automaticamente (Zod + testes de conteúdo): formato, ids únicos, artigo+plural em substantivos alemães, termos do glossário.
 
 ## Adicionar uma aula
 
 1. Copie `src/content/en/w01-l1.json` para `src/content/en/w02-l1.json` (id `en-w02-l1`, `weekId` `en-w02`).
-2. Preencha os 8 blocos. Regras: ≥5 exercícios com ≥3 tipos e ≥2 habilidades, 1 ditado, produção `free`, 3 erros comuns, ≥8 vocabulários (alemão: substantivos com `noun`, `article`, `plural`).
-3. `npm test` — o conteúdo é validado. Ids de exercício e vocabulário devem ser únicos.
-4. A aula aparece automaticamente no mapa, no cronograma e nos cartões.
+2. Preencha os 8 blocos. Regras: ≥5 exercícios com ≥3 tipos e ≥2 habilidades, 1 ditado, produção `free`, 3 erros comuns, ≥8 vocabulários (alemão: `noun`, `article`, `plural`), explicação com "Regra" e termos `[[assim]]`.
+3. `npm test`. A aula entra automaticamente no início, na trilha e nos cartões.
