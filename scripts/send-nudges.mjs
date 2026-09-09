@@ -6,9 +6,8 @@
 import webpush from 'web-push'
 
 const { SUPABASE_URL, SUPABASE_SERVICE_KEY, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT, APP_URL = '/' } = process.env
-for (const k of ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'VAPID_PUBLIC_KEY', 'VAPID_PRIVATE_KEY', 'VAPID_SUBJECT']) {
-  if (!process.env[k]) { console.error(`faltou ${k}`); process.exit(1) }
-}
+const missing = ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'VAPID_PUBLIC_KEY', 'VAPID_PRIVATE_KEY', 'VAPID_SUBJECT'].filter((k) => !process.env[k])
+if (missing.length) { console.log(`lembretes ainda não configurados (faltam: ${missing.join(', ')}). Nada enviado.`); process.exit(0) }
 webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY)
 
 const THRESHOLDS = [18, 20.5, 22]
