@@ -1,6 +1,6 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type { Card } from 'ts-fsrs'
-import type { Language, Skill, Minutes, Goal, StartLevel } from './types'
+import type { Language, Skill, Goal, StartLevel } from './types'
 
 // Progresso do aluno. Conteúdo NÃO fica aqui — é somente-leitura no bundle.
 // Uma matrícula (enrollment) por idioma: planos e históricos independentes.
@@ -19,8 +19,8 @@ export interface Enrollment {
   language: Language
   level: StartLevel
   goal: Goal
-  /** Minutos por dia dedicados a ESTE idioma (já divididos se houver dois). */
-  minutesPerDay: Minutes
+  /** Minutos por dia dedicados a ESTE idioma (já divididos se houver dois: 20/30/45…). */
+  minutesPerDay: number
   /** 0 = domingo … 6 = sábado */
   weekdays: number[]
   startDate: string

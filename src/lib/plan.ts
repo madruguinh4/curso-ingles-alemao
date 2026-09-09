@@ -28,7 +28,7 @@ export function dailyAgenda(minutes: Minutes, twoLanguages: boolean): { kinds: S
 }
 
 /** Minutos efetivos por idioma → como cada aula ocupa o cronograma. */
-function mode(minutes: Minutes) {
+function mode(minutes: number) {
   return { split: minutes < 40, withReview: minutes >= 60 }
 }
 
