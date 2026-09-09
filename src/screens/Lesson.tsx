@@ -8,6 +8,7 @@ import { miniMarkdown, vocabFront } from '../lib/export'
 import type { Lesson } from '../lib/types'
 import { Button, Card, Notice, Screen } from '../components/ui'
 import { Say, NoVoiceNotice } from '../components/Say'
+import { Md } from '../components/Md'
 import { ExerciseRunner } from '../components/exercises/ExerciseRunner'
 
 // Aula com os 8 blocos do §6. Cada bloco concluído é gravado; a aula fica
@@ -71,7 +72,7 @@ export function LessonScreen() {
           </Card>
           <Card>
             <p className="font-semibold">Tarefa fora do app</p>
-            <p className="mt-1">{lesson.task}</p>
+            <Md block className="mt-1" text={lesson.task} />
           </Card>
           {all && <Button to={`/review/${eid}`} block>Revisar os cartões agora</Button>}
           <Button variant="secondary" to="/" block>Voltar ao início</Button>
@@ -113,7 +114,7 @@ function Warmup({ lesson, onNext }: { lesson: Lesson; onNext: () => void }) {
     <div className="grid gap-3">
       <Card>
         <h2 className="font-bold mb-2">{lesson.warmup.prompt}</h2>
-        <ul className="list-disc pl-5 grid gap-2">{lesson.warmup.items.map((i) => <li key={i}>{i}</li>)}</ul>
+        <ul className="list-disc pl-5 grid gap-2">{lesson.warmup.items.map((i) => <li key={i}><Md text={i} /></li>)}</ul>
       </Card>
       <Button onClick={onNext} block>Pronto, vamos à aula</Button>
     </div>
@@ -197,7 +198,7 @@ function Feedback({ lesson, onNext }: { lesson: Lesson; onNext: () => void }) {
           {lesson.feedback.commonErrors.map((c) => (
             <li key={c.wrong}>
               <span style={{ color: 'var(--err)', textDecoration: 'line-through' }}>{c.wrong}</span> → <b style={{ color: 'var(--ok)' }}>{c.right}</b>
-              <p className="text-sm muted mt-0.5">{c.why}</p>
+              <Md block className="text-sm muted mt-0.5" text={c.why} />
             </li>
           ))}
         </ul>
@@ -212,7 +213,7 @@ function Task({ lesson, onNext, onLater }: { lesson: Lesson; onNext: () => void;
     <div className="grid gap-3">
       <Card>
         <h2 className="font-bold mb-2">Tarefa prática fora do app</h2>
-        <p className="text-lg">{lesson.task}</p>
+        <Md block className="text-lg" text={lesson.task} />
       </Card>
       <p className="text-sm muted">É aqui que o idioma sai da tela. A tarefa não é avaliada pelo app — é para você.</p>
       <Button onClick={onNext} block>Entendi, vou fazer</Button>

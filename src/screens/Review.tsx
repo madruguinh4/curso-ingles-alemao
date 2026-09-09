@@ -10,6 +10,7 @@ import { LANGUAGE_NAMES } from '../lib/types'
 import { useActiveEnrollment } from '../state/useEnrollments'
 import { Button, Card, Notice, ProgressBar, Screen, Spinner } from '../components/ui'
 import { Say, NoVoiceNotice } from '../components/Say'
+import { Md } from '../components/Md'
 
 // Revisão espaçada: fila fixa carregada na entrada (o FSRS reagenda cada
 // cartão; a fila não muda no meio da sessão).
@@ -91,7 +92,7 @@ export function Review() {
               {related && (
                 <div className="card text-sm mt-2" style={{ borderLeft: '4px solid var(--warn)' }}>
                   <b>Você já errou isso:</b> <span style={{ textDecoration: 'line-through' }}>{related.given}</span> → <b>{related.expected}</b>
-                  <p className="muted mt-1">{related.explanation}</p>
+                  <Md block className="muted mt-1" text={related.explanation} />
                 </div>
               )}
               <div className="grid grid-cols-4 gap-2 mt-3">

@@ -6,6 +6,7 @@ import { LANGUAGE_NAMES } from '../lib/types'
 import { useActiveEnrollment } from '../state/useEnrollments'
 import { Card, Notice, Screen, Spinner } from '../components/ui'
 import { Say } from '../components/Say'
+import { Md } from '../components/Md'
 
 const SCENARIOS = ['Apresentação pessoal', 'Restaurante e supermercado', 'Aeroporto e hotel', 'Entrevista de emprego', 'Reunião de trabalho', 'Consulta médica', 'Conversa com colegas', 'Busca de moradia e mudança de país']
 
@@ -38,7 +39,7 @@ export function Talk() {
             {prompts.map((l) => (
               <li key={l.id} className="border-t pt-2" style={{ borderColor: 'var(--border)' }}>
                 <p className="font-semibold">{l.title} {done.has(l.id) && <span className="chip">concluída</span>}</p>
-                <p className="text-sm">{l.production.prompt}</p>
+                <Md block className="text-sm" text={l.production.prompt} />
                 <p className="text-sm mt-1"><i>{l.production.model}</i> <Say text={l.production.model} lang={lang} /></p>
               </li>
             ))}

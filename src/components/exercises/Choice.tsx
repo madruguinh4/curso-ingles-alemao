@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Exercise, Language } from '../../lib/types'
 import type { SubmitInfo } from './ExerciseRunner'
 import { Card } from '../ui'
+import { Md } from '../Md'
 
 type Ex = Extract<Exercise, { type: 'choice' }>
 
@@ -9,7 +10,7 @@ export function ChoiceEx({ ex, disabled, onSubmit }: { ex: Ex; lang: Language; d
   const [picked, setPicked] = useState<number | null>(null)
   return (
     <Card>
-      <p className="mb-3 text-lg">{ex.prompt}</p>
+      <Md block className="mb-3 text-lg" text={ex.prompt} />
       <div className="grid gap-2">
         {ex.options.map((o, i) => {
           const cls = picked === null ? '' : i === ex.answer ? 'choice-ok' : i === picked ? 'choice-err' : ''

@@ -4,6 +4,7 @@ import { useProfile } from '../../state/useTheme'
 import type { SubmitInfo } from './ExerciseRunner'
 import { Say } from '../Say'
 import { Button, Card, Notice } from '../ui'
+import { Md } from '../Md'
 
 type Ex = Extract<Exercise, { type: 'free' }>
 
@@ -23,7 +24,7 @@ export function FreeEx({ ex, lang, disabled, onSubmit }: { ex: Ex; lang: Languag
   return (
     <Card>
       <p className="text-sm muted mb-1">{speaking ? 'Produção oral' : 'Produção escrita'}</p>
-      <p className="text-lg mb-3">{ex.prompt}</p>
+      <Md block className="text-lg mb-3" text={ex.prompt} />
 
       {speaking ? (
         <Notice>
@@ -42,7 +43,7 @@ export function FreeEx({ ex, lang, disabled, onSubmit }: { ex: Ex; lang: Languag
           {ex.checklist.map((c, i) => (
             <label key={c} className="choice flex items-start gap-2 cursor-pointer" aria-checked={checked[i]} role="checkbox">
               <input type="checkbox" className="mt-1" checked={checked[i]} disabled={disabled} onChange={() => setChecked(checked.map((v, j) => (j === i ? !v : v)))} />
-              <span>{c}</span>
+              <Md text={c} />
             </label>
           ))}
         </div>

@@ -37,9 +37,14 @@ export interface KitInput {
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
-/** Markdown mínimo usado nas explicações: **negrito**, *itálico*, parágrafos e listas com "- ". */
+/** Ênfase inline: **negrito**, *itálico*. Escapa HTML antes. */
+export function inlineMarkdown(s: string): string {
+  return esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>')
+}
+
+/** Markdown mínimo usado nas explicações: ênfase, parágrafos e listas com "- ". */
 export function miniMarkdown(md: string): string {
-  const inline = (s: string) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>')
+  const inline = inlineMarkdown
   return md
     .split(/\n\s*\n/)
     .map((p) => {
@@ -96,14 +101,14 @@ export function kitHtml(k: KitInput): string {
 
   const errors = k.errors.length
     ? `<table><thead><tr><th>Data</th><th>Pergunta</th><th>Você escreveu</th><th>Correto</th><th>Por quê</th></tr></thead><tbody>
-       ${k.errors.map((e) => `<tr><td>${formatBR(e.at.slice(0, 10))}</td><td>${esc(e.prompt)}</td><td class="wrong">${esc(e.given)}</td><td class="right">${esc(e.expected)}</td><td>${esc(e.explanation)}</td></tr>`).join('')}
+       ${k.errors.map((e) => `<tr><td>${formatBR(e.at.slice(0, 10))}</td><td>${esc(e.prompt)}</td><td class="wrong">${esc(e.given)}</td><td class="right">${esc(e.expected)}</td><td>${inlineMarkdown(e.explanation)}</td></tr>`).join('')}
        </tbody></table>`
     : '<p>Nenhum erro registrado ainda. Erros são a parte mais útil deste relatório — continue praticando.</p>'
-  const commonErrors = k.lessons.map((l) => `<h4>${esc(l.title)}</h4><ul>${l.feedback.commonErrors.map((c) => `<li><span class="wrong">${esc(c.wrong)}</span> → <span class="right">${esc(c.right)}</span><br><small>${esc(c.why)}</small></li>`).join('')}</ul>`).join('')
+  const commonErrors = k.lessons.map((l) => `<h4>${esc(l.title)}</h4><ul>${l.feedback.commonErrors.map((c) => `<li><span class="wrong">${esc(c.wrong)}</span> → <span class="right">${esc(c.right)}</span><br><small>${inlineMarkdown(c.why)}</small></li>`).join('')}</ul>`).join('')
 
   const exercises = k.lessons.map((l) => `
     <h3>${esc(l.title)}</h3><ol>
-    ${[...l.guided, l.production].map((e) => `<li>${esc(exercisePrompt(e))}<br><b>Resposta:</b> ${esc(exerciseAnswer(e))}${'explanation' in e ? `<br><small>${esc(e.explanation)}</small>` : ''}</li>`).join('')}
+    ${[...l.guided, l.production].map((e) => `<li>${inlineMarkdown(exercisePrompt(e))}<br><b>Resposta:</b> ${esc(exerciseAnswer(e))}${'explanation' in e ? `<br><small>${inlineMarkdown(e.explanation)}</small>` : ''}</li>`).join('')}
     </ol>`).join('')
 
   const skills = `<table><thead><tr><th>Habilidade</th><th>Tentativas</th><th>Acerto</th></tr></thead><tbody>

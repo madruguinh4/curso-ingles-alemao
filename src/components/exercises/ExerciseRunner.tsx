@@ -3,6 +3,7 @@ import { db } from '../../lib/db'
 import type { Exercise, Language, Skill } from '../../lib/types'
 import { SKILL_NAMES } from '../../lib/types'
 import { Button, Card, ProgressBar } from '../ui'
+import { Md } from '../Md'
 import { ChoiceEx } from './Choice'
 import { GapEx } from './Gap'
 import { OrderEx } from './Order'
@@ -63,27 +64,28 @@ export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, lesson
     setAttemptNo((n) => n + 1)
   }
 
-  const props = { key: `${ex.id}-${attemptNo}`, lang, disabled: !!feedback, onSubmit: submit }
+  const key = `${ex.id}-${attemptNo}`
+  const props = { lang, disabled: !!feedback, onSubmit: submit }
   return (
     <div className="grid gap-3">
       <ProgressBar value={idx / exercises.length} label={`Exercício ${idx + 1} de ${exercises.length} · ${SKILL_NAMES[ex.skill]}`} />
-      {ex.type === 'choice' && <ChoiceEx {...props} ex={ex} />}
-      {ex.type === 'gap' && <GapEx {...props} ex={ex} />}
-      {ex.type === 'order' && <OrderEx {...props} ex={ex} />}
-      {ex.type === 'transform' && <TransformEx {...props} ex={ex} />}
-      {ex.type === 'dictation' && <DictationEx {...props} ex={ex} />}
-      {ex.type === 'free' && <FreeEx {...props} ex={ex} />}
+      {ex.type === 'choice' && <ChoiceEx key={key} {...props} ex={ex} />}
+      {ex.type === 'gap' && <GapEx key={key} {...props} ex={ex} />}
+      {ex.type === 'order' && <OrderEx key={key} {...props} ex={ex} />}
+      {ex.type === 'transform' && <TransformEx key={key} {...props} ex={ex} />}
+      {ex.type === 'dictation' && <DictationEx key={key} {...props} ex={ex} />}
+      {ex.type === 'free' && <FreeEx key={key} {...props} ex={ex} />}
 
       {feedback && (
         <Card className={feedback.correct ? 'choice-ok' : 'choice-err'}>
           {ex.type === 'free' ? (
             <p><b>Registrado.</b> {feedback.correct ? 'Você marcou a maior parte da lista — boa produção.' : 'Você marcou poucos itens da lista. Vale repetir esta produção amanhã, com o modelo ao lado.'}</p>
           ) : feedback.correct ? (
-            <p><b>Certo!</b> {'explanation' in ex && <span className="muted">{ex.explanation}</span>}</p>
+            <p><b>Certo!</b> {'explanation' in ex && <Md className="muted" text={ex.explanation} />}</p>
           ) : (
             <div>
               <p><b>Ainda não.</b> Resposta esperada: <b>{feedback.expected}</b></p>
-              {'explanation' in ex && <p className="mt-1">{ex.explanation}</p>}
+              {'explanation' in ex && <Md block className="mt-1" text={ex.explanation} />}
               {attemptNo === 0 && mode === 'lesson' && <p className="text-sm muted mt-1">Este erro foi guardado no seu histórico — ele volta em outros contextos e aparece no kit final.</p>}
             </div>
           )}
