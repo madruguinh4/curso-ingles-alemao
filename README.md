@@ -2,6 +2,8 @@
 
 Curso de **um ano (52 semanas)** de inglês e alemão para falantes de português brasileiro, como **app web instalável (PWA)**: roda em Android e iPhone, funciona offline, sem conta e sem servidor. O aluno estuda **um idioma por vez**, no ritmo dele; o app registra os dias de estudo e, no fim, exporta um kit para continuar sozinho.
 
+**No ar:** https://madruguinh4.github.io/curso-ingles-alemao/ — publicado automaticamente a cada push na `main` (GitHub Actions → Pages).
+
 ## Rodar
 
 ```bash
@@ -44,6 +46,16 @@ Usa a **Web Speech API** do navegador e escolhe automaticamente a melhor voz ins
 
 Para áudio humano garantido em qualquer aparelho seria preciso **pré-gerar arquivos** com um serviço neural (Azure, Google Cloud TTS, ElevenLabs) e embarcá-los — tem custo e exige licença de distribuição. Não está nesta versão.
 
+## Lembretes diários (push)
+
+Push com o app fechado exige um servidor. Aqui ele é mínimo e gratuito:
+
+- **Supabase** — tabela `push_subscriptions` (`supabase/migrations/`): inscrição de push, fuso e último dia de estudo de cada aparelho. Anônimos só inserem/apagam a própria linha (RLS); ninguém lista.
+- **GitHub Actions** — `.github/workflows/nudges.yml` roda `scripts/send-nudges.mjs` de hora em hora. Quem não estudou no dia (no fuso dele) recebe até 3 avisos: 18h, 20h30 e 22h. Quem estudou não recebe nada.
+- **App** — `src/lib/push.ts` e `src/components/Reminders.tsx`: opt-in em Configurações (ou convite no Início), reversível. iPhone: só com o app instalado na tela inicial (iOS 16.4+).
+
+Segredos do repositório: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_KEY`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`; variável `APP_URL`. Gere chaves VAPID com `npx web-push generate-vapid-keys`. Localmente, copie `.env.example` para `.env.local`.
+
 ## Estado real do projeto
 
 | Área | Situação |
@@ -59,7 +71,8 @@ Para áudio humano garantido em qualquer aparelho seria preciso **pré-gerar arq
 | Biblioteca (vocabulário, gramática, termos) | **Implementado** |
 | Kit de encerramento: HTML (8 seções + glossário) + CSV para Anki | **Implementado** |
 | Tema claro/escuro, texto ajustável, ARIA | **Implementado** |
-| Tutor de IA, reconhecimento de voz, login/sync, notificações, áudio para download | **Não implementado** — o app informa onde faria diferença |
+| Lembretes diários por push (3 avisos escalonados) | **Implementado** — Supabase + GitHub Actions |
+| Tutor de IA, reconhecimento de voz, login/sync, áudio para download | **Não implementado** — o app informa onde faria diferença |
 
 **O que exige produção pedagógica:** ~300 aulas (semanas 2–52 × 2 idiomas) no formato de `src/content/en/w01-l1.json`. Cada aula nova é validada automaticamente (Zod + testes de conteúdo): formato, ids únicos, artigo+plural em substantivos alemães, termos do glossário.
 
