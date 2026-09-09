@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom'
+import { Home, Map, RefreshCw, BarChart3, MoreHorizontal } from 'lucide-react'
 import { useActiveEnrollment } from '../state/useEnrollments'
 
 const HIDDEN = ['/welcome', '/onboarding', '/language', '/lesson/', '/assessment/']
@@ -9,26 +10,20 @@ export function Nav() {
   if (HIDDEN.some((p) => pathname.startsWith(p)) || !enrollment) return null
   const id = enrollment.id
   const items = [
-    { to: '/', label: 'Início', icon: '⌂' },
-    { to: `/map/${id}`, label: 'Mapa', icon: '▦' },
-    { to: `/review/${id}`, label: 'Revisão', icon: '↻' },
-    { to: `/progress/${id}`, label: 'Progresso', icon: '◔' },
-    { to: '/more', label: 'Mais', icon: '⋯' },
+    { to: '/', label: 'Início', Icon: Home },
+    { to: `/map/${id}`, label: 'Trilha', Icon: Map },
+    { to: `/review/${id}`, label: 'Revisão', Icon: RefreshCw },
+    { to: `/progress/${id}`, label: 'Progresso', Icon: BarChart3 },
+    { to: '/more', label: 'Mais', Icon: MoreHorizontal },
   ]
   return (
-    <nav aria-label="Navegação principal" className="fixed bottom-0 inset-x-0 border-t" style={{ background: 'var(--card)', borderColor: 'var(--border)', paddingBottom: 'env(safe-area-inset-bottom)' }}>
-      <ul className="mx-auto max-w-lg grid grid-cols-5">
-        {items.map((it) => (
-          <li key={it.to}>
-            <NavLink
-              to={it.to}
-              end={it.to === '/'}
-              className={({ isActive }) => `flex flex-col items-center py-2 text-xs ${isActive ? 'font-bold' : 'muted'}`}
-              style={({ isActive }) => ({ color: isActive ? 'var(--accent)' : undefined })}
-              aria-current={pathname === it.to ? 'page' : undefined}
-            >
-              <span aria-hidden="true" className="text-lg leading-none">{it.icon}</span>
-              {it.label}
+    <nav aria-label="Navegação principal" className="fixed bottom-0 inset-x-0 border-t backdrop-blur" style={{ background: 'color-mix(in srgb, var(--card) 88%, transparent)', borderColor: 'var(--border)', paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <ul className="mx-auto max-w-md grid grid-cols-5 px-2 py-1 gap-1">
+        {items.map(({ to, label, Icon }) => (
+          <li key={to}>
+            <NavLink to={to} end={to === '/'} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} aria-current={pathname === to ? 'page' : undefined}>
+              <Icon size={22} aria-hidden="true" />
+              {label}
             </NavLink>
           </li>
         ))}

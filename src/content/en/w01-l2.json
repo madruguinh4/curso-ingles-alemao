@@ -15,25 +15,72 @@
   "dialogue": {
     "context": "Aula online de inglês. Marco, de Recife, conversa com Yuki, do Japão, na sala de espera virtual.",
     "lines": [
-      { "speaker": "Yuki", "text": "Hi! Where are you from?", "translation": "Oi! De onde você é?" },
-      { "speaker": "Marco", "text": "I'm from Brazil. And you?", "translation": "Eu sou do Brasil. E você?" },
-      { "speaker": "Yuki", "text": "I'm from Japan. I'm Japanese.", "translation": "Eu sou do Japão. Sou japonesa." },
-      { "speaker": "Marco", "text": "Nice! Are you from Tokyo?", "translation": "Legal! Você é de Tóquio?" },
-      { "speaker": "Yuki", "text": "No, I'm not. I'm from Osaka. Are you from Rio?", "translation": "Não. Eu sou de Osaka. Você é do Rio?" },
-      { "speaker": "Marco", "text": "No, I'm from Recife. It's in the north-east of Brazil.", "translation": "Não, eu sou de Recife. Fica no Nordeste do Brasil." },
-      { "speaker": "Yuki", "text": "Oh, cool. Is it hot there?", "translation": "Ah, legal. É quente lá?" },
-      { "speaker": "Marco", "text": "Yes, it is! Very hot.", "translation": "É sim! Muito quente." }
+      {
+        "speaker": "Yuki",
+        "text": "Hi! Where are you from?",
+        "translation": "Oi! De onde você é?"
+      },
+      {
+        "speaker": "Marco",
+        "text": "I'm from Brazil. And you?",
+        "translation": "Eu sou do Brasil. E você?"
+      },
+      {
+        "speaker": "Yuki",
+        "text": "I'm from Japan. I'm Japanese.",
+        "translation": "Eu sou do Japão. Sou japonesa."
+      },
+      {
+        "speaker": "Marco",
+        "text": "Nice! Are you from Tokyo?",
+        "translation": "Legal! Você é de Tóquio?"
+      },
+      {
+        "speaker": "Yuki",
+        "text": "No, I'm not. I'm from Osaka. Are you from Rio?",
+        "translation": "Não. Eu sou de Osaka. Você é do Rio?"
+      },
+      {
+        "speaker": "Marco",
+        "text": "No, I'm from Recife. It's in the north-east of Brazil.",
+        "translation": "Não, eu sou de Recife. Fica no Nordeste do Brasil."
+      },
+      {
+        "speaker": "Yuki",
+        "text": "Oh, cool. Is it hot there?",
+        "translation": "Ah, legal. É quente lá?"
+      },
+      {
+        "speaker": "Marco",
+        "text": "Yes, it is! Very hot.",
+        "translation": "É sim! Muito quente."
+      }
     ]
   },
   "explanation": {
     "title": "Where are you from? — origem, nacionalidade e respostas curtas",
-    "body": "**Where are you from?** = \"De onde você é?\". A palavra **from** significa \"de\" no sentido de origem. Resposta: **I'm from** + país ou cidade.\n\n**País vs. nacionalidade:** *Brazil* é o país, *Brazilian* é a nacionalidade (com letra maiúscula sempre). Você diz *I'm from Brazil* **ou** *I'm Brazilian* — nunca \"I'm from Brazilian\".\n\n**Perguntas sim/não** com to be: o verbo vai para a frente. *You are from Rio.* → **Are you** from Rio? Respostas curtas: **Yes, I am.** / **No, I'm not.** Atenção: na resposta curta afirmativa **não** se usa contração — \"Yes, I'm\" está errado.\n\n**It** para lugares e coisas: *Is it hot?* — *Yes, it is.* / *No, it isn't.*\n\n**Sílaba forte:** cada palavra em inglês tem uma sílaba mais forte, e errar isso atrapalha mais que o sotaque. *Bra-**ZIL***, *Ja-**PAN***, ***CA**-na-da*, ***GER**-ma-ny*, ***ENG**-land*. Brasileiros tendem a dizer \"BRA-zil\" — treine \"bra-ZIL\".",
+    "body": "**Where are you from?** = \"De onde você é?\". A [[preposição]] **from** significa \"de\" no sentido de origem.\n\n**Regra 1 — origem é *from*.** Resposta: **I'm from** + país ou cidade. *I'm from Brazil.* Nunca \"of\".\n\n**Regra 2 — país e [[nacionalidade]] são palavras diferentes.** *Brazil* é o país (vai com *from*); *Brazilian* é a nacionalidade — um [[adjetivo]], sempre com maiúscula, que vai direto com *I'm*. \"I'm from Brazilian\" está errado.\n\n**Regra 3 — [[pergunta sim/não]]: o verbo vai para a frente.** *You are from Rio.* → **Are you** from Rio?\n\n**Regra 4 — [[resposta curta]]: repita o verbo, sem contração.** *Yes, I am.* / *No, I'm not.* \"Yes, I'm\" está errado, porque a [[contração]] não pode ficar no fim da frase.\n\n**It** serve para lugares e coisas: *Is it hot?* — *Yes, it is.* / *No, it isn't.*\n\n**[[sílaba tônica]]:** cada palavra tem uma sílaba mais forte, e errar isso atrapalha mais que o sotaque. *Bra-ZIL*, *Ja-PAN*, *CA-na-da*, *GER-ma-ny*, *ENG-land* (as maiúsculas marcam a força). Brasileiros tendem a dizer \"BRA-zil\" — treine \"bra-ZIL\".",
     "examples": [
-      { "text": "Where are you from?", "translation": "De onde você é?" },
-      { "text": "I'm from Brazil. I'm Brazilian.", "translation": "Eu sou do Brasil. Sou brasileiro(a)." },
-      { "text": "Are you from Rio? — No, I'm not.", "translation": "Você é do Rio? — Não." },
-      { "text": "Is it hot there? — Yes, it is.", "translation": "É quente lá? — É sim." },
-      { "text": "I'm from Recife, in Brazil.", "translation": "Eu sou de Recife, no Brasil." }
+      {
+        "text": "Where are you from?",
+        "translation": "De onde você é?"
+      },
+      {
+        "text": "I'm from Brazil. I'm Brazilian.",
+        "translation": "Eu sou do Brasil. Sou brasileiro(a)."
+      },
+      {
+        "text": "Are you from Rio? — No, I'm not.",
+        "translation": "Você é do Rio? — Não."
+      },
+      {
+        "text": "Is it hot there? — Yes, it is.",
+        "translation": "É quente lá? — É sim."
+      },
+      {
+        "text": "I'm from Recife, in Brazil.",
+        "translation": "Eu sou de Recife, no Brasil."
+      }
     ]
   },
   "guided": [
@@ -42,7 +89,11 @@
       "type": "choice",
       "skill": "reading",
       "prompt": "Como se pergunta de onde alguém é?",
-      "options": ["Where you are from?", "Where are you from?", "From where you are?"],
+      "options": [
+        "Where you are from?",
+        "Where are you from?",
+        "From where you are?"
+      ],
       "answer": 1,
       "explanation": "Na pergunta, o verbo *are* vem antes de *you*: Where **are you** from?"
     },
@@ -51,15 +102,20 @@
       "type": "gap",
       "skill": "writing",
       "prompt": "I'm ___ Brazil.",
-      "answers": ["from"],
-      "explanation": "Origem = *from*. \"Of\" não serve aqui."
+      "answers": [
+        "from"
+      ],
+      "explanation": "Origem = *from*. \"Of\" não serve aqui. *From* é uma [[preposição]]."
     },
     {
       "id": "en-w01-l2-g3",
       "type": "dictation",
       "skill": "listening",
       "text": "Where are you from? I'm from Canada.",
-      "answers": ["Where are you from? I'm from Canada.", "Where are you from? I am from Canada."],
+      "answers": [
+        "Where are you from? I'm from Canada.",
+        "Where are you from? I am from Canada."
+      ],
       "explanation": "Repare que *are you* soa quase como uma palavra só: \"a-ryu\".",
       "lang": "en"
     },
@@ -69,7 +125,10 @@
       "skill": "writing",
       "prompt": "Are you from Rio?",
       "instruction": "Responda que não, com a resposta curta.",
-      "answers": ["No, I'm not.", "No, I am not."],
+      "answers": [
+        "No, I'm not.",
+        "No, I am not."
+      ],
       "explanation": "Resposta curta negativa: *No, I'm not.*"
     },
     {
@@ -77,7 +136,13 @@
       "type": "order",
       "skill": "writing",
       "prompt": "Coloque na ordem certa.",
-      "tokens": ["I'm", "from", "Recife", "in", "Brazil"],
+      "tokens": [
+        "I'm",
+        "from",
+        "Recife",
+        "in",
+        "Brazil"
+      ],
       "answer": "I'm from Recife in Brazil",
       "explanation": "Cidade primeiro, depois *in* + país."
     },
@@ -86,9 +151,13 @@
       "type": "choice",
       "skill": "reading",
       "prompt": "Qual resposta curta está correta para \"Are you Brazilian?\"",
-      "options": ["Yes, I'm.", "Yes, I am.", "Yes, am."],
+      "options": [
+        "Yes, I'm.",
+        "Yes, I am.",
+        "Yes, am."
+      ],
       "answer": 1,
-      "explanation": "Na resposta curta afirmativa a forma é completa: *Yes, I am.* A contração *I'm* nunca fica no fim da frase."
+      "explanation": "Na [[resposta curta]] afirmativa a forma é completa: *Yes, I am.* A [[contração]] *I'm* nunca fica no fim da frase."
     }
   ],
   "production": {
@@ -107,24 +176,108 @@
   },
   "feedback": {
     "commonErrors": [
-      { "wrong": "I'm from Brazilian.", "right": "I'm from Brazil. / I'm Brazilian.", "why": "*Brazil* é o país (vai com *from*); *Brazilian* é a nacionalidade (vai direto com *I'm*)." },
-      { "wrong": "Yes, I'm.", "right": "Yes, I am.", "why": "A contração não pode ficar no fim da frase. Na resposta curta afirmativa, use a forma completa." },
-      { "wrong": "I am of Brazil.", "right": "I am from Brazil.", "why": "O \"de\" de origem em inglês é *from*, não *of*." }
+      {
+        "wrong": "I'm from Brazilian.",
+        "right": "I'm from Brazil. / I'm Brazilian.",
+        "why": "*Brazil* é o país (vai com *from*); *Brazilian* é a nacionalidade (vai direto com *I'm*)."
+      },
+      {
+        "wrong": "Yes, I'm.",
+        "right": "Yes, I am.",
+        "why": "A contração não pode ficar no fim da frase. Na resposta curta afirmativa, use a forma completa."
+      },
+      {
+        "wrong": "I am of Brazil.",
+        "right": "I am from Brazil.",
+        "why": "O \"de\" de origem em inglês é *from*, não *of*."
+      }
     ]
   },
   "task": "Escolha 3 países que você gostaria de visitar. Procure o nome deles em inglês e diga em voz alta: \"I'm from Brazil. I want to visit [país].\" Preste atenção na sílaba forte de cada país (pode ouvir a pronúncia no tradutor do celular).",
   "vocabulary": [
-    { "id": "en-w01-l2-where", "term": "where", "translation": "onde", "example": "Where are you from?", "exampleTranslation": "De onde você é?" },
-    { "id": "en-w01-l2-from", "term": "from", "translation": "de (origem)", "example": "I'm from Brazil.", "exampleTranslation": "Eu sou do Brasil." },
-    { "id": "en-w01-l2-country", "term": "country", "translation": "país", "example": "Brazil is a big country.", "exampleTranslation": "O Brasil é um país grande." },
-    { "id": "en-w01-l2-city", "term": "city", "translation": "cidade", "example": "Recife is a city in Brazil.", "exampleTranslation": "Recife é uma cidade no Brasil." },
-    { "id": "en-w01-l2-brazil", "term": "Brazil / Brazilian", "translation": "Brasil / brasileiro(a)", "example": "I'm from Brazil. I'm Brazilian.", "exampleTranslation": "Eu sou do Brasil. Sou brasileiro(a)." },
-    { "id": "en-w01-l2-usa", "term": "the United States / American", "translation": "os Estados Unidos / americano(a)", "example": "She's from the United States.", "exampleTranslation": "Ela é dos Estados Unidos." },
-    { "id": "en-w01-l2-japan", "term": "Japan / Japanese", "translation": "Japão / japonês(a)", "example": "Yuki is Japanese.", "exampleTranslation": "A Yuki é japonesa." },
-    { "id": "en-w01-l2-germany", "term": "Germany / German", "translation": "Alemanha / alemão(ã)", "example": "Is he German?", "exampleTranslation": "Ele é alemão?" },
-    { "id": "en-w01-l2-canada", "term": "Canada / Canadian", "translation": "Canadá / canadense", "example": "Tom is Canadian.", "exampleTranslation": "O Tom é canadense." },
-    { "id": "en-w01-l2-hot", "term": "hot", "translation": "quente", "example": "It's hot in Recife.", "exampleTranslation": "É quente em Recife." },
-    { "id": "en-w01-l2-cold", "term": "cold", "translation": "frio", "example": "It's cold in Canada.", "exampleTranslation": "É frio no Canadá." },
-    { "id": "en-w01-l2-andyou", "term": "And you?", "translation": "E você?", "example": "I'm from Brazil. And you?", "exampleTranslation": "Eu sou do Brasil. E você?" }
+    {
+      "id": "en-w01-l2-where",
+      "term": "where",
+      "translation": "onde",
+      "example": "Where are you from?",
+      "exampleTranslation": "De onde você é?"
+    },
+    {
+      "id": "en-w01-l2-from",
+      "term": "from",
+      "translation": "de (origem)",
+      "example": "I'm from Brazil.",
+      "exampleTranslation": "Eu sou do Brasil."
+    },
+    {
+      "id": "en-w01-l2-country",
+      "term": "country",
+      "translation": "país",
+      "example": "Brazil is a big country.",
+      "exampleTranslation": "O Brasil é um país grande."
+    },
+    {
+      "id": "en-w01-l2-city",
+      "term": "city",
+      "translation": "cidade",
+      "example": "Recife is a city in Brazil.",
+      "exampleTranslation": "Recife é uma cidade no Brasil."
+    },
+    {
+      "id": "en-w01-l2-brazil",
+      "term": "Brazil / Brazilian",
+      "translation": "Brasil / brasileiro(a)",
+      "example": "I'm from Brazil. I'm Brazilian.",
+      "exampleTranslation": "Eu sou do Brasil. Sou brasileiro(a)."
+    },
+    {
+      "id": "en-w01-l2-usa",
+      "term": "the United States / American",
+      "translation": "os Estados Unidos / americano(a)",
+      "example": "She's from the United States.",
+      "exampleTranslation": "Ela é dos Estados Unidos."
+    },
+    {
+      "id": "en-w01-l2-japan",
+      "term": "Japan / Japanese",
+      "translation": "Japão / japonês(a)",
+      "example": "Yuki is Japanese.",
+      "exampleTranslation": "A Yuki é japonesa."
+    },
+    {
+      "id": "en-w01-l2-germany",
+      "term": "Germany / German",
+      "translation": "Alemanha / alemão(ã)",
+      "example": "Is he German?",
+      "exampleTranslation": "Ele é alemão?"
+    },
+    {
+      "id": "en-w01-l2-canada",
+      "term": "Canada / Canadian",
+      "translation": "Canadá / canadense",
+      "example": "Tom is Canadian.",
+      "exampleTranslation": "O Tom é canadense."
+    },
+    {
+      "id": "en-w01-l2-hot",
+      "term": "hot",
+      "translation": "quente",
+      "example": "It's hot in Recife.",
+      "exampleTranslation": "É quente em Recife."
+    },
+    {
+      "id": "en-w01-l2-cold",
+      "term": "cold",
+      "translation": "frio",
+      "example": "It's cold in Canada.",
+      "exampleTranslation": "É frio no Canadá."
+    },
+    {
+      "id": "en-w01-l2-andyou",
+      "term": "And you?",
+      "translation": "E você?",
+      "example": "I'm from Brazil. And you?",
+      "exampleTranslation": "Eu sou do Brasil. E você?"
+    }
   ]
 }

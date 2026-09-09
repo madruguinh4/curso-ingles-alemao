@@ -17,6 +17,7 @@ import { Talk } from './screens/Talk'
 import { Finish } from './screens/Finish'
 import { Settings } from './screens/Settings'
 import { More } from './screens/More'
+import { About } from './screens/About'
 import { Screen, Notice } from './components/ui'
 
 function NotFound() {
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/finish/:enrollmentId?" element={<Finish />} />
         <Route path="/more" element={<More />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Nav />

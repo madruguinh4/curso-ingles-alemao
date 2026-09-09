@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../lib/db'
+import { db, recordStudyDay } from '../lib/db'
 import { getWeek, lessonsForWeek } from '../lib/content'
+import { todayISO } from '../lib/dates'
 import type { Exercise, Skill } from '../lib/types'
 import { LANGUAGE_NAMES, SKILL_NAMES } from '../lib/types'
 import { useActiveEnrollment } from '../state/useEnrollments'
 import { Button, Card, Notice, Screen, Spinner } from '../components/ui'
 import { ExerciseRunner, type ExerciseResult } from '../components/exercises/ExerciseRunner'
 
-// Verificação semanal: 6 exercícios da semana que o aluno ainda não viu
-// (sorteio determinístico) + 1 produção. Sem "tentar de novo".
+// Verificação da semana: 6 exercícios ainda não vistos (sorteio determinístico) + 1 produção.
 
 function seeded(seed: number) {
   let s = seed >>> 0 || 1
@@ -51,7 +51,7 @@ export function Assessment() {
   if (!week || !lessons.length) {
     return (
       <Screen title={`Verificação da semana ${wn}`} back="/">
-        <Notice kind="warn">Esta semana ainda não tem aulas escritas, então não há o que verificar. {week && <>O objetivo previsto é: <i>{week.canDo}</i>.</>}</Notice>
+        <Notice kind="warn">Esta semana ainda não tem aulas, então não há o que verificar. {week && <>O objetivo previsto é: <i>{week.canDo}</i>.</>}</Notice>
       </Screen>
     )
   }
@@ -67,14 +67,12 @@ export function Assessment() {
         <div className="grid gap-4">
           <Card>
             <h2 className="font-bold mb-2">{week.title}: <i>{week.canDo}</i></h2>
-            <ul className="grid gap-1">{by.map((x) => <li key={x.skill}>{SKILL_NAMES[x.skill]}: <b>{x.ok}/{x.total}</b></li>)}</ul>
+            <ul className="grid gap-1">{by.map((x) => <li key={x.skill} className="flex justify-between"><span>{SKILL_NAMES[x.skill]}</span><b>{x.ok}/{x.total}</b></li>)}</ul>
           </Card>
           {weak.length ? (
-            <Notice kind="warn">
-              <b>Antes de avançar, vale reforçar:</b> {weak.map((x) => SKILL_NAMES[x.skill]).join(', ')}. Refaça os exercícios das aulas desta semana e a revisão de cartões; os erros de hoje já entraram no seu histórico e voltam em outros contextos.
-            </Notice>
+            <Notice kind="warn"><b>Antes de avançar, vale reforçar:</b> {weak.map((x) => SKILL_NAMES[x.skill]).join(', ')}. Refaça os exercícios das aulas desta semana e a revisão de cartões; os erros de hoje já entraram no seu histórico e voltam em outros contextos.</Notice>
           ) : (
-            <Notice kind="ok">Bom resultado. O objetivo da semana conta como demonstrado quando as três aulas estiverem concluídas com a produção feita.</Notice>
+            <Notice kind="ok">Bom resultado. Você pode seguir para a próxima semana com segurança.</Notice>
           )}
           <p className="text-sm muted">Esta é uma verificação interna, com poucos itens, para orientar o estudo — não um nível oficial.</p>
           <Button to="/" block>Voltar ao início</Button>
@@ -85,7 +83,7 @@ export function Assessment() {
 
   if (!set) return <Spinner />
   return (
-    <Screen title={`Verificação da semana ${wn} — ${LANGUAGE_NAMES[lang]}`} back="/">
+    <Screen title={`Verificação da semana ${wn}`} back="/" subtitle={LANGUAGE_NAMES[lang]}>
       <p className="text-sm muted mb-3">7 itens: 6 exercícios e 1 produção. Sem “tentar de novo” — aqui o objetivo é ver o que ficou.</p>
       <ExerciseRunner
         exercises={set.map((x) => x.ex)}
@@ -95,8 +93,9 @@ export function Assessment() {
         lessonId={lessons[0].id}
         mode="assessment"
         onFinish={async (r) => {
-          const item = await db.schedule.where('enrollmentId').equals(eid).filter((i) => i.kind === 'assessment' && i.weekNumber === wn && i.status === 'pending').first()
-          if (item?.id) await db.schedule.update(item.id, { status: 'done' })
+          const by = (['listening', 'reading', 'writing', 'speaking'] as Skill[]).map((s) => ({ skill: s, ok: r.filter((x) => x.skill === s && x.correct).length, total: r.filter((x) => x.skill === s).length })).filter((x) => x.total)
+          await db.assessments.add({ enrollmentId: eid, weekNumber: wn, results: by, doneAt: new Date().toISOString() })
+          await recordStudyDay(eid, todayISO())
           setResults(r)
         }}
       />

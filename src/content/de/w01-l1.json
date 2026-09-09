@@ -15,25 +15,72 @@
   "dialogue": {
     "context": "Primeiro dia de um curso de alemão em Curitiba. Lucas conhece a professora (tratamento formal) e depois uma colega (tratamento informal).",
     "lines": [
-      { "speaker": "Frau Weber", "text": "Guten Tag! Ich bin Frau Weber. Wie heißen Sie?", "translation": "Bom dia! Eu sou a Sra. Weber. Como o senhor se chama?" },
-      { "speaker": "Lucas", "text": "Guten Tag. Ich heiße Lucas. Lucas Silva.", "translation": "Bom dia. Eu me chamo Lucas. Lucas Silva." },
-      { "speaker": "Frau Weber", "text": "Freut mich, Herr Silva. Willkommen!", "translation": "Prazer, Sr. Silva. Bem-vindo!" },
-      { "speaker": "Lucas", "text": "Danke!", "translation": "Obrigado!" },
-      { "speaker": "Paula", "text": "Hallo! Ich bin Paula. Und du?", "translation": "Oi! Eu sou a Paula. E você?" },
-      { "speaker": "Lucas", "text": "Hallo, Paula. Ich bin Lucas.", "translation": "Oi, Paula. Eu sou o Lucas." },
-      { "speaker": "Paula", "text": "Freut mich, Lucas! Bis später.", "translation": "Prazer, Lucas! Até mais." },
-      { "speaker": "Lucas", "text": "Tschüss!", "translation": "Tchau!" }
+      {
+        "speaker": "Frau Weber",
+        "text": "Guten Tag! Ich bin Frau Weber. Wie heißen Sie?",
+        "translation": "Bom dia! Eu sou a Sra. Weber. Como o senhor se chama?"
+      },
+      {
+        "speaker": "Lucas",
+        "text": "Guten Tag. Ich heiße Lucas. Lucas Silva.",
+        "translation": "Bom dia. Eu me chamo Lucas. Lucas Silva."
+      },
+      {
+        "speaker": "Frau Weber",
+        "text": "Freut mich, Herr Silva. Willkommen!",
+        "translation": "Prazer, Sr. Silva. Bem-vindo!"
+      },
+      {
+        "speaker": "Lucas",
+        "text": "Danke!",
+        "translation": "Obrigado!"
+      },
+      {
+        "speaker": "Paula",
+        "text": "Hallo! Ich bin Paula. Und du?",
+        "translation": "Oi! Eu sou a Paula. E você?"
+      },
+      {
+        "speaker": "Lucas",
+        "text": "Hallo, Paula. Ich bin Lucas.",
+        "translation": "Oi, Paula. Eu sou o Lucas."
+      },
+      {
+        "speaker": "Paula",
+        "text": "Freut mich, Lucas! Bis später.",
+        "translation": "Prazer, Lucas! Até mais."
+      },
+      {
+        "speaker": "Lucas",
+        "text": "Tschüss!",
+        "translation": "Tchau!"
+      }
     ]
   },
   "explanation": {
     "title": "du ou Sie? — e os dois verbos para se apresentar",
-    "body": "O alemão tem **duas formas de \"você\"**:\n\n- **du** — informal: amigos, família, crianças, colegas jovens, estudantes entre si.\n- **Sie** — formal: desconhecidos adultos, atendimento, trabalho, professores. **Sempre com S maiúsculo.**\n\nNa dúvida, use **Sie**. É melhor ser formal demais do que íntimo demais.\n\n**Dois verbos para se apresentar:**\n\n- **sein** (ser): *ich **bin*** Lucas / *du **bist*** Paula / *Sie **sind*** Frau Weber\n- **heißen** (chamar-se): *ich **heiße*** Lucas / *du **heißt*** Paula / *Sie **heißen*** Frau Weber\n\nPergunta do nome: **Wie heißt du?** (informal) / **Wie heißen Sie?** (formal).\n\n**Saudações:** *Hallo* (informal ou neutro), *Guten Tag* (neutro/formal, durante o dia), *Tschüss* (tchau, informal), *Auf Wiedersehen* (formal), *Bis später* (até mais).\n\n**Sons novos:**\n- **ch** de *ich* — não é \"ik\" nem \"ich\" de \"chuva\". É um sopro com a língua alta, como um \"h\" forte. Sorria e sopre.\n- **ß** = \"ss\". *Heißen* soa \"háissen\".\n- **ei** = \"ai\" (*heißen*, *Weber* não — só quando as duas letras aparecem juntas: h**ei**ßen).\n- **eu** = \"ói\" (*Freut* = \"fróit\").",
+    "body": "O alemão tem **duas formas de \"você\"** — o [[registro]] está dentro da gramática:\n\n- **du** — informal: amigos, família, crianças, colegas jovens, estudantes entre si.\n- **Sie** — formal: desconhecidos adultos, atendimento, trabalho, professores. **Sempre com S maiúsculo.**\n\n**Regra 1 — na dúvida, use Sie.** É melhor ser formal demais do que íntimo demais.\n\n**Regra 2 — dois [[verbo|verbos]] para se apresentar, e a [[terminação]] muda com a pessoa** (isso se chama [[conjugação]]):\n\n- **sein** (ser): *ich bin* / *du bist* / *Sie sind*\n- **heißen** (chamar-se): *ich heiße* / *du heißt* / *Sie heißen*\n\nUse um ou outro, nunca os dois: \"Ich heiße bin Lucas\" está errado.\n\n**Regra 3 — o [[sujeito]] é obrigatório:** *Ich bin Lucas*, nunca \"Bin Lucas\".\n\nPergunta do nome: **Wie heißt du?** (informal) / **Wie heißen Sie?** (formal).\n\n**Saudações:** *Hallo* (informal ou neutro), *Guten Tag* (neutro/formal, durante o dia), *Tschüss* (tchau, informal), *Auf Wiedersehen* (formal), *Bis später* (até mais).\n\n**Sons novos:**\n- **ch** de *ich* — não é \"ik\" nem \"ich\" de \"chuva\". É um sopro com a língua alta, como um \"h\" forte. Sorria e sopre.\n- **[[ß]]** = \"ss\". *Heißen* soa \"háissen\".\n- **ei** = \"ai\" (h**ei**ßen).\n- **eu** = \"ói\" (*Freut* = \"fróit\").",
     "examples": [
-      { "text": "Ich bin Lucas.", "translation": "Eu sou o Lucas." },
-      { "text": "Ich heiße Lucas Silva.", "translation": "Eu me chamo Lucas Silva." },
-      { "text": "Wie heißt du? (informal)", "translation": "Como você se chama?" },
-      { "text": "Wie heißen Sie? (formal)", "translation": "Como o senhor / a senhora se chama?" },
-      { "text": "Freut mich!", "translation": "Prazer!" }
+      {
+        "text": "Ich bin Lucas.",
+        "translation": "Eu sou o Lucas."
+      },
+      {
+        "text": "Ich heiße Lucas Silva.",
+        "translation": "Eu me chamo Lucas Silva."
+      },
+      {
+        "text": "Wie heißt du? (informal)",
+        "translation": "Como você se chama?"
+      },
+      {
+        "text": "Wie heißen Sie? (formal)",
+        "translation": "Como o senhor / a senhora se chama?"
+      },
+      {
+        "text": "Freut mich!",
+        "translation": "Prazer!"
+      }
     ]
   },
   "guided": [
@@ -42,16 +89,22 @@
       "type": "choice",
       "skill": "reading",
       "prompt": "Você é apresentado à mãe de um colega, uns 50 anos. Como pergunta o nome dela?",
-      "options": ["Wie heißt du?", "Wie heißen Sie?", "Wie heißt Sie?"],
+      "options": [
+        "Wie heißt du?",
+        "Wie heißen Sie?",
+        "Wie heißt Sie?"
+      ],
       "answer": 1,
-      "explanation": "Adulto desconhecido → *Sie*. E com *Sie* o verbo termina em *-en*: *heißen*."
+      "explanation": "Adulto desconhecido → *Sie*. E com *Sie* a [[terminação]] do verbo é *-en*: *heißen*."
     },
     {
       "id": "de-w01-l1-g2",
       "type": "gap",
       "skill": "writing",
       "prompt": "Ich ___ Lucas.",
-      "answers": ["bin"],
+      "answers": [
+        "bin"
+      ],
       "explanation": "*sein* com *ich* = *bin*."
     },
     {
@@ -59,7 +112,10 @@
       "type": "gap",
       "skill": "writing",
       "prompt": "Wie ___ du?",
-      "answers": ["heißt", "heisst"],
+      "answers": [
+        "heißt",
+        "heisst"
+      ],
       "explanation": "*heißen* com *du* = *heißt*. (Se seu teclado não tem ß, *heisst* é aceito.)"
     },
     {
@@ -67,16 +123,23 @@
       "type": "order",
       "skill": "writing",
       "prompt": "Coloque na ordem certa.",
-      "tokens": ["Ich", "heiße", "Paula"],
+      "tokens": [
+        "Ich",
+        "heiße",
+        "Paula"
+      ],
       "answer": "Ich heiße Paula",
-      "explanation": "Sujeito + verbo + nome. O verbo fica sempre na segunda posição."
+      "explanation": "[[sujeito]] + [[verbo]] + nome. O verbo fica sempre na segunda posição ([[V2]])."
     },
     {
       "id": "de-w01-l1-g5",
       "type": "dictation",
       "skill": "listening",
       "text": "Hallo! Ich bin Paula. Und du?",
-      "answers": ["Hallo! Ich bin Paula. Und du?", "Hallo, ich bin Paula. Und du?"],
+      "answers": [
+        "Hallo! Ich bin Paula. Und du?",
+        "Hallo, ich bin Paula. Und du?"
+      ],
       "explanation": "Repare no *ch* soprado de *ich*.",
       "lang": "de"
     },
@@ -85,7 +148,11 @@
       "type": "choice",
       "skill": "reading",
       "prompt": "Qual despedida é formal?",
-      "options": ["Tschüss!", "Auf Wiedersehen!", "Bis später!"],
+      "options": [
+        "Tschüss!",
+        "Auf Wiedersehen!",
+        "Bis später!"
+      ],
       "answer": 1,
       "explanation": "*Auf Wiedersehen* é a despedida formal. *Tschüss* e *Bis später* são informais."
     }
@@ -106,24 +173,114 @@
   },
   "feedback": {
     "commonErrors": [
-      { "wrong": "Ich bin Lucas, und Sie? (para um colega de 20 anos)", "right": "Ich bin Lucas, und du?", "why": "Entre estudantes e jovens, o normal é *du*. *Sie* soaria distante." },
-      { "wrong": "Ich heiße bin Lucas.", "right": "Ich heiße Lucas. / Ich bin Lucas.", "why": "*Heißen* e *sein* são dois verbos diferentes. Use um ou outro, nunca os dois." },
-      { "wrong": "Wie heißen sie?", "right": "Wie heißen Sie?", "why": "*Sie* formal é sempre maiúsculo. Com minúscula, *sie* significa \"ela\" ou \"eles\"." }
+      {
+        "wrong": "Ich bin Lucas, und Sie? (para um colega de 20 anos)",
+        "right": "Ich bin Lucas, und du?",
+        "why": "Entre estudantes e jovens, o normal é *du*. *Sie* soaria distante."
+      },
+      {
+        "wrong": "Ich heiße bin Lucas.",
+        "right": "Ich heiße Lucas. / Ich bin Lucas.",
+        "why": "*Heißen* e *sein* são dois verbos diferentes. Use um ou outro, nunca os dois."
+      },
+      {
+        "wrong": "Wie heißen sie?",
+        "right": "Wie heißen Sie?",
+        "why": "*Sie* formal é sempre maiúsculo. Com minúscula, *sie* significa \"ela\" ou \"eles\"."
+      }
     ]
   },
   "task": "Escolha três pessoas do seu dia (por exemplo: chefe, amigo, vizinho idoso). Para cada uma, decida: *du* ou *Sie*? Diga em voz alta a saudação e a pergunta do nome adequadas para cada uma.",
   "vocabulary": [
-    { "id": "de-w01-l1-hallo", "term": "Hallo", "translation": "oi, olá", "example": "Hallo, Paula!", "exampleTranslation": "Oi, Paula!" },
-    { "id": "de-w01-l1-gutentag", "term": "Guten Tag", "translation": "bom dia / boa tarde (neutro-formal)", "example": "Guten Tag, Frau Weber.", "exampleTranslation": "Bom dia, Sra. Weber." },
-    { "id": "de-w01-l1-tschuess", "term": "Tschüss", "translation": "tchau (informal)", "example": "Tschüss, Lucas!", "exampleTranslation": "Tchau, Lucas!" },
-    { "id": "de-w01-l1-aufwiedersehen", "term": "Auf Wiedersehen", "translation": "até logo (formal)", "example": "Auf Wiedersehen, Herr Silva.", "exampleTranslation": "Até logo, Sr. Silva." },
-    { "id": "de-w01-l1-bisspaeter", "term": "Bis später", "translation": "até mais", "example": "Bis später, Paula!", "exampleTranslation": "Até mais, Paula!" },
-    { "id": "de-w01-l1-ichbin", "term": "ich bin", "translation": "eu sou / eu estou", "example": "Ich bin Lucas.", "exampleTranslation": "Eu sou o Lucas." },
-    { "id": "de-w01-l1-ichheisse", "term": "ich heiße", "translation": "eu me chamo", "example": "Ich heiße Paula.", "exampleTranslation": "Eu me chamo Paula." },
-    { "id": "de-w01-l1-wieheisst", "term": "Wie heißt du? / Wie heißen Sie?", "translation": "Como você se chama? (informal / formal)", "example": "Wie heißen Sie? — Ich heiße Weber.", "exampleTranslation": "Como a senhora se chama? — Me chamo Weber." },
-    { "id": "de-w01-l1-freutmich", "term": "Freut mich", "translation": "prazer (em conhecer)", "example": "Freut mich, Lucas!", "exampleTranslation": "Prazer, Lucas!" },
-    { "id": "de-w01-l1-name", "term": "Name", "translation": "nome", "example": "Mein Name ist Lucas.", "exampleTranslation": "Meu nome é Lucas.", "noun": true, "article": "der", "plural": "die Namen" },
-    { "id": "de-w01-l1-tag", "term": "Tag", "translation": "dia", "example": "Guten Tag!", "exampleTranslation": "Bom dia!", "noun": true, "article": "der", "plural": "die Tage" },
-    { "id": "de-w01-l1-danke", "term": "danke", "translation": "obrigado(a)", "example": "Danke, Frau Weber!", "exampleTranslation": "Obrigado, Sra. Weber!" }
+    {
+      "id": "de-w01-l1-hallo",
+      "term": "Hallo",
+      "translation": "oi, olá",
+      "example": "Hallo, Paula!",
+      "exampleTranslation": "Oi, Paula!"
+    },
+    {
+      "id": "de-w01-l1-gutentag",
+      "term": "Guten Tag",
+      "translation": "bom dia / boa tarde (neutro-formal)",
+      "example": "Guten Tag, Frau Weber.",
+      "exampleTranslation": "Bom dia, Sra. Weber."
+    },
+    {
+      "id": "de-w01-l1-tschuess",
+      "term": "Tschüss",
+      "translation": "tchau (informal)",
+      "example": "Tschüss, Lucas!",
+      "exampleTranslation": "Tchau, Lucas!"
+    },
+    {
+      "id": "de-w01-l1-aufwiedersehen",
+      "term": "Auf Wiedersehen",
+      "translation": "até logo (formal)",
+      "example": "Auf Wiedersehen, Herr Silva.",
+      "exampleTranslation": "Até logo, Sr. Silva."
+    },
+    {
+      "id": "de-w01-l1-bisspaeter",
+      "term": "Bis später",
+      "translation": "até mais",
+      "example": "Bis später, Paula!",
+      "exampleTranslation": "Até mais, Paula!"
+    },
+    {
+      "id": "de-w01-l1-ichbin",
+      "term": "ich bin",
+      "translation": "eu sou / eu estou",
+      "example": "Ich bin Lucas.",
+      "exampleTranslation": "Eu sou o Lucas."
+    },
+    {
+      "id": "de-w01-l1-ichheisse",
+      "term": "ich heiße",
+      "translation": "eu me chamo",
+      "example": "Ich heiße Paula.",
+      "exampleTranslation": "Eu me chamo Paula."
+    },
+    {
+      "id": "de-w01-l1-wieheisst",
+      "term": "Wie heißt du? / Wie heißen Sie?",
+      "translation": "Como você se chama? (informal / formal)",
+      "example": "Wie heißen Sie? — Ich heiße Weber.",
+      "exampleTranslation": "Como a senhora se chama? — Me chamo Weber."
+    },
+    {
+      "id": "de-w01-l1-freutmich",
+      "term": "Freut mich",
+      "translation": "prazer (em conhecer)",
+      "example": "Freut mich, Lucas!",
+      "exampleTranslation": "Prazer, Lucas!"
+    },
+    {
+      "id": "de-w01-l1-name",
+      "term": "Name",
+      "translation": "nome",
+      "example": "Mein Name ist Lucas.",
+      "exampleTranslation": "Meu nome é Lucas.",
+      "noun": true,
+      "article": "der",
+      "plural": "die Namen"
+    },
+    {
+      "id": "de-w01-l1-tag",
+      "term": "Tag",
+      "translation": "dia",
+      "example": "Guten Tag!",
+      "exampleTranslation": "Bom dia!",
+      "noun": true,
+      "article": "der",
+      "plural": "die Tage"
+    },
+    {
+      "id": "de-w01-l1-danke",
+      "term": "danke",
+      "translation": "obrigado(a)",
+      "example": "Danke, Frau Weber!",
+      "exampleTranslation": "Obrigado, Sra. Weber!"
+    }
   ]
 }

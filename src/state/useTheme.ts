@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type Profile } from '../lib/db'
+import { setPreferredVoices } from '../lib/tts'
 
 export const DEFAULT_PROFILE: Profile = { id: 'me', name: '', theme: 'system', textScale: 1, micAllowed: false, createdAt: '' }
 
@@ -13,9 +14,10 @@ export async function saveProfile(patch: Partial<Profile>): Promise<void> {
   await db.profile.put({ ...current, ...patch, id: 'me' })
 }
 
-/** Aplica tema (claro/escuro/sistema) e tamanho do texto no <html>. */
+/** Aplica tema (claro/escuro/sistema), tamanho do texto e voz preferida. */
 export function useApplyTheme(): void {
   const p = useProfile()
+  useEffect(() => { setPreferredVoices(p.voices) }, [p.voices])
   useEffect(() => {
     const root = document.documentElement
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
@@ -23,7 +25,7 @@ export function useApplyTheme(): void {
       const dark = p.theme === 'dark' || (p.theme === 'system' && mq.matches)
       root.dataset.theme = dark ? 'dark' : 'light'
       root.style.setProperty('--text-scale', String(p.textScale))
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0f172a' : '#f8fafc')
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0b1220' : '#eef2f7')
     }
     apply()
     mq.addEventListener('change', apply)

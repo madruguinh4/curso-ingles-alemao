@@ -72,8 +72,8 @@ export const LessonSchema = z
 export const WeekSchema = z.object({
   id: z.string().regex(/^(en|de)-w\d{2}$/),
   language: LanguageSchema,
-  number: z.number().int().min(1).max(26),
-  month: z.number().int().min(1).max(6),
+  number: z.number().int().min(1).max(52),
+  month: z.number().int().min(1).max(12),
   level: LevelSchema,
   title: z.string().min(1),
   canDo: z.string().min(1),

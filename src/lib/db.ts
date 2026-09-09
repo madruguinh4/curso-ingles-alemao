@@ -4,6 +4,8 @@ import type { Language, Skill, Goal, StartLevel } from './types'
 
 // Progresso do aluno. Conteúdo NÃO fica aqui — é somente-leitura no bundle.
 // Uma matrícula (enrollment) por idioma: planos e históricos independentes.
+// Sem agenda por tempo: o aluno avança no ritmo dele; o app registra os dias
+// em que estudou (studyDays) e mostra isso sem punição.
 
 export interface Profile {
   id: 'me'
@@ -11,6 +13,8 @@ export interface Profile {
   theme: 'system' | 'light' | 'dark'
   textScale: 1 | 1.15 | 1.3
   micAllowed: boolean
+  /** voz escolhida por idioma (voiceURI); vazio = automática */
+  voices?: Partial<Record<Language, string>>
   createdAt: string
 }
 
@@ -19,25 +23,8 @@ export interface Enrollment {
   language: Language
   level: StartLevel
   goal: Goal
-  /** Minutos por dia dedicados a ESTE idioma (já divididos se houver dois: 20/30/45…). */
-  minutesPerDay: number
-  /** 0 = domingo … 6 = sábado */
-  weekdays: number[]
   startDate: string
   createdAt: string
-}
-
-export type ScheduleKind = 'lesson' | 'lesson-a' | 'lesson-b' | 'review' | 'assessment'
-export type ScheduleStatus = 'pending' | 'done' | 'missed'
-
-export interface ScheduleItem {
-  id?: number
-  enrollmentId: number
-  date: string
-  weekNumber: number
-  lessonId: string | null
-  kind: ScheduleKind
-  status: ScheduleStatus
 }
 
 export interface Attempt {
@@ -77,14 +64,30 @@ export interface Completion {
   completedAt: string | null
 }
 
+export interface StudyDay {
+  id?: number
+  enrollmentId: number
+  /** YYYY-MM-DD local */
+  date: string
+}
+
+export interface AssessmentResult {
+  id?: number
+  enrollmentId: number
+  weekNumber: number
+  results: { skill: Skill; ok: number; total: number }[]
+  doneAt: string
+}
+
 export class AppDB extends Dexie {
   profile!: EntityTable<Profile, 'id'>
   enrollments!: EntityTable<Enrollment, 'id'>
-  schedule!: EntityTable<ScheduleItem, 'id'>
   attempts!: EntityTable<Attempt, 'id'>
   errors!: EntityTable<ErrorLog, 'id'>
   cards!: EntityTable<CardRow, 'id'>
   completions!: EntityTable<Completion, 'id'>
+  studyDays!: EntityTable<StudyDay, 'id'>
+  assessments!: EntityTable<AssessmentResult, 'id'>
 
   constructor() {
     super('curso-idiomas')
@@ -96,6 +99,11 @@ export class AppDB extends Dexie {
       errors: '++id, enrollmentId, lessonId, at',
       cards: '++id, enrollmentId, vocabId, [enrollmentId+vocabId], [enrollmentId+due]',
       completions: '++id, enrollmentId, lessonId, [enrollmentId+lessonId]',
+    })
+    this.version(2).stores({
+      schedule: null,
+      studyDays: '++id, enrollmentId, [enrollmentId+date]',
+      assessments: '++id, enrollmentId, [enrollmentId+weekNumber]',
     })
   }
 }
@@ -110,4 +118,10 @@ export async function storageAvailable(): Promise<boolean> {
   } catch {
     return false
   }
+}
+
+/** Registra que o aluno estudou este idioma hoje (idempotente). */
+export async function recordStudyDay(enrollmentId: number, date: string): Promise<void> {
+  const exists = await db.studyDays.where('[enrollmentId+date]').equals([enrollmentId, date]).count()
+  if (!exists) await db.studyDays.add({ enrollmentId, date })
 }

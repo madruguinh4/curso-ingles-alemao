@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
+import { Search } from 'lucide-react'
 import { db } from '../lib/db'
 import { lessonsFor } from '../lib/content'
-import { miniMarkdown, vocabFront } from '../lib/export'
+import { GLOSSARY } from '../content/glossary'
+import { vocabFront } from '../lib/export'
 import { LANGUAGE_NAMES } from '../lib/types'
 import { useActiveEnrollment } from '../state/useEnrollments'
-import { Card, Screen, Spinner } from '../components/ui'
+import { Card, Screen, SectionTitle, Spinner } from '../components/ui'
 import { Say, NoVoiceNotice } from '../components/Say'
+import { Md } from '../components/Md'
 
 export function Library() {
   const { enrollmentId } = useParams()
@@ -22,12 +25,17 @@ export function Library() {
   const norm = (s: string) => s.toLowerCase()
   const query = norm(q.trim())
   const hit = (...fields: string[]) => !query || fields.some((f) => norm(f).includes(query))
+  const terms = GLOSSARY.filter((t) => hit(t.key, t.title, t.definition))
 
   return (
-    <Screen title={`Biblioteca — ${LANGUAGE_NAMES[lang]}`}>
-      <input className="input mb-3" placeholder="Buscar palavra, tradução ou tema…" value={q} onChange={(ev) => setQ(ev.target.value)} aria-label="Buscar" />
+    <Screen title="Biblioteca" subtitle={LANGUAGE_NAMES[lang]}>
+      <div className="relative mb-3">
+        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 muted" aria-hidden="true" />
+        <input className="input pl-10" placeholder="Buscar palavra, tradução ou termo…" value={q} onChange={(ev) => setQ(ev.target.value)} aria-label="Buscar" />
+      </div>
       <NoVoiceNotice lang={lang} />
-      <h2 className="text-lg font-bold mt-2 mb-2">Vocabulário</h2>
+
+      <SectionTitle>Vocabulário</SectionTitle>
       <div className="grid gap-3">
         {lessons.map((l) => {
           const items = l.vocabulary.filter((v) => hit(v.term, v.translation, v.example))
@@ -37,7 +45,7 @@ export function Library() {
               <p className="text-sm muted mb-2"><Link to={`/lesson/${eid}/${l.id}`} style={{ color: 'var(--accent)' }}>{l.title}</Link>{done.has(l.id) ? ' · concluída' : ''}</p>
               <ul className="grid gap-1">
                 {items.map((v) => (
-                  <li key={v.id} className="flex items-center gap-2 py-1 border-b last:border-0" style={{ borderColor: 'var(--border)' }}>
+                  <li key={v.id} className="flex items-center gap-2 py-1.5 border-b last:border-0" style={{ borderColor: 'var(--border)' }}>
                     <div className="grow"><b>{vocabFront(v, lang)}</b> <span className="muted">— {v.translation}</span><br /><span className="text-sm">{v.example}</span></div>
                     <Say text={v.example} lang={lang} />
                   </li>
@@ -47,12 +55,25 @@ export function Library() {
           )
         })}
       </div>
-      <h2 className="text-lg font-bold mt-6 mb-2">Gramática</h2>
+
+      <SectionTitle>Gramática</SectionTitle>
       <div className="grid gap-3">
         {lessons.filter((l) => hit(l.explanation.title, l.explanation.body, l.title)).map((l) => (
           <details key={l.id} className="card">
             <summary className="font-semibold cursor-pointer">{l.explanation.title} <span className="muted text-sm">({l.title})</span></summary>
-            <div className="prose mt-2" dangerouslySetInnerHTML={{ __html: miniMarkdown(l.explanation.body) }} />
+            <Md block className="mt-2" text={l.explanation.body} />
+          </details>
+        ))}
+      </div>
+
+      <SectionTitle>Termos de gramática</SectionTitle>
+      <p className="text-sm muted mb-2">Tudo o que o curso usa para explicar, em português simples. Estes termos aparecem sublinhados nas aulas.</p>
+      <div className="grid gap-2">
+        {terms.map((t) => (
+          <details key={t.key} className="card-flat">
+            <summary className="font-semibold cursor-pointer">{t.title}</summary>
+            <p className="text-sm mt-1">{t.definition}</p>
+            <p className="text-sm muted mt-1"><i>{t.example}</i></p>
           </details>
         ))}
       </div>

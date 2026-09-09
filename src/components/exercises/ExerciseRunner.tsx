@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { db } from '../../lib/db'
+import { CheckCircle2, XCircle, RotateCcw, ArrowRight } from 'lucide-react'
+import { db, recordStudyDay } from '../../lib/db'
+import { todayISO } from '../../lib/dates'
 import type { Exercise, Language, Skill } from '../../lib/types'
 import { SKILL_NAMES } from '../../lib/types'
-import { Button, Card, ProgressBar } from '../ui'
+import { Button, ProgressBar } from '../ui'
 import { Md } from '../Md'
 import { ChoiceEx } from './Choice'
 import { GapEx } from './Gap'
@@ -16,7 +18,6 @@ import { FreeEx } from './Free'
 // Tentar de novo destrava sem contar como acerto.
 
 export interface ExerciseResult { exerciseId: string; skill: Skill; correct: boolean }
-
 export interface SubmitInfo { given: string; correct: boolean; expected: string; skill?: Skill }
 
 export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, lessonIdOf, mode, onFinish }: {
@@ -47,6 +48,7 @@ export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, lesson
         const explanation = 'explanation' in ex ? ex.explanation : ''
         await db.errors.add({ enrollmentId, lessonId: lid, exerciseId: ex.id, prompt, given: info.given, expected: info.expected, explanation, at })
       }
+      await recordStudyDay(enrollmentId, todayISO())
       setResults((r) => [...r, { exerciseId: ex.id, skill, correct: info.correct }])
     }
     setFeedback(info)
@@ -66,6 +68,7 @@ export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, lesson
 
   const key = `${ex.id}-${attemptNo}`
   const props = { lang, disabled: !!feedback, onSubmit: submit }
+  const last = idx + 1 >= exercises.length
   return (
     <div className="grid gap-3">
       <ProgressBar value={idx / exercises.length} label={`Exercício ${idx + 1} de ${exercises.length} · ${SKILL_NAMES[ex.skill]}`} />
@@ -77,23 +80,28 @@ export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, lesson
       {ex.type === 'free' && <FreeEx key={key} {...props} ex={ex} />}
 
       {feedback && (
-        <Card className={feedback.correct ? 'choice-ok' : 'choice-err'}>
-          {ex.type === 'free' ? (
-            <p><b>Registrado.</b> {feedback.correct ? 'Você marcou a maior parte da lista — boa produção.' : 'Você marcou poucos itens da lista. Vale repetir esta produção amanhã, com o modelo ao lado.'}</p>
-          ) : feedback.correct ? (
-            <p><b>Certo!</b> {'explanation' in ex && <Md className="muted" text={ex.explanation} />}</p>
-          ) : (
-            <div>
-              <p><b>Ainda não.</b> Resposta esperada: <b>{feedback.expected}</b></p>
-              {'explanation' in ex && <Md block className="mt-1" text={ex.explanation} />}
-              {attemptNo === 0 && mode === 'lesson' && <p className="text-sm muted mt-1">Este erro foi guardado no seu histórico — ele volta em outros contextos e aparece no kit final.</p>}
+        <div className={`fade-in ${feedback.correct ? 'feedback-ok' : 'feedback-err'}`} role="status">
+          <div className="flex items-start gap-2">
+            {feedback.correct ? <CheckCircle2 size={22} style={{ color: 'var(--ok)', flex: 'none' }} /> : <XCircle size={22} style={{ color: 'var(--err)', flex: 'none' }} />}
+            <div className="grow">
+              {ex.type === 'free' ? (
+                <p><b>Registrado.</b> {feedback.correct ? 'Você marcou a maior parte da lista — boa produção.' : 'Você marcou poucos itens. Vale repetir esta produção amanhã, com o modelo ao lado.'}</p>
+              ) : feedback.correct ? (
+                <div><p className="font-bold">Certo!</p>{'explanation' in ex && <Md block className="text-sm mt-1" text={ex.explanation} />}</div>
+              ) : (
+                <div>
+                  <p className="font-bold">Ainda não. A resposta esperada era: <span className="font-mono">{feedback.expected}</span></p>
+                  {'explanation' in ex && <Md block className="text-sm mt-1" text={ex.explanation} />}
+                  {attemptNo === 0 && mode === 'lesson' && <p className="text-xs muted mt-1">Este erro ficou no seu histórico — ele volta em outros contextos e aparece no kit final.</p>}
+                </div>
+              )}
             </div>
-          )}
-          <div className="flex gap-2 mt-3">
-            {!feedback.correct && mode === 'lesson' && ex.type !== 'free' && <Button variant="secondary" onClick={retry}>Tentar de novo</Button>}
-            <Button onClick={next}>{idx + 1 >= exercises.length ? 'Concluir' : 'Continuar'}</Button>
           </div>
-        </Card>
+          <div className="flex gap-2 mt-3">
+            {!feedback.correct && mode === 'lesson' && ex.type !== 'free' && <Button variant="secondary" icon={<RotateCcw size={16} />} onClick={retry}>Tentar de novo</Button>}
+            <Button onClick={next} icon={<ArrowRight size={16} />}>{last ? 'Concluir' : 'Continuar'}</Button>
+          </div>
+        </div>
       )}
     </div>
   )
