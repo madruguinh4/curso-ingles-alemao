@@ -126,4 +126,6 @@ export async function storageAvailable(): Promise<boolean> {
 export async function recordStudyDay(enrollmentId: number, date: string): Promise<void> {
   const exists = await db.studyDays.where('[enrollmentId+date]').equals([enrollmentId, date]).count()
   if (!exists) await db.studyDays.add({ enrollmentId, date })
+  // Avisa o servidor de lembretes (se o aluno ativou push). Nunca bloqueia nem quebra offline.
+  import('./push').then((m) => m.syncStudy(date)).catch(() => {})
 }

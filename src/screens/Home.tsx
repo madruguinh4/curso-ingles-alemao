@@ -14,6 +14,7 @@ import { useActiveEnrollment, languageChosen } from '../state/useEnrollments'
 import { useProfile } from '../state/useTheme'
 import { Button, Card, Ring, Screen, SectionTitle, Spinner } from '../components/ui'
 import { StudyCalendar } from '../components/StudyCalendar'
+import { RemindersInvite } from '../components/Reminders'
 
 export function Home() {
   const { enrollment: e, all, loading } = useActiveEnrollment()
@@ -42,7 +43,7 @@ function Today({ e, name, canSwitch }: { e: Enrollment; name: string; canSwitch:
   const stats = contentStats(lang)
   const next = nextLesson(lessons, completions)
   const week = currentWeek(lang, completions)
-  const doneCount = completions.filter((c) => c.completedAt).length
+  const doneCount = completions.filter((c) => c.completedAt && !c.skipped).length
   const upcoming = upcomingLessons(lessons, completions, 5)
   const checks = pendingAssessments(lang, completions, assessed)
   const study = studyStats(days.map((d) => d.date), today)
@@ -104,6 +105,7 @@ function Today({ e, name, canSwitch }: { e: Enrollment; name: string; canSwitch:
         </Link>
       ))}
 
+      <RemindersInvite enrollmentId={eid} lang={lang} />
       <StudyCalendar stats={study} />
 
       <SectionTitle action={<Link to={`/map/${eid}`} className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>Ver trilha</Link>}>Próximas aulas</SectionTitle>

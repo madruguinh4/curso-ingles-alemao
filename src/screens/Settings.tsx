@@ -7,6 +7,7 @@ import { useEnrollments } from '../state/useEnrollments'
 import { voicesFor, isNeural, speak, ttsSupported } from '../lib/tts'
 import { LANGUAGE_NAMES, type Language } from '../lib/types'
 import { Button, Card, Choice, Notice, Screen } from '../components/ui'
+import { RemindersCard } from '../components/Reminders'
 
 function isIosSafariNotInstalled(): boolean {
   const ua = navigator.userAgent
@@ -47,6 +48,7 @@ export function Settings() {
           <input id="name" className="input" value={name} onChange={(e) => setName(e.target.value)} onBlur={() => saveProfile({ name: name.trim() })} />
         </Card>
 
+        {(enrollments ?? []).map((e) => <RemindersCard key={e.id} enrollmentId={e.id!} lang={e.language} />)}
         {langs.map((l) => <VoicePicker key={l} lang={l} value={p.voices?.[l] ?? ''} onChange={(uri) => saveProfile({ voices: { ...(p.voices ?? {}), [l]: uri } })} />)}
 
         <Card>
