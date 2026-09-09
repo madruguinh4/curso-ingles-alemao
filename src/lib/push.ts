@@ -1,12 +1,13 @@
 import type { Language } from './types'
+import { SUPABASE_URL, SUPABASE_ANON_KEY, VAPID_PUBLIC_KEY } from '../config'
 
 // Lembretes diários por push. Opt-in (o navegador exige toque do usuário).
 // O app só guarda a inscrição e a data do último estudo numa tabela do
 // Supabase; quem envia é o job em scripts/send-nudges.mjs.
 
-const URL = import.meta.env.VITE_SUPABASE_URL as string | undefined
-const KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
-const VAPID = import.meta.env.VITE_VAPID_PUBLIC_KEY as string | undefined
+const URL: string | undefined = SUPABASE_URL
+const KEY: string | undefined = SUPABASE_ANON_KEY
+const VAPID: string | undefined = VAPID_PUBLIC_KEY
 
 export const pushConfigured = (): boolean => !!(URL && KEY && VAPID)
 
