@@ -1,8 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
 import { useApplyTheme } from './state/useTheme'
+import { useLanguageTheme } from './state/useEnrollments'
 import { Nav } from './components/Nav'
 import { Welcome } from './screens/Welcome'
 import { Onboarding } from './screens/Onboarding'
+import { LanguagePicker } from './screens/LanguagePicker'
 import { Plan } from './screens/Plan'
 import { Home } from './screens/Home'
 import { CourseMap } from './screens/CourseMap'
@@ -27,12 +29,14 @@ function NotFound() {
 
 export default function App() {
   useApplyTheme()
+  useLanguageTheme()
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/language" element={<LanguagePicker />} />
         <Route path="/plan/:enrollmentId?" element={<Plan />} />
         <Route path="/map/:enrollmentId?" element={<CourseMap />} />
         <Route path="/lesson/:enrollmentId/:lessonId" element={<LessonScreen />} />

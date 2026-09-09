@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { useActiveEnrollment } from '../state/useEnrollments'
 
-const HIDDEN = ['/welcome', '/onboarding', '/lesson/', '/assessment/']
+const HIDDEN = ['/welcome', '/onboarding', '/language', '/lesson/', '/assessment/']
 
 export function Nav() {
   const { pathname } = useLocation()

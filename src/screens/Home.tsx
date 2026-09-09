@@ -8,20 +8,24 @@ import { formatBR, todayISO } from '../lib/dates'
 import { getLesson, lessonsForWeek, getWeek } from '../lib/content'
 import { MONTH_TITLES } from '../content/curriculum'
 import { LANGUAGE_NAMES } from '../lib/types'
-import { useEnrollments } from '../state/useEnrollments'
+import { useActiveEnrollment, languageChosen } from '../state/useEnrollments'
 import { useProfile } from '../state/useTheme'
 import { Button, Card, Notice, Screen, Spinner } from '../components/ui'
 
 export function Home() {
-  const all = useEnrollments()
+  const { enrollment: e, all, loading } = useActiveEnrollment()
   const p = useProfile()
-  if (!all) return <Spinner />
-  if (!all.length) return <Navigate to="/welcome" replace />
+  if (loading) return <Spinner />
+  if (!all?.length || !e) return <Navigate to="/welcome" replace />
+  // Com dois idiomas, o aluno escolhe qual estudar ao abrir o app — nunca vê os dois juntos.
+  if (all.length > 1 && !languageChosen()) return <Navigate to="/language" replace />
   return (
     <Screen title={p.name ? `Olá, ${p.name}` : 'Hoje'}>
-      <div className="grid gap-6">
-        {all.map((e) => <EnrollmentToday key={e.id} e={e} />)}
+      <div className="flex items-center justify-between mb-3">
+        <span className="chip text-base" style={{ borderColor: 'var(--accent)', color: 'var(--accent)' }}>{e.language === 'en' ? '🇬🇧' : '🇩🇪'} {LANGUAGE_NAMES[e.language]}</span>
+        <Button variant="ghost" to="/language">{all.length > 1 ? 'Trocar idioma' : 'Adicionar idioma'}</Button>
       </div>
+      <EnrollmentToday e={e} />
     </Screen>
   )
 }
@@ -65,8 +69,8 @@ function EnrollmentToday({ e }: { e: Enrollment }) {
   return (
     <section aria-labelledby={`h-${eid}`}>
       <div className="flex items-baseline justify-between mb-2">
-        <h2 id={`h-${eid}`} className="text-xl font-bold">{LANGUAGE_NAMES[e.language]}</h2>
-        {week && <span className="text-sm muted">Semana {week.number} de 26 · {MONTH_TITLES[week.month]}</span>}
+        <h2 id={`h-${eid}`} className="text-xl font-bold">{week ? `Semana ${week.number} de 26` : 'Plano concluído'}</h2>
+        {week && <span className="text-sm muted">{MONTH_TITLES[week.month]}</span>}
       </div>
       {week && <p className="text-sm mb-3"><b>Objetivo da semana:</b> {week.canDo}</p>}
       {notice && <div className="mb-3"><Notice>{notice}</Notice></div>}

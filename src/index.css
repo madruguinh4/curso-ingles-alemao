@@ -14,6 +14,9 @@
   --accent: #60a5fa; --accent-fg: #0f172a; --ok: #4ade80; --warn: #fbbf24; --err: #f87171;
   --border: #334155;
 }
+/* Cor de destaque por idioma: reforça em qual idioma o aluno está. Nunca os dois juntos. */
+[data-lang=de] { --accent: #b45309; --accent-fg: #ffffff; }
+[data-theme=dark][data-lang=de] { --accent: #fbbf24; --accent-fg: #0f172a; }
 html { font-size: calc(16px * var(--text-scale)); }
 body {
   margin: 0; background: var(--bg); color: var(--fg);

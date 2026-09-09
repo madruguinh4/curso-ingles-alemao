@@ -12,15 +12,14 @@ import { Button, Card, Notice, Screen, Spinner } from '../components/ui'
 
 export function Plan() {
   const { enrollmentId } = useParams()
-  const { enrollment: e, all, loading } = useActiveEnrollment(enrollmentId)
+  const { enrollment: e, loading } = useActiveEnrollment(enrollmentId)
   const items = useLiveQuery(() => (e?.id ? db.schedule.where('enrollmentId').equals(e.id).toArray() : []), [e?.id])
   if (loading || !items) return <Spinner />
   if (!e) return <Screen title="Plano"><Notice kind="warn">Nenhuma matrícula encontrada.</Notice></Screen>
 
   const s = planSummary(items)
   const stats = contentStats(e.language)
-  const two = (all?.length ?? 0) > 1
-  const agenda = dailyAgenda((two ? e.minutesPerDay * 2 : e.minutesPerDay) as Minutes, two)
+  const agenda = dailyAgenda(e.minutesPerDay as Minutes, false)
 
   return (
     <Screen title={`Seu plano de ${LANGUAGE_NAMES[e.language]}`} back="/">
@@ -30,7 +29,7 @@ export function Plan() {
             <dt className="muted">Início</dt><dd>{formatBR(s.start)}</dd>
             <dt className="muted">Término previsto</dt><dd>{formatBR(s.end)}</dd>
             <dt className="muted">Dias de estudo</dt><dd>{s.studyDays} ({e.weekdays.map((d) => WEEKDAY_SHORT[d]).join(', ')})</dd>
-            <dt className="muted">Tempo por dia</dt><dd>{e.minutesPerDay} min{two ? ' neste idioma' : ''}</dd>
+            <dt className="muted">Tempo por dia</dt><dd>{e.minutesPerDay} min</dd>
             <dt className="muted">Ponto de partida</dt><dd>{LEVEL_NAMES[e.level]}</dd>
             <dt className="muted">Objetivo</dt><dd>{GOAL_NAMES[e.goal]}</dd>
           </dl>
