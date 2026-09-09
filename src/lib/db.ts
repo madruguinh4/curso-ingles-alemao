@@ -62,6 +62,8 @@ export interface Completion {
   lessonId: string
   blocksDone: string[]
   completedAt: string | null
+  /** marcada como "já sei": sai da fila sem contar como concluída */
+  skipped?: boolean
 }
 
 export interface StudyDay {

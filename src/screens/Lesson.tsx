@@ -45,9 +45,11 @@ export function LessonScreen() {
 
   async function markBlock(b: BlockId) {
     const existing = await db.completions.where('[enrollmentId+lessonId]').equals([eid, lesson!.id]).first()
-    const blocksDone = Array.from(new Set([...(existing?.blocksDone ?? []), b]))
+    const wasSkipped = !!existing?.skipped
+    const blocksDone = Array.from(new Set([...(wasSkipped ? [] : existing?.blocksDone ?? []), b]))
     const complete = ALL.every((x) => blocksDone.includes(x))
-    const row = { enrollmentId: eid, lessonId: lesson!.id, blocksDone, completedAt: complete ? existing?.completedAt ?? new Date().toISOString() : existing?.completedAt ?? null }
+    const prevDone = wasSkipped ? null : existing?.completedAt ?? null
+    const row = { enrollmentId: eid, lessonId: lesson!.id, blocksDone, completedAt: complete ? prevDone ?? new Date().toISOString() : prevDone, skipped: false }
     if (existing?.id) await db.completions.update(existing.id, row)
     else await db.completions.add(row)
     await recordStudyDay(eid, todayISO())
@@ -100,6 +102,9 @@ export function LessonScreen() {
         })}
       </ol>
 
+      {completion?.skipped && idx === 0 && (
+        <div className="mb-3"><Notice kind="warn">Você marcou esta aula como “já sei”. Pode fazê-la mesmo assim — ao concluir um bloco, ela volta a contar normalmente.</Notice></div>
+      )}
       {current === 'warmup' && <Warmup lesson={lesson} onNext={advance} />}
       {current === 'dialogue' && <Dialogue lesson={lesson} onNext={advance} />}
       {current === 'explanation' && <Explanation lesson={lesson} onNext={advance} />}

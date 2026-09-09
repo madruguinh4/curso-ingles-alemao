@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Award, Headphones, BookOpenText, PencilLine, Mic } from 'lucide-react'
 import { db } from '../lib/db'
-import { skillScores, demonstratedObjectives, needsReview, completedCount } from '../lib/progress'
+import { skillScores, demonstratedObjectives, needsReview, completedCount, skippedCount } from '../lib/progress'
 import { lessonsFor, lessonsForWeek, contentStats } from '../lib/content'
 import { weeksFor, TOTAL_WEEKS } from '../content/curriculum'
 import { studyStats } from '../lib/study'
@@ -38,7 +38,7 @@ export function Progress() {
         <Card>
           <h2 className="font-bold mb-2">Conteúdo concluído</h2>
           <ProgressBar value={stats.lessons ? done / stats.lessons : 0} label={`${done} de ${stats.lessons} aulas existentes`} />
-          <p className="text-sm muted">{stats.weeksWithLessons} de {TOTAL_WEEKS} semanas têm aulas prontas.</p>
+          <p className="text-sm muted">{stats.weeksWithLessons} de {TOTAL_WEEKS} semanas têm aulas prontas.{skippedCount(completions) ? ` ${skippedCount(completions)} aula(s) marcada(s) como “já sei” — não contam como concluídas.` : ''}</p>
         </Card>
 
         <StudyCalendar stats={studyStats(days.map((d) => d.date), todayISO())} />

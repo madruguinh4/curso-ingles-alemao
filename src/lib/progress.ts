@@ -42,7 +42,7 @@ export function demonstratedObjectives(
     if (!lessons.length) return false
     const allDone = lessons.every((l) => {
       const c = completions.find((c) => c.lessonId === l.id)
-      return !!c?.completedAt && c.blocksDone.includes('production')
+      return !!c?.completedAt && !c.skipped && c.blocksDone.includes('production')
     })
     if (!allDone) return false
     const ids = new Set(lessons.map((l) => l.id))
@@ -66,4 +66,5 @@ export function needsReview(lessons: Lesson[], attempts: Attempt[], errors: Erro
   return out
 }
 
-export const completedCount = (completions: Completion[]): number => completions.filter((c) => !!c.completedAt).length
+export const completedCount = (completions: Completion[]): number => completions.filter((c) => !!c.completedAt && !c.skipped).length
+export const skippedCount = (completions: Completion[]): number => completions.filter((c) => c.skipped).length

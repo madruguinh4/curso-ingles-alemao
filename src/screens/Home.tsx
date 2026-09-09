@@ -1,7 +1,8 @@
 import { Navigate, Link } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { Play, RefreshCw, ClipboardCheck, ChevronRight, CheckCircle2, CircleDot, Circle, Languages } from 'lucide-react'
+import { Play, RefreshCw, ClipboardCheck, ChevronRight, CheckCircle2, CircleDot, Circle, Languages, FastForward } from 'lucide-react'
 import { db, type Enrollment } from '../lib/db'
+import { skipLesson } from '../lib/skip'
 import { dueCards } from '../lib/srs'
 import { todayISO } from '../lib/dates'
 import { lessonsFor, contentStats } from '../lib/content'
@@ -75,6 +76,10 @@ function Today({ e, name, canSwitch }: { e: Enrollment; name: string; canSwitch:
           <h2 className="text-xl font-bold mt-1">{next.title}</h2>
           <p className="text-sm muted mt-1">{next.objective}</p>
           <Button className="mt-4" block to={`/lesson/${eid}/${next.id}`} icon={<Play size={18} />}>{lessonStatus(next.id, completions) === 'progress' ? 'Continuar aula' : 'Começar aula'}</Button>
+          <div className="flex justify-between mt-2">
+            <Button variant="ghost" size="sm" icon={<FastForward size={16} />} onClick={() => skipLesson(eid, next.id)}>Já sei isso — pular</Button>
+            <Button variant="ghost" size="sm" to={`/map/${eid}`}>Escolher outra aula</Button>
+          </div>
         </Card>
       ) : (
         <Card>
