@@ -2,8 +2,10 @@
 // Regra: quem não estudou hoje (no fuso dele) recebe até 3 avisos:
 //   1º a partir das 18h · 2º a partir das 20h30 · 3º a partir das 22h.
 // Quem estudou não recebe nada. Inscrições mortas (404/410) são apagadas.
+// As chamadas (24, cada uma de um mascote) ficam em nudge-messages.mjs.
 
 import webpush from 'web-push'
+import { pickNudge } from './nudge-messages.mjs'
 
 const { SUPABASE_URL, SUPABASE_SERVICE_KEY, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT, APP_URL = '/' } = process.env
 // FORCE=1: modo de teste — manda a 1ª mensagem para todos agora, sem olhar hora nem estudo, e não conta como aviso do dia.
@@ -14,12 +16,6 @@ webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY)
 
 const THRESHOLDS = [18, 20.5, 22]
 const LANG = { en: 'inglês', de: 'alemão' }
-
-const MESSAGES = [
-  (n, l) => ({ title: `Sua lição de ${l} não vai se fazer sozinha`, body: `Ei${n ? `, ${n}` : ''}! Cinco minutos agora e pronto. Entra aqui — é rapidinho.` }),
-  (n, l) => ({ title: `Ainda nada de ${l} hoje…`, body: `${n ? `${n}, u` : 'U'}ma aula hoje vale mais que duas amanhã. Vem terminar o que você começou.` }),
-  (n, l) => ({ title: 'Última chamada de hoje', body: `O dia acaba e a sua sequência de ${l} acaba junto${n ? `, ${n}` : ''}. Uma aula e você dorme em paz.` }),
-]
 
 const headers = { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`, 'Content-Type': 'application/json' }
 const table = `${SUPABASE_URL}/rest/v1/push_subscriptions`
@@ -46,8 +42,8 @@ for (const row of rows) {
     if (row.last_study === date) { skipped++; continue }
     if (stage >= THRESHOLDS.length || hour < THRESHOLDS[stage]) { skipped++; continue }
   }
-  const msg = MESSAGES[stage](row.name?.trim(), LANG[row.lang] ?? 'idiomas')
-  const payload = JSON.stringify({ ...(FORCE ? { title: 'Teste de lembrete ✅', body: `${msg.title} — ${msg.body}` } : msg), url: APP_URL, tag: FORCE ? `test-${Date.now()}` : `nudge-${date}-${stage}` })
+  const msg = pickNudge(stage, date, row.endpoint, row.name?.trim(), LANG[row.lang] ?? 'idiomas')
+  const payload = JSON.stringify({ ...msg, ...(FORCE ? { title: `Teste ✅ ${msg.title}` } : {}), url: APP_URL, tag: FORCE ? `test-${Date.now()}` : `nudge-${date}-${stage}` })
   const patch = (body) => fetch(`${table}?endpoint=eq.${encodeURIComponent(row.endpoint)}`, { method: 'PATCH', headers: { ...headers, Prefer: 'return=minimal' }, body: JSON.stringify(body) })
   try {
     await webpush.sendNotification(row.subscription, payload, { TTL: 3 * 3600 })

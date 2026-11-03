@@ -17,15 +17,19 @@ cleanupOutdatedCaches()
 const BASE = import.meta.env.BASE_URL
 registerRoute(new NavigationRoute(createHandlerBoundToURL(BASE + 'index.html')))
 
-interface NudgePayload { title?: string; body?: string; url?: string; tag?: string }
+interface NudgePayload { title?: string; body?: string; url?: string; tag?: string; mascot?: string }
+
+// O ícone da notificação é o mascote que "manda" a mensagem (public/mascots/<id>.png).
+const MASCOT_IDS = ['tico', 'zeca', 'bia', 'lu', 'rafa', 'nina', 'dudu']
 
 self.addEventListener('push', (event) => {
   let data: NudgePayload = {}
   try { data = event.data?.json() ?? {} } catch { data = { body: event.data?.text() } }
+  const mascot = MASCOT_IDS.includes(data.mascot ?? '') ? data.mascot : 'zeca'
   event.waitUntil(
-    self.registration.showNotification(data.title ?? 'Sua lição de hoje te espera', {
-      body: data.body ?? 'Entra aqui — é rapidinho.',
-      icon: BASE + 'icons/icon-192.png',
+    self.registration.showNotification(data.title ?? 'Zeca: bora jogar?', {
+      body: data.body ?? 'Uma aula curta e eu já começo a pular.',
+      icon: `${BASE}mascots/${mascot}.png`,
       badge: BASE + 'icons/icon-192.png',
       tag: data.tag ?? 'nudge',
       data: { url: data.url ?? BASE },

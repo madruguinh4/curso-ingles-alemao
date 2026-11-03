@@ -55,7 +55,7 @@ Para áudio humano garantido em qualquer aparelho seria preciso **pré-gerar arq
 Push com o app fechado exige um servidor. Aqui ele é mínimo e gratuito:
 
 - **Supabase** — tabela `push_subscriptions` (`supabase/migrations/`): inscrição de push, fuso e último dia de estudo de cada aparelho. Anônimos só inserem/apagam a própria linha (RLS); ninguém lista.
-- **GitHub Actions** — `.github/workflows/nudges.yml` roda `scripts/send-nudges.mjs` de hora em hora. Quem não estudou no dia (no fuso dele) recebe até 3 avisos: 18h, 20h30 e 22h. Quem estudou não recebe nada.
+- **GitHub Actions** — `.github/workflows/nudges.yml` roda `scripts/send-nudges.mjs` de hora em hora. Quem não estudou no dia (no fuso dele) recebe até 3 avisos: 18h, 20h30 e 22h. Quem estudou não recebe nada. Cada aviso vem de um mascote (ícone em `public/mascots/`), sorteado entre 24 chamadas em `scripts/nudge-messages.mjs` (8 por horário, trocando a cada dia).
 - **App** — `src/lib/push.ts` e `src/components/Reminders.tsx`: opt-in em Configurações (ou convite no Início), reversível. iPhone: só com o app instalado na tela inicial (iOS 16.4+).
 
 Segredos do repositório: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_KEY`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`; variável `APP_URL`. Gere chaves VAPID com `npx web-push generate-vapid-keys`. Localmente, copie `.env.example` para `.env.local`.
