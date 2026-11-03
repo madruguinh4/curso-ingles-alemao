@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { BellRing, BellOff } from 'lucide-react'
 import { db } from '../lib/db'
-import { pushState, enableReminders, disableReminders, type PushState } from '../lib/push'
+import { pushState, enableReminders, disableReminders, testReminder, type PushState } from '../lib/push'
 import { LANGUAGE_NAMES, type Language } from '../lib/types'
 import { useProfile } from '../state/useTheme'
 import { Button, Card, Notice } from '../components/ui'
@@ -35,6 +35,7 @@ export function useReminders(enrollmentId: number, lang: Language) {
 /** Cartão completo (Configurações). */
 export function RemindersCard({ enrollmentId, lang }: { enrollmentId: number; lang: Language }) {
   const { state, busy, enable, disable } = useReminders(enrollmentId, lang)
+  const [test, setTest] = useState<'ok' | 'denied' | 'error'>()
   return (
     <Card>
       <h2 className="font-semibold mb-1 flex items-center gap-2"><BellRing size={18} /> Lembretes diários</h2>
@@ -44,12 +45,16 @@ export function RemindersCard({ enrollmentId, lang }: { enrollmentId: number; la
       {state === 'needs-install' && <Notice>No iPhone, os lembretes só funcionam com o app instalado: Safari → Compartilhar → <b>Adicionar à Tela de Início</b>. Depois volte aqui.</Notice>}
       {state === 'denied' && <Notice kind="warn">Você bloqueou notificações para este site. Para reativar, libere nas configurações do navegador e volte aqui.</Notice>}
       {state === 'off' && <Button block icon={<BellRing size={18} />} disabled={busy} onClick={enable}>Ativar lembretes</Button>}
-      {state === 'on' && (
+      {state === 'on' && (<>
         <div className="flex items-center justify-between gap-3">
           <span className="chip chip-ok"><BellRing size={14} /> ativados neste aparelho</span>
           <Button variant="secondary" size="sm" icon={<BellOff size={16} />} disabled={busy} onClick={disable}>Desativar</Button>
         </div>
-      )}
+        <Button variant="ghost" size="sm" className="mt-2" onClick={async () => setTest(await testReminder())}>Testar agora</Button>
+        {test === 'ok' && <p className="text-sm muted mt-1">Enviado. Se não apareceu, o celular está bloqueando: segure o ícone do app → Informações do app → Notificações.</p>}
+        {test === 'denied' && <Notice kind="warn">O celular não deixou mostrar notificações. Libere em Informações do app → Notificações.</Notice>}
+        {test === 'error' && <Notice kind="warn">Não consegui mostrar a notificação neste aparelho.</Notice>}
+      </>)}
     </Card>
   )
 }

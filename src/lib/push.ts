@@ -91,6 +91,24 @@ export async function disableReminders(): Promise<void> {
   await sub.unsubscribe()
 }
 
+/** Mostra uma notificação na hora, sem servidor: separa "o celular bloqueia" de "o envio falhou". */
+export async function testReminder(): Promise<'ok' | 'denied' | 'error'> {
+  try {
+    if ((await Notification.requestPermission()) !== 'granted') return 'denied'
+    const reg = await navigator.serviceWorker.ready
+    const base = import.meta.env.BASE_URL
+    await reg.showNotification('Zeca: funcionou!', {
+      body: 'É assim que os lembretes vão chegar.',
+      icon: `${base}mascots/zeca.png`,
+      badge: `${base}icons/badge-96.png`,
+      tag: 'test-local',
+    })
+    return 'ok'
+  } catch {
+    return 'error'
+  }
+}
+
 /** Avisa o servidor que o aluno estudou hoje (para não mandar lembrete). Silencioso se offline. */
 export async function syncStudy(date: string, info?: { name?: string; lang?: Language }): Promise<void> {
   if (!pushSupported() || !pushConfigured()) return
