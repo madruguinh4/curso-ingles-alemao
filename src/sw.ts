@@ -34,7 +34,11 @@ self.addEventListener('push', (event) => {
       badge: BASE + 'icons/badge-96.png',
       tag: data.tag ?? 'nudge',
       data: { url: data.url ?? BASE },
-    }),
+      // Web não aceita som próprio: toca o som de notificação do celular, mais a vibração.
+      silent: false,
+      renotify: true,
+      vibrate: [180, 80, 180, 80, 320],
+    } as NotificationOptions),
   )
 })
 

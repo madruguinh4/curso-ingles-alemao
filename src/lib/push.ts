@@ -102,7 +102,10 @@ export async function testReminder(): Promise<'ok' | 'denied' | 'error'> {
       icon: `${base}mascots/zeca.png`,
       badge: `${base}icons/badge-96.png`,
       tag: 'test-local',
-    })
+      silent: false,
+      renotify: true,
+      vibrate: [180, 80, 180, 80, 320],
+    } as NotificationOptions)
     return 'ok'
   } catch {
     return 'error'
