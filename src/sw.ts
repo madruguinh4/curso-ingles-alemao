@@ -30,7 +30,8 @@ self.addEventListener('push', (event) => {
     self.registration.showNotification(data.title ?? 'Zeca: bora jogar?', {
       body: data.body ?? 'Uma aula curta e eu já começo a pular.',
       icon: `${BASE}mascots/${mascot}.png`,
-      badge: BASE + 'icons/icon-192.png',
+      // Android pinta o ícone pequeno de uma cor só: precisa ser silhueta transparente.
+      badge: BASE + 'icons/badge-96.png',
       tag: data.tag ?? 'nudge',
       data: { url: data.url ?? BASE },
     }),
