@@ -42,3 +42,11 @@ export function studyStats(days: string[], today: string, weeks = 12): StudyStat
 
   return { totalDays: set.size, currentStreak, longestStreak, studiedToday: set.has(today), grid, thisWeek }
 }
+
+/** O que o Dudu diz sobre os dias de estudo: incentivo, nunca cobrança. */
+export function studyMessage(s: StudyStats): string {
+  if (s.studiedToday) return s.currentStreak > 1 ? `Hoje já contou! São ${s.currentStreak} dias seguidos.` : 'Hoje já contou! Amanhã tem mais.'
+  if (s.currentStreak > 0) return `Uma aula hoje e são ${s.currentStreak + 1} dias seguidos.`
+  if (s.totalDays > 0) return 'Que bom te ver de volta. Uma aula curta já vale.'
+  return 'Cada dia que você estudar aparece aqui.'
+}

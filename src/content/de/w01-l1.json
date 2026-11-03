@@ -3,109 +3,52 @@
   "weekId": "de-w01",
   "language": "de",
   "title": "Hallo! Ich bin…",
-  "objective": "Cumprimentar, dizer seu nome e se despedir — escolhendo entre du e Sie.",
-  "warmup": {
-    "prompt": "Antes de começar, ative o que você já sabe:",
-    "items": [
-      "Você conhece alguma palavra em alemão? (Kindergarten, Volkswagen, Bratwurst, Angst…) Diga em voz alta.",
-      "Em português, você trata todo mundo por \"você\"? Ou usa \"senhor/senhora\" com algumas pessoas? O alemão marca essa diferença na gramática.",
-      "Como você se apresenta em português? Pense na frase inteira."
-    ]
-  },
-  "dialogue": {
-    "context": "Primeiro dia de um curso de alemão em Curitiba. Lucas conhece a professora (tratamento formal) e depois uma colega (tratamento informal).",
-    "lines": [
-      {
-        "speaker": "Frau Weber",
-        "text": "Guten Tag! Ich bin Frau Weber. Wie heißen Sie?",
-        "translation": "Bom dia! Eu sou a Sra. Weber. Como o senhor se chama?"
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Guten Tag. Ich heiße Lucas. Lucas Silva.",
-        "translation": "Bom dia. Eu me chamo Lucas. Lucas Silva."
-      },
-      {
-        "speaker": "Frau Weber",
-        "text": "Freut mich, Herr Silva. Willkommen!",
-        "translation": "Prazer, Sr. Silva. Bem-vindo!"
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Danke!",
-        "translation": "Obrigado!"
-      },
-      {
-        "speaker": "Paula",
-        "text": "Hallo! Ich bin Paula. Und du?",
-        "translation": "Oi! Eu sou a Paula. E você?"
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Hallo, Paula. Ich bin Lucas.",
-        "translation": "Oi, Paula. Eu sou o Lucas."
-      },
-      {
-        "speaker": "Paula",
-        "text": "Freut mich, Lucas! Bis später.",
-        "translation": "Prazer, Lucas! Até mais."
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Tschüss!",
-        "translation": "Tchau!"
-      }
-    ]
-  },
-  "explanation": {
-    "title": "du ou Sie? — e os dois verbos para se apresentar",
-    "body": "O alemão tem **duas formas de \"você\"** — o [[registro]] está dentro da gramática:\n\n- **du** — informal: amigos, família, crianças, colegas jovens, estudantes entre si.\n- **Sie** — formal: desconhecidos adultos, atendimento, trabalho, professores. **Sempre com S maiúsculo.**\n\n**Regra 1 — na dúvida, use Sie.** É melhor ser formal demais do que íntimo demais.\n\n**Regra 2 — dois [[verbo|verbos]] para se apresentar, e a [[terminação]] muda com a pessoa** (isso se chama [[conjugação]]):\n\n- **sein** (ser): *ich bin* / *du bist* / *Sie sind*\n- **heißen** (chamar-se): *ich heiße* / *du heißt* / *Sie heißen*\n\nUse um ou outro, nunca os dois: \"Ich heiße bin Lucas\" está errado.\n\n**Regra 3 — o [[sujeito]] é obrigatório:** *Ich bin Lucas*, nunca \"Bin Lucas\".\n\nPergunta do nome: **Wie heißt du?** (informal) / **Wie heißen Sie?** (formal).\n\n**Saudações:** *Hallo* (informal ou neutro), *Guten Tag* (neutro/formal, durante o dia), *Tschüss* (tchau, informal), *Auf Wiedersehen* (formal), *Bis später* (até mais).\n\n**Sons novos:**\n- **ch** de *ich* — não é \"ik\" nem \"ich\" de \"chuva\". É um sopro com a língua alta, como um \"h\" forte. Sorria e sopre.\n- **[[ß]]** = \"ss\". *Heißen* soa \"háissen\".\n- **ei** = \"ai\" (h**ei**ßen).\n- **eu** = \"ói\" (*Freut* = \"fróit\").",
-    "examples": [
-      {
-        "text": "Ich bin Lucas.",
-        "translation": "Eu sou o Lucas."
-      },
-      {
-        "text": "Ich heiße Lucas Silva.",
-        "translation": "Eu me chamo Lucas Silva."
-      },
-      {
-        "text": "Wie heißt du? (informal)",
-        "translation": "Como você se chama?"
-      },
-      {
-        "text": "Wie heißen Sie? (formal)",
-        "translation": "Como o senhor / a senhora se chama?"
-      },
-      {
-        "text": "Freut mich!",
-        "translation": "Prazer!"
-      }
-    ]
-  },
-  "guided": [
+  "objective": "Dizer oi, seu nome e tchau.",
+  "steps": [
     {
-      "id": "de-w01-l1-g1",
-      "type": "choice",
-      "skill": "reading",
-      "prompt": "Você é apresentado à mãe de um colega, uns 50 anos. Como pergunta o nome dela?",
-      "options": [
-        "Wie heißt du?",
-        "Wie heißen Sie?",
-        "Wie heißt Sie?"
-      ],
-      "answer": 1,
-      "explanation": "Adulto desconhecido → *Sie*. E com *Sie* a [[terminação]] do verbo é *-en*: *heißen*."
+      "type": "learn",
+      "text": "Hallo! Ich bin Lucas.",
+      "translation": "Oi! Eu sou o Lucas.",
+      "rule": "Eu sou = ich bin"
     },
     {
-      "id": "de-w01-l1-g2",
+      "id": "de-w01-l1-g1",
       "type": "gap",
       "skill": "writing",
       "prompt": "Ich ___ Lucas.",
       "answers": [
         "bin"
       ],
-      "explanation": "*sein* com *ich* = *bin*."
+      "explanation": "Eu sou = ich bin."
+    },
+    {
+      "type": "learn",
+      "text": "Ich heiße Lucas.",
+      "translation": "Eu me chamo Lucas.",
+      "rule": "Eu me chamo = ich heiße. Use bin ou heiße, nunca os dois.",
+      "avoid": {
+        "wrong": "Ich heiße bin Lucas.",
+        "right": "Ich heiße Lucas."
+      }
+    },
+    {
+      "id": "de-w01-l1-g2",
+      "type": "order",
+      "skill": "writing",
+      "prompt": "Monte a frase.",
+      "tokens": [
+        "Ich",
+        "heiße",
+        "Paula"
+      ],
+      "answer": "Ich heiße Paula",
+      "explanation": "Ich + heiße + nome."
+    },
+    {
+      "type": "learn",
+      "text": "Wie heißt du?",
+      "translation": "Como você se chama?",
+      "rule": "du = você, para amigos, família e colegas."
     },
     {
       "id": "de-w01-l1-g3",
@@ -116,35 +59,39 @@
         "heißt",
         "heisst"
       ],
-      "explanation": "*heißen* com *du* = *heißt*. (Se seu teclado não tem ß, *heisst* é aceito.)"
+      "explanation": "Com du: heißt."
+    },
+    {
+      "type": "learn",
+      "text": "Wie heißen Sie?",
+      "translation": "Como o(a) senhor(a) se chama?",
+      "rule": "Sie = você formal, com S maiúsculo. Na dúvida, use Sie.",
+      "avoid": {
+        "wrong": "Wie heißen sie?",
+        "right": "Wie heißen Sie?"
+      }
     },
     {
       "id": "de-w01-l1-g4",
-      "type": "order",
-      "skill": "writing",
-      "prompt": "Coloque na ordem certa.",
-      "tokens": [
-        "Ich",
-        "heiße",
-        "Paula"
+      "type": "choice",
+      "skill": "reading",
+      "prompt": "Mãe de um colega, 50 anos. Como perguntar o nome?",
+      "options": [
+        "Wie heißt du?",
+        "Wie heißen Sie?",
+        "Wie heißt Sie?"
       ],
-      "answer": "Ich heiße Paula",
-      "explanation": "[[sujeito]] + [[verbo]] + nome. O verbo fica sempre na segunda posição ([[V2]])."
+      "answer": 1,
+      "explanation": "Adulto desconhecido: Sie."
+    },
+    {
+      "type": "learn",
+      "text": "Tschüss! / Auf Wiedersehen!",
+      "translation": "Tchau! / Até logo!",
+      "rule": "Tschüss = com amigos · Auf Wiedersehen = formal"
     },
     {
       "id": "de-w01-l1-g5",
-      "type": "dictation",
-      "skill": "listening",
-      "text": "Hallo! Ich bin Paula. Und du?",
-      "answers": [
-        "Hallo! Ich bin Paula. Und du?",
-        "Hallo, ich bin Paula. Und du?"
-      ],
-      "explanation": "Repare no *ch* soprado de *ich*.",
-      "lang": "de"
-    },
-    {
-      "id": "de-w01-l1-g6",
       "type": "choice",
       "skill": "reading",
       "prompt": "Qual despedida é formal?",
@@ -154,43 +101,68 @@
         "Bis später!"
       ],
       "answer": 1,
-      "explanation": "*Auf Wiedersehen* é a despedida formal. *Tschüss* e *Bis später* são informais."
+      "explanation": "Auf Wiedersehen é a formal."
+    },
+    {
+      "type": "dialogue",
+      "lines": [
+        {
+          "speaker": "Frau Weber",
+          "text": "Guten Tag! Ich bin Frau Weber. Wie heißen Sie?",
+          "translation": "Bom dia! Eu sou a Sra. Weber. Como o senhor se chama?"
+        },
+        {
+          "speaker": "Lucas",
+          "text": "Ich heiße Lucas Silva.",
+          "translation": "Eu me chamo Lucas Silva."
+        },
+        {
+          "speaker": "Frau Weber",
+          "text": "Freut mich, Herr Silva!",
+          "translation": "Prazer, Sr. Silva!"
+        },
+        {
+          "speaker": "Paula",
+          "text": "Hallo! Ich bin Paula. Und du?",
+          "translation": "Oi! Eu sou a Paula. E você?"
+        },
+        {
+          "speaker": "Lucas",
+          "text": "Hallo, Paula! Ich bin Lucas.",
+          "translation": "Oi, Paula! Eu sou o Lucas."
+        },
+        {
+          "speaker": "Paula",
+          "text": "Freut mich! Tschüss!",
+          "translation": "Prazer! Tchau!"
+        }
+      ]
+    },
+    {
+      "id": "de-w01-l1-g6",
+      "type": "dictation",
+      "skill": "listening",
+      "text": "Hallo! Ich bin Paula. Und du?",
+      "answers": [
+        "Hallo! Ich bin Paula. Und du?",
+        "Hallo, ich bin Paula. Und du?"
+      ],
+      "explanation": "O ch de ich é um sopro, não \"ik\".",
+      "lang": "de"
     }
   ],
   "production": {
     "id": "de-w01-l1-p",
     "type": "free",
     "skill": "speaking",
-    "prompt": "Grave no celular uma apresentação de uns 15 segundos: cumprimente, diga seu nome (com *ich bin* e depois com *ich heiße*) e se despeça. Ouça a gravação e confira a lista.",
+    "prompt": "Fale em voz alta: oi, seu nome e tchau.",
     "model": "Hallo! Ich bin Lucas. Ich heiße Lucas Silva. Freut mich! Tschüss!",
     "checklist": [
-      "Usei *Hallo* ou *Guten Tag*",
-      "Disse *Ich bin* + nome",
-      "Disse *Ich heiße* + nome (só um verbo por frase)",
-      "O *ch* de *ich* saiu soprado, não \"ik\"",
-      "Me despedi com *Tschüss* ou *Auf Wiedersehen*"
+      "Disse Ich bin ou Ich heiße + nome",
+      "Soprei o ch de ich (não \"ik\")",
+      "Me despedi com Tschüss ou Auf Wiedersehen"
     ]
   },
-  "feedback": {
-    "commonErrors": [
-      {
-        "wrong": "Ich bin Lucas, und Sie? (para um colega de 20 anos)",
-        "right": "Ich bin Lucas, und du?",
-        "why": "Entre estudantes e jovens, o normal é *du*. *Sie* soaria distante."
-      },
-      {
-        "wrong": "Ich heiße bin Lucas.",
-        "right": "Ich heiße Lucas. / Ich bin Lucas.",
-        "why": "*Heißen* e *sein* são dois verbos diferentes. Use um ou outro, nunca os dois."
-      },
-      {
-        "wrong": "Wie heißen sie?",
-        "right": "Wie heißen Sie?",
-        "why": "*Sie* formal é sempre maiúsculo. Com minúscula, *sie* significa \"ela\" ou \"eles\"."
-      }
-    ]
-  },
-  "task": "Escolha três pessoas do seu dia (por exemplo: chefe, amigo, vizinho idoso). Para cada uma, decida: *du* ou *Sie*? Diga em voz alta a saudação e a pergunta do nome adequadas para cada uma.",
   "vocabulary": [
     {
       "id": "de-w01-l1-hallo",

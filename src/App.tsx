@@ -1,9 +1,8 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useApplyTheme } from './state/useTheme'
 import { useLanguageTheme } from './state/useEnrollments'
 import { Nav } from './components/Nav'
 import { Welcome } from './screens/Welcome'
-import { Onboarding } from './screens/Onboarding'
 import { LanguagePicker } from './screens/LanguagePicker'
 import { Plan } from './screens/Plan'
 import { Home } from './screens/Home'
@@ -36,7 +35,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/welcome" element={<Welcome />} />
-        <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/onboarding" element={<Navigate to="/welcome" replace />} />
         <Route path="/language" element={<LanguagePicker />} />
         <Route path="/plan/:enrollmentId?" element={<Plan />} />
         <Route path="/map/:enrollmentId?" element={<CourseMap />} />

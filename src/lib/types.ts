@@ -1,5 +1,5 @@
 import type { z } from 'zod'
-import type { LanguageSchema, SkillSchema, LevelSchema, VocabItemSchema, ExerciseSchema, LessonSchema, WeekSchema } from './schema'
+import type { LanguageSchema, SkillSchema, LevelSchema, VocabItemSchema, ExerciseSchema, LessonSchema, WeekSchema, LearnStepSchema, DialogueStepSchema, StepSchema } from './schema'
 
 export type Language = z.infer<typeof LanguageSchema>
 export type Skill = z.infer<typeof SkillSchema>
@@ -8,6 +8,9 @@ export type VocabItem = z.infer<typeof VocabItemSchema>
 export type Exercise = z.infer<typeof ExerciseSchema>
 export type FreeExercise = Extract<Exercise, { type: 'free' }>
 export type Lesson = z.infer<typeof LessonSchema>
+export type LearnStep = z.infer<typeof LearnStepSchema>
+export type DialogueStep = z.infer<typeof DialogueStepSchema>
+export type Step = z.infer<typeof StepSchema>
 export type Week = z.infer<typeof WeekSchema>
 
 export type Minutes = 20 | 40 | 60 | 90

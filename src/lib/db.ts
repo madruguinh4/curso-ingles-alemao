@@ -122,6 +122,19 @@ export async function storageAvailable(): Promise<boolean> {
   }
 }
 
+/**
+ * Pede ao navegador para não apagar os dados sozinho (falta de espaço, ou os
+ * 7 dias sem uso do Safari). Silencioso: se negar, o app segue funcionando.
+ */
+export async function requestPersistentStorage(): Promise<boolean> {
+  try {
+    if (!navigator.storage?.persist) return false
+    return (await navigator.storage.persisted()) || (await navigator.storage.persist())
+  } catch {
+    return false
+  }
+}
+
 /** Registra que o aluno estudou este idioma hoje (idempotente). */
 export async function recordStudyDay(enrollmentId: number, date: string): Promise<void> {
   const exists = await db.studyDays.where('[enrollmentId+date]').equals([enrollmentId, date]).count()

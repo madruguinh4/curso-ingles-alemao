@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { studyStats } from '../src/lib/study'
+import { studyStats, studyMessage } from '../src/lib/study'
 
 describe('studyStats', () => {
   it('handles no study days', () => {
@@ -26,5 +26,18 @@ describe('studyStats', () => {
     expect(s.grid[s.grid.length - 1].date).toBe('2026-09-20') // domingo
     expect(s.grid.find((g) => g.date === '2026-09-14')?.studied).toBe(true)
     expect(s.thisWeek).toBe(1)
+  })
+})
+
+describe('studyMessage', () => {
+  const at = (days: string[]) => studyMessage(studyStats(days, '2026-11-03'))
+  it('celebrates today and counts the streak', () => {
+    expect(at(['2026-11-02', '2026-11-03'])).toBe('Hoje já contou! São 2 dias seguidos.')
+    expect(at(['2026-11-03'])).toBe('Hoje já contou! Amanhã tem mais.')
+  })
+  it('invites without guilt', () => {
+    expect(at(['2026-11-01', '2026-11-02'])).toBe('Uma aula hoje e são 3 dias seguidos.')
+    expect(at(['2026-10-01'])).toMatch(/de volta/)
+    expect(at([])).toMatch(/aparece aqui/)
   })
 })

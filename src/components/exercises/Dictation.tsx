@@ -5,6 +5,7 @@ import { speak } from '../../lib/tts'
 import type { SubmitInfo } from './ExerciseRunner'
 import { useVoice } from '../Say'
 import { Button, Card, Notice } from '../ui'
+import { Coach } from '../mascots/Coach'
 
 type Ex = Extract<Exercise, { type: 'dictation' }>
 
@@ -14,10 +15,10 @@ export function DictationEx({ ex, lang, disabled, onSubmit }: { ex: Ex; lang: La
   const send = () => onSubmit({ given: text, correct: matches(text, ex.answers), expected: ex.answers[0], skill: has ? 'listening' : 'reading' })
   return (
     <Card>
-      <p className="mb-3 muted text-sm">Ditado: ouça e escreva o que ouviu.</p>
+      <div className="mb-3"><Coach who="lu" size={44}>Ouça e escreva.</Coach></div>
       {has === false ? (
         <Notice kind="warn">
-          Sem voz para este idioma no seu navegador. Leia e copie a frase abaixo — vai contar como <b>leitura</b>, não como compreensão oral: <b>{ex.text}</b>
+          Sem voz neste navegador. Copie a frase (conta como leitura): <b>{ex.text}</b>
         </Notice>
       ) : (
         <div className="flex gap-2 mb-3">

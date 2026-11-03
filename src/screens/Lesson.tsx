@@ -1,53 +1,61 @@
-import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { Check, BookOpen, MessagesSquare, Lightbulb, PencilLine, Mic, AlertCircle, Compass, Volume2, Turtle, Eye, EyeOff, RefreshCw } from 'lucide-react'
+import { Volume2, Turtle, Eye, EyeOff, RefreshCw, XCircle, CheckCircle2 } from 'lucide-react'
 import { db, recordStudyDay } from '../lib/db'
-import { getLesson, getWeek } from '../lib/content'
+import { getLesson, getWeek, isExercise } from '../lib/content'
 import { ensureCards } from '../lib/srs'
-import { vocabFront } from '../lib/export'
 import { speak } from '../lib/tts'
 import { todayISO } from '../lib/dates'
-import type { Lesson } from '../lib/types'
-import { Button, Card, Notice, Screen } from '../components/ui'
+import { resumeIndex, screenKeys } from '../lib/course'
+import type { DialogueStep, Exercise, LearnStep, Lesson, Step } from '../lib/types'
+import { Button, Card, Notice, ProgressBar, Screen, Spinner } from '../components/ui'
 import { Say, NoVoiceNotice, useVoice } from '../components/Say'
-import { Md } from '../components/Md'
-import { ExerciseRunner } from '../components/exercises/ExerciseRunner'
+import { ExerciseStep } from '../components/exercises/ExerciseRunner'
+import { Coach } from '../components/mascots/Coach'
+import { Mascot } from '../components/mascots/Mascots'
 
-// Aula com os 8 blocos. Cada bloco concluído é gravado; a aula fica concluída
-// quando os 7 blocos interativos estão feitos (o objetivo é o 1º).
+// Aula em telas curtas, uma ideia por tela: cartões "aprender" intercalados
+// com exercícios, o diálogo inteiro no fim e a produção. Cada tela concluída
+// é gravada (s0, s1… e "production"); a aula fica concluída com todas feitas.
 
-type BlockId = 'warmup' | 'dialogue' | 'explanation' | 'guided' | 'production' | 'feedback' | 'task'
-const ALL: BlockId[] = ['warmup', 'dialogue', 'explanation', 'guided', 'production', 'feedback', 'task']
-const META: Record<BlockId, { label: string; Icon: typeof BookOpen }> = {
-  warmup: { label: 'Aquecer', Icon: Lightbulb },
-  dialogue: { label: 'Diálogo', Icon: MessagesSquare },
-  explanation: { label: 'Regras', Icon: BookOpen },
-  guided: { label: 'Praticar', Icon: PencilLine },
-  production: { label: 'Produzir', Icon: Mic },
-  feedback: { label: 'Erros comuns', Icon: AlertCircle },
-  task: { label: 'Missão', Icon: Compass },
+type Screenful = { key: string; step: Step }
+
+const screensOf = (l: Lesson): Screenful[] => {
+  const keys = screenKeys(l)
+  return [...l.steps, l.production].map((step, i) => ({ key: keys[i], step }))
 }
 
 export function LessonScreen() {
   const { enrollmentId, lessonId } = useParams()
-  const nav = useNavigate()
   const eid = Number(enrollmentId)
   const lesson = getLesson(lessonId ?? '')
-  const [idx, setIdx] = useState(0)
+  const completion = useLiveQuery(() => db.completions.where('[enrollmentId+lessonId]').equals([eid, lessonId ?? '']).first().then((c) => c ?? null), [eid, lessonId])
+  const [chosen, setIdx] = useState<number | null>(null)
   const [finished, setFinished] = useState(false)
-  const completion = useLiveQuery(() => db.completions.where('[enrollmentId+lessonId]').equals([eid, lessonId ?? '']).first(), [eid, lessonId])
+  const [startedAt] = useState(() => new Date().toISOString())
+  // Erros desta sessão, para a Bia rever no fim (um por exercício).
+  const sessionErrors = useLiveQuery(
+    () => db.errors.where('lessonId').equals(lessonId ?? '').filter((e) => e.enrollmentId === eid && e.at >= startedAt).toArray(),
+    [eid, lessonId, startedAt],
+  )
+  const top = useRef<HTMLDivElement>(null)
+
+  useEffect(() => { top.current?.focus() }, [chosen])
 
   if (!lesson) return <Screen title="Aula" back="/"><Notice kind="warn">Aula não encontrada.</Notice></Screen>
+  if (completion === undefined) return <Spinner />
+  const screens = screensOf(lesson)
+  // Até o aluno avançar, retoma na primeira tela ainda não feita.
+  const idx = chosen ?? resumeIndex(lesson, completion)
   const week = getWeek(lesson.weekId)
-  const current = ALL[idx]
-  const doneSet = new Set(completion?.blocksDone ?? [])
+  const current = screens[idx]
 
-  async function markBlock(b: BlockId) {
+  async function markDone(key: string) {
     const existing = await db.completions.where('[enrollmentId+lessonId]').equals([eid, lesson!.id]).first()
     const wasSkipped = !!existing?.skipped
-    const blocksDone = Array.from(new Set([...(wasSkipped ? [] : existing?.blocksDone ?? []), b]))
-    const complete = ALL.every((x) => blocksDone.includes(x))
+    const blocksDone = Array.from(new Set([...(wasSkipped ? [] : existing?.blocksDone ?? []), key]))
+    const complete = screens.every((s) => blocksDone.includes(s.key))
     const prevDone = wasSkipped ? null : existing?.completedAt ?? null
     const row = { enrollmentId: eid, lessonId: lesson!.id, blocksDone, completedAt: complete ? prevDone ?? new Date().toISOString() : prevDone, skipped: false }
     if (existing?.id) await db.completions.update(existing.id, row)
@@ -56,9 +64,9 @@ export function LessonScreen() {
     if (complete) await ensureCards(eid, lesson!.vocabulary.map((v) => v.id))
   }
 
-  async function advance() {
-    await markBlock(current)
-    if (idx + 1 >= ALL.length) setFinished(true)
+  async function next() {
+    await markDone(current.key)
+    if (idx + 1 >= screens.length) setFinished(true)
     else { setIdx(idx + 1); window.scrollTo({ top: 0 }) }
   }
 
@@ -67,166 +75,87 @@ export function LessonScreen() {
       <Screen title="Aula concluída" back="/">
         <div className="grid gap-4">
           <div className="hero fade-in text-center">
-            <Check size={40} className="mx-auto" aria-hidden="true" />
+            <Mascot id="zeca" mood="cheer" size={96} className="mx-auto" decorative />
             <p className="text-xl font-bold mt-2">{lesson.title}</p>
-            <p className="mt-1 text-sm opacity-90">O vocabulário desta aula entrou nos seus cartões de revisão.</p>
+            <p className="mt-1 text-sm opacity-90">Aula concluída! As palavras foram para a revisão.</p>
           </div>
-          <Card>
-            <p className="font-semibold flex items-center gap-2"><Compass size={18} /> Sua missão fora do app</p>
-            <Md block className="mt-1" text={lesson.task} />
-          </Card>
-          <Button to={`/review/${eid}`} block icon={<RefreshCw size={18} />}>Revisar os cartões agora</Button>
+          {!!sessionErrors?.length && (
+            <Coach who="bia" mood="calm">
+              <p className="font-semibold">Vale rever:</p>
+              <ul className="grid gap-1 mt-1 text-sm">
+                {[...new Map(sessionErrors.map((e) => [e.exerciseId, e])).values()].map((e) => (
+                  <li key={e.id}><span style={{ textDecoration: 'line-through' }}>{e.given}</span> → <b>{e.expected}</b></li>
+                ))}
+              </ul>
+            </Coach>
+          )}
+          <Button to={`/review/${eid}`} block icon={<RefreshCw size={18} />}>Revisar agora</Button>
           <Button variant="secondary" to="/" block>Voltar ao início</Button>
         </div>
       </Screen>
     )
   }
 
+  const step = current.step
   return (
     <Screen title={lesson.title} back="/" subtitle={`${week ? `Semana ${week.number} · ` : ''}${lesson.objective}`}>
-      <ol className="grid grid-cols-7 gap-1 mb-4" aria-label="Blocos da aula">
-        {ALL.map((b, i) => {
-          const { label, Icon } = META[b]
-          const done = i < idx || doneSet.has(b)
-          const active = i === idx
-          return (
-            <li key={b} aria-current={active ? 'step' : undefined}>
-              <button type="button" className="w-full flex flex-col items-center gap-1 text-[10px] font-semibold rounded-xl py-1.5"
-                style={{ color: active ? 'var(--accent)' : done ? 'var(--ok)' : 'var(--muted)', background: active ? 'var(--accent-soft)' : 'transparent' }}
-                onClick={() => i < idx && setIdx(i)} disabled={i > idx} aria-label={`${label}${done ? ' (feito)' : ''}`}>
-                {done && !active ? <Check size={18} /> : <Icon size={18} />}
-                <span className="truncate w-full text-center">{label}</span>
-              </button>
-            </li>
-          )
-        })}
-      </ol>
-
-      {completion?.skipped && idx === 0 && (
-        <div className="mb-3"><Notice kind="warn">Você marcou esta aula como “já sei”. Pode fazê-la mesmo assim — ao concluir um bloco, ela volta a contar normalmente.</Notice></div>
-      )}
-      {current === 'warmup' && <Warmup lesson={lesson} onNext={advance} />}
-      {current === 'dialogue' && <Dialogue lesson={lesson} onNext={advance} />}
-      {current === 'explanation' && <Explanation lesson={lesson} onNext={advance} />}
-      {current === 'guided' && <ExerciseRunner key="guided" exercises={lesson.guided} lang={lesson.language} enrollmentId={eid} lessonId={lesson.id} mode="lesson" onFinish={advance} />}
-      {current === 'production' && <ExerciseRunner key="production" exercises={[lesson.production]} lang={lesson.language} enrollmentId={eid} lessonId={lesson.id} mode="lesson" onFinish={advance} />}
-      {current === 'feedback' && <Feedback lesson={lesson} onNext={advance} />}
-      {current === 'task' && <Task lesson={lesson} onNext={advance} onLater={() => nav('/')} />}
+      <ProgressBar value={idx / screens.length} label={`${idx + 1} de ${screens.length}`} />
+      {idx === 0 && <NoVoiceNotice lang={lesson.language} />}
+      {completion?.skipped && idx === 0 && <div className="mb-3"><Notice kind="warn">Você marcou esta aula como “já sei”. Fazer de novo também vale.</Notice></div>}
+      <div ref={top} tabIndex={-1} className="outline-none mt-2">
+        {step.type === 'learn' && <LearnCard key={current.key} step={step} lesson={lesson} onNext={next} />}
+        {step.type === 'dialogue' && <DialogueCard key={current.key} step={step} lesson={lesson} onNext={next} />}
+        {isExercise(step) && (
+          <ExerciseStep key={current.key} ex={step as Exercise} lang={lesson.language} enrollmentId={eid} lessonId={lesson.id} mode="lesson" last={idx + 1 >= screens.length} onDone={next} />
+        )}
+      </div>
     </Screen>
   )
 }
 
-function Warmup({ lesson, onNext }: { lesson: Lesson; onNext: () => void }) {
+function LearnCard({ step, lesson, onNext }: { step: LearnStep; lesson: Lesson; onNext: () => void }) {
   return (
-    <div className="grid gap-3">
-      <Card>
-        <h2 className="font-bold mb-2 flex items-center gap-2"><Lightbulb size={18} /> {lesson.warmup.prompt}</h2>
-        <ul className="grid gap-2">{lesson.warmup.items.map((i) => <li key={i} className="card-flat py-2"><Md text={i} /></li>)}</ul>
+    <div className="grid gap-3 fade-in">
+      <Card className="text-center">
+        <p className="text-2xl font-bold leading-snug">{step.text} <Say text={step.text} lang={lesson.language} /></p>
+        <p className="muted mt-2">{step.translation}</p>
       </Card>
-      <Button onClick={onNext} block>Pronto, vamos à aula</Button>
-    </div>
-  )
-}
-
-function Dialogue({ lesson, onNext }: { lesson: Lesson; onNext: () => void }) {
-  const [show, setShow] = useState(true)
-  const lang = lesson.language
-  const has = useVoice(lang)
-  const all = lesson.dialogue.lines.map((l) => l.text).join(' ')
-  const speakers = [...new Set(lesson.dialogue.lines.map((l) => l.speaker))]
-  return (
-    <div className="grid gap-3">
-      <p className="muted text-sm">{lesson.dialogue.context}</p>
-      <div className="flex gap-2 flex-wrap items-center">
-        {has && <Button variant="secondary" size="sm" icon={<Volume2 size={16} />} onClick={() => speak(all, lang, 1)}>Ouvir tudo</Button>}
-        {has && <Button variant="secondary" size="sm" icon={<Turtle size={16} />} onClick={() => speak(all, lang, 0.8)}>Devagar</Button>}
-        <Button variant="ghost" size="sm" icon={show ? <EyeOff size={16} /> : <Eye size={16} />} onClick={() => setShow(!show)}>{show ? 'Esconder tradução' : 'Mostrar tradução'}</Button>
-      </div>
-      <NoVoiceNotice lang={lang} />
-      <ol className="grid gap-2">
-        {lesson.dialogue.lines.map((l, i) => {
-          const right = speakers.indexOf(l.speaker) % 2 === 1
-          return (
-            <li key={i} className={`bubble fade-in ${right ? 'bubble-r' : 'bubble-l'}`}>
-              <p className="text-xs muted mb-0.5">{l.speaker}</p>
-              <p className="text-lg leading-snug flex items-start gap-1">{l.text} <Say text={l.text} lang={lang} className="shrink-0 -my-1" /></p>
-              {show && <p className="text-sm muted mt-0.5">{l.translation}</p>}
-            </li>
-          )
-        })}
-      </ol>
-      <p className="text-sm muted">Dica: ouça uma vez sem ler, depois leia, depois repita em voz alta junto com o áudio.</p>
-      <Button onClick={onNext} block>Entendi o diálogo</Button>
-    </div>
-  )
-}
-
-function Explanation({ lesson, onNext }: { lesson: Lesson; onNext: () => void }) {
-  const lang = lesson.language
-  return (
-    <div className="grid gap-3">
-      <Notice>Toque nas palavras <span className="term" style={{ pointerEvents: 'none' }}>sublinhadas</span> para ver o que significam. Cada regra aparece antes do exercício que a usa.</Notice>
-      <Card>
-        <h2 className="font-bold text-lg mb-2">{lesson.explanation.title}</h2>
-        <Md block text={lesson.explanation.body} />
-      </Card>
-      <Card>
-        <h3 className="font-semibold mb-2">Exemplos</h3>
-        <ul className="grid gap-2">
-          {lesson.explanation.examples.map((x) => (
-            <li key={x.text} className="flex items-start gap-2 card-flat py-2">
-              <div className="grow"><b>{x.text}</b><br /><span className="text-sm muted">{x.translation}</span></div>
-              <Say text={x.text} lang={lang} />
-            </li>
-          ))}
-        </ul>
-      </Card>
-      <Card>
-        <h3 className="font-semibold mb-2">Vocabulário desta aula</h3>
-        <ul className="grid gap-1">
-          {lesson.vocabulary.map((v) => (
-            <li key={v.id} className="flex items-center gap-2 py-1.5 border-b last:border-0" style={{ borderColor: 'var(--border)' }}>
-              <div className="grow"><b>{vocabFront(v, lang)}</b> <span className="muted">— {v.translation}</span><br /><span className="text-sm">{v.example}</span></div>
-              <Say text={v.example} lang={lang} />
-            </li>
-          ))}
-        </ul>
-      </Card>
-      <Button onClick={onNext} block>Ir para os exercícios</Button>
-    </div>
-  )
-}
-
-function Feedback({ lesson, onNext }: { lesson: Lesson; onNext: () => void }) {
-  return (
-    <div className="grid gap-3">
-      <Card>
-        <h2 className="font-bold mb-3 flex items-center gap-2"><AlertCircle size={18} /> Erros comuns de brasileiros nesta aula</h2>
-        <ul className="grid gap-3">
-          {lesson.feedback.commonErrors.map((c) => (
-            <li key={c.wrong} className="card-flat">
-              <p><span style={{ color: 'var(--err)', textDecoration: 'line-through' }}>{c.wrong}</span></p>
-              <p><b style={{ color: 'var(--ok)' }}>✓ {c.right}</b></p>
-              <Md block className="text-sm muted mt-1" text={c.why} />
-            </li>
-          ))}
-        </ul>
-      </Card>
+      {step.rule && <Coach who="tico"><p className="font-semibold">{step.rule}</p></Coach>}
+      {step.avoid && (
+        <div className="card-flat grid gap-1">
+          <p className="flex items-center gap-2"><XCircle size={18} style={{ color: 'var(--err)' }} aria-label="Errado" /><span style={{ textDecoration: 'line-through' }}>{step.avoid.wrong}</span></p>
+          <p className="flex items-center gap-2"><CheckCircle2 size={18} style={{ color: 'var(--ok)' }} aria-label="Certo" /><b>{step.avoid.right}</b></p>
+        </div>
+      )}
       <Button onClick={onNext} block>Continuar</Button>
     </div>
   )
 }
 
-function Task({ lesson, onNext, onLater }: { lesson: Lesson; onNext: () => void; onLater: () => void }) {
+function DialogueCard({ step, lesson, onNext }: { step: DialogueStep; lesson: Lesson; onNext: () => void }) {
+  const [show, setShow] = useState(false)
+  const lang = lesson.language
+  const has = useVoice(lang)
+  const all = step.lines.map((l) => l.text).join(' ')
+  const speakers = [...new Set(step.lines.map((l) => l.speaker))]
   return (
-    <div className="grid gap-3">
-      <Card>
-        <h2 className="font-bold mb-2 flex items-center gap-2"><Compass size={18} /> Missão fora do app</h2>
-        <Md block className="text-lg" text={lesson.task} />
-      </Card>
-      <p className="text-sm muted">É aqui que o idioma sai da tela. A missão não é avaliada pelo app — é para você.</p>
-      <Button onClick={onNext} block>Entendi, vou fazer</Button>
-      <Button variant="ghost" onClick={onLater} block>Ver depois (a aula fica em andamento)</Button>
+    <div className="grid gap-3 fade-in">
+      <Coach who="lu"><h2 className="font-bold">Agora a conversa inteira</h2><p className="text-sm">Ouça e acompanhe.</p></Coach>
+      <div className="flex gap-2 flex-wrap items-center">
+        {has && <Button variant="secondary" size="sm" icon={<Volume2 size={16} />} onClick={() => speak(all, lang, 1)}>Ouvir</Button>}
+        {has && <Button variant="secondary" size="sm" icon={<Turtle size={16} />} onClick={() => speak(all, lang, 0.8)}>Devagar</Button>}
+        <Button variant="ghost" size="sm" icon={show ? <EyeOff size={16} /> : <Eye size={16} />} onClick={() => setShow(!show)}>{show ? 'Esconder tradução' : 'Tradução'}</Button>
+      </div>
+      <ol className="grid gap-2">
+        {step.lines.map((l, i) => (
+          <li key={i} className={`bubble ${speakers.indexOf(l.speaker) % 2 === 1 ? 'bubble-r' : 'bubble-l'}`}>
+            <p className="text-xs muted mb-0.5">{l.speaker}</p>
+            <p className="text-lg leading-snug flex items-start gap-1">{l.text} <Say text={l.text} lang={lang} className="shrink-0 -my-1" /></p>
+            {show && <p className="text-sm muted mt-0.5">{l.translation}</p>}
+          </li>
+        ))}
+      </ol>
+      <Button onClick={onNext} block>Continuar</Button>
     </div>
   )
 }

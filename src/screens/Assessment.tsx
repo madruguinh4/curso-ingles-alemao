@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, recordStudyDay } from '../lib/db'
-import { getWeek, lessonsForWeek } from '../lib/content'
+import { exercisesOf, getWeek, lessonsForWeek } from '../lib/content'
 import { todayISO } from '../lib/dates'
 import type { Exercise, Skill } from '../lib/types'
 import { LANGUAGE_NAMES, SKILL_NAMES } from '../lib/types'
@@ -36,7 +36,7 @@ export function Assessment() {
   const set = useMemo(() => {
     if (!attempts || !lessons.length) return null
     const seen = new Set(attempts.map((a) => a.exerciseId))
-    const all = lessons.flatMap((l) => l.guided.map((ex) => ({ ex, lessonId: l.id })))
+    const all = lessons.flatMap((l) => exercisesOf(l).map((ex) => ({ ex, lessonId: l.id })))
     const unseen = all.filter((x) => !seen.has(x.ex.id))
     const pool = unseen.length >= 6 ? unseen : [...unseen, ...all.filter((x) => seen.has(x.ex.id))]
     const picked = shuffle(pool, wn * 7919 + eid).slice(0, 6)
@@ -84,7 +84,7 @@ export function Assessment() {
   if (!set) return <Spinner />
   return (
     <Screen title={`Verificação da semana ${wn}`} back="/" subtitle={LANGUAGE_NAMES[lang]}>
-      <p className="text-sm muted mb-3">7 itens: 6 exercícios e 1 produção. Sem “tentar de novo” — aqui o objetivo é ver o que ficou.</p>
+      <p className="text-sm muted mb-3">7 itens, sem “tentar de novo”: é para ver o que ficou.</p>
       <ExerciseRunner
         exercises={set.map((x) => x.ex)}
         lessonIdOf={(ex: Exercise) => set.find((x) => x.ex.id === ex.id)?.lessonId ?? lessons[0].id}

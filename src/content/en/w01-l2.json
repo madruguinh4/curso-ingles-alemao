@@ -3,99 +3,36 @@
   "weekId": "en-w01",
   "language": "en",
   "title": "De onde você é?",
-  "objective": "Perguntar e dizer de onde alguém é, e responder sim ou não.",
-  "warmup": {
-    "prompt": "Revisão rápida da aula anterior:",
-    "items": [
-      "Complete em voz alta: \"Hi! I ___ [seu nome].\"",
-      "Como se diz \"prazer em conhecer você\"?",
-      "Diga *hello* e *thanks* prestando atenção nos sons *h* e *th*."
-    ]
-  },
-  "dialogue": {
-    "context": "Aula online de inglês. Marco, de Recife, conversa com Yuki, do Japão, na sala de espera virtual.",
-    "lines": [
-      {
-        "speaker": "Yuki",
-        "text": "Hi! Where are you from?",
-        "translation": "Oi! De onde você é?"
-      },
-      {
-        "speaker": "Marco",
-        "text": "I'm from Brazil. And you?",
-        "translation": "Eu sou do Brasil. E você?"
-      },
-      {
-        "speaker": "Yuki",
-        "text": "I'm from Japan. I'm Japanese.",
-        "translation": "Eu sou do Japão. Sou japonesa."
-      },
-      {
-        "speaker": "Marco",
-        "text": "Nice! Are you from Tokyo?",
-        "translation": "Legal! Você é de Tóquio?"
-      },
-      {
-        "speaker": "Yuki",
-        "text": "No, I'm not. I'm from Osaka. Are you from Rio?",
-        "translation": "Não. Eu sou de Osaka. Você é do Rio?"
-      },
-      {
-        "speaker": "Marco",
-        "text": "No, I'm from Recife. It's in the north-east of Brazil.",
-        "translation": "Não, eu sou de Recife. Fica no Nordeste do Brasil."
-      },
-      {
-        "speaker": "Yuki",
-        "text": "Oh, cool. Is it hot there?",
-        "translation": "Ah, legal. É quente lá?"
-      },
-      {
-        "speaker": "Marco",
-        "text": "Yes, it is! Very hot.",
-        "translation": "É sim! Muito quente."
-      }
-    ]
-  },
-  "explanation": {
-    "title": "Where are you from? — origem, nacionalidade e respostas curtas",
-    "body": "**Where are you from?** = \"De onde você é?\". A [[preposição]] **from** significa \"de\" no sentido de origem.\n\n**Regra 1 — origem é *from*.** Resposta: **I'm from** + país ou cidade. *I'm from Brazil.* Nunca \"of\".\n\n**Regra 2 — país e [[nacionalidade]] são palavras diferentes.** *Brazil* é o país (vai com *from*); *Brazilian* é a nacionalidade — um [[adjetivo]], sempre com maiúscula, que vai direto com *I'm*. \"I'm from Brazilian\" está errado.\n\n**Regra 3 — [[pergunta sim/não]]: o verbo vai para a frente.** *You are from Rio.* → **Are you** from Rio?\n\n**Regra 4 — [[resposta curta]]: repita o verbo, sem contração.** *Yes, I am.* / *No, I'm not.* \"Yes, I'm\" está errado, porque a [[contração]] não pode ficar no fim da frase.\n\n**It** serve para lugares e coisas: *Is it hot?* — *Yes, it is.* / *No, it isn't.*\n\n**[[sílaba tônica]]:** cada palavra tem uma sílaba mais forte, e errar isso atrapalha mais que o sotaque. *Bra-ZIL*, *Ja-PAN*, *CA-na-da*, *GER-ma-ny*, *ENG-land* (as maiúsculas marcam a força). Brasileiros tendem a dizer \"BRA-zil\" — treine \"bra-ZIL\".",
-    "examples": [
-      {
-        "text": "Where are you from?",
-        "translation": "De onde você é?"
-      },
-      {
-        "text": "I'm from Brazil. I'm Brazilian.",
-        "translation": "Eu sou do Brasil. Sou brasileiro(a)."
-      },
-      {
-        "text": "Are you from Rio? — No, I'm not.",
-        "translation": "Você é do Rio? — Não."
-      },
-      {
-        "text": "Is it hot there? — Yes, it is.",
-        "translation": "É quente lá? — É sim."
-      },
-      {
-        "text": "I'm from Recife, in Brazil.",
-        "translation": "Eu sou de Recife, no Brasil."
-      }
-    ]
-  },
-  "guided": [
+  "objective": "Dizer de onde você é e perguntar de onde a pessoa é.",
+  "steps": [
+    {
+      "type": "learn",
+      "text": "Where are you from?",
+      "translation": "De onde você é?",
+      "rule": "De onde…? = Where… from?"
+    },
     {
       "id": "en-w01-l2-g1",
       "type": "choice",
       "skill": "reading",
-      "prompt": "Como se pergunta de onde alguém é?",
+      "prompt": "Como perguntar de onde alguém é?",
       "options": [
         "Where you are from?",
         "Where are you from?",
         "From where you are?"
       ],
       "answer": 1,
-      "explanation": "Na pergunta, o verbo *are* vem antes de *you*: Where **are you** from?"
+      "explanation": "Na pergunta, are vem antes de you."
+    },
+    {
+      "type": "learn",
+      "text": "I'm from Brazil.",
+      "translation": "Eu sou do Brasil.",
+      "rule": "Sou do… = I'm from…",
+      "avoid": {
+        "wrong": "I'm of Brazil.",
+        "right": "I'm from Brazil."
+      }
     },
     {
       "id": "en-w01-l2-g2",
@@ -105,37 +42,64 @@
       "answers": [
         "from"
       ],
-      "explanation": "Origem = *from*. \"Of\" não serve aqui. *From* é uma [[preposição]]."
+      "explanation": "Origem = from."
+    },
+    {
+      "type": "learn",
+      "text": "I'm Brazilian.",
+      "translation": "Eu sou brasileiro(a).",
+      "rule": "País: from Brazil · Nacionalidade: Brazilian, sem from.",
+      "avoid": {
+        "wrong": "I'm from Brazilian.",
+        "right": "I'm Brazilian."
+      }
+    },
+    {
+      "type": "learn",
+      "text": "Are you from Rio?",
+      "translation": "Você é do Rio?",
+      "rule": "Para perguntar, troque a ordem: you are → are you?"
+    },
+    {
+      "type": "learn",
+      "text": "Yes, I am. / No, I'm not.",
+      "translation": "Sou sim. / Não sou.",
+      "rule": "Resposta curta termina em am, nunca em I'm.",
+      "avoid": {
+        "wrong": "Yes, I'm.",
+        "right": "Yes, I am."
+      }
     },
     {
       "id": "en-w01-l2-g3",
-      "type": "dictation",
-      "skill": "listening",
-      "text": "Where are you from? I'm from Canada.",
-      "answers": [
-        "Where are you from? I'm from Canada.",
-        "Where are you from? I am from Canada."
+      "type": "choice",
+      "skill": "reading",
+      "prompt": "Are you Brazilian?",
+      "options": [
+        "Yes, I'm.",
+        "Yes, I am.",
+        "Yes, am."
       ],
-      "explanation": "Repare que *are you* soa quase como uma palavra só: \"a-ryu\".",
-      "lang": "en"
+      "answer": 1,
+      "explanation": "Resposta curta: Yes, I am."
     },
     {
       "id": "en-w01-l2-g4",
       "type": "transform",
       "skill": "writing",
       "prompt": "Are you from Rio?",
-      "instruction": "Responda que não, com a resposta curta.",
+      "instruction": "Responda que não.",
       "answers": [
         "No, I'm not.",
         "No, I am not."
       ],
-      "explanation": "Resposta curta negativa: *No, I'm not.*"
+      "explanation": "Não = No, I'm not."
     },
     {
       "id": "en-w01-l2-g5",
       "type": "order",
       "skill": "writing",
-      "prompt": "Coloque na ordem certa.",
+      "prompt": "Monte a frase.",
       "tokens": [
         "I'm",
         "from",
@@ -144,56 +108,68 @@
         "Brazil"
       ],
       "answer": "I'm from Recife in Brazil",
-      "explanation": "Cidade primeiro, depois *in* + país."
+      "explanation": "Cidade primeiro, depois in + país."
+    },
+    {
+      "type": "dialogue",
+      "lines": [
+        {
+          "speaker": "Yuki",
+          "text": "Hi! Where are you from?",
+          "translation": "Oi! De onde você é?"
+        },
+        {
+          "speaker": "Marco",
+          "text": "I'm from Brazil. And you?",
+          "translation": "Eu sou do Brasil. E você?"
+        },
+        {
+          "speaker": "Yuki",
+          "text": "I'm from Japan.",
+          "translation": "Eu sou do Japão."
+        },
+        {
+          "speaker": "Marco",
+          "text": "Are you from Tokyo?",
+          "translation": "Você é de Tóquio?"
+        },
+        {
+          "speaker": "Yuki",
+          "text": "No, I'm not. I'm from Osaka.",
+          "translation": "Não. Eu sou de Osaka."
+        },
+        {
+          "speaker": "Marco",
+          "text": "Cool!",
+          "translation": "Legal!"
+        }
+      ]
     },
     {
       "id": "en-w01-l2-g6",
-      "type": "choice",
-      "skill": "reading",
-      "prompt": "Qual resposta curta está correta para \"Are you Brazilian?\"",
-      "options": [
-        "Yes, I'm.",
-        "Yes, I am.",
-        "Yes, am."
+      "type": "dictation",
+      "skill": "listening",
+      "text": "Where are you from? I'm from Canada.",
+      "answers": [
+        "Where are you from? I'm from Canada.",
+        "Where are you from? I am from Canada."
       ],
-      "answer": 1,
-      "explanation": "Na [[resposta curta]] afirmativa a forma é completa: *Yes, I am.* A [[contração]] *I'm* nunca fica no fim da frase."
+      "explanation": "are you soa quase junto: \"a-ryu\".",
+      "lang": "en"
     }
   ],
   "production": {
     "id": "en-w01-l2-p",
     "type": "free",
     "skill": "speaking",
-    "prompt": "Grave uns 20 segundos: diga seu nome, de onde você é (país e cidade), sua nacionalidade, e faça uma pergunta para um colega imaginário. Ouça e confira a lista.",
-    "model": "Hi! I'm Marco. I'm from Brazil — from Recife. I'm Brazilian. Where are you from?",
+    "prompt": "Fale: seu nome, de onde você é e pergunte de onde a pessoa é.",
+    "model": "Hi! I'm Marco. I'm from Recife, in Brazil. I'm Brazilian. Where are you from?",
     "checklist": [
-      "Disse *I'm from* + país",
-      "Disse a cidade também",
-      "Disse a nacionalidade com *I'm Brazilian* (não \"from Brazilian\")",
-      "Fiz a pergunta *Where are you from?* com *are* antes de *you*",
-      "Falei *bra-ZIL* com a força na última sílaba"
+      "Disse I'm from + cidade ou país",
+      "Disse I'm Brazilian, sem from",
+      "Falei bra-ZIL, com força no fim"
     ]
   },
-  "feedback": {
-    "commonErrors": [
-      {
-        "wrong": "I'm from Brazilian.",
-        "right": "I'm from Brazil. / I'm Brazilian.",
-        "why": "*Brazil* é o país (vai com *from*); *Brazilian* é a nacionalidade (vai direto com *I'm*)."
-      },
-      {
-        "wrong": "Yes, I'm.",
-        "right": "Yes, I am.",
-        "why": "A contração não pode ficar no fim da frase. Na resposta curta afirmativa, use a forma completa."
-      },
-      {
-        "wrong": "I am of Brazil.",
-        "right": "I am from Brazil.",
-        "why": "O \"de\" de origem em inglês é *from*, não *of*."
-      }
-    ]
-  },
-  "task": "Escolha 3 países que você gostaria de visitar. Procure o nome deles em inglês e diga em voz alta: \"I'm from Brazil. I want to visit [país].\" Preste atenção na sílaba forte de cada país (pode ouvir a pronúncia no tradutor do celular).",
   "vocabulary": [
     {
       "id": "en-w01-l2-where",

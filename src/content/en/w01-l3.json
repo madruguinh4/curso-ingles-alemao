@@ -3,117 +3,61 @@
   "weekId": "en-w01",
   "language": "en",
   "title": "Formal e informal",
-  "objective": "Cumprimentar de acordo com a hora do dia e o grau de formalidade, e perguntar como a pessoa está.",
-  "warmup": {
-    "prompt": "Revisão das duas aulas anteriores:",
-    "items": [
-      "Apresente-se em voz alta: nome e origem, em duas frases.",
-      "Pergunte para alguém imaginário de onde ele é.",
-      "Em português, como você cumprimenta seu chefe? E um amigo? A diferença também existe em inglês."
-    ]
-  },
-  "dialogue": {
-    "context": "Ana chega a um hotel em Londres pela manhã. Depois do check-in, encontra a amiga Ju no saguão.",
-    "lines": [
-      {
-        "speaker": "Receptionist",
-        "text": "Good morning, ma'am. How are you today?",
-        "translation": "Bom dia, senhora. Como a senhora está hoje?"
-      },
-      {
-        "speaker": "Ana",
-        "text": "Good morning. I'm fine, thank you. And you?",
-        "translation": "Bom dia. Estou bem, obrigada. E você?"
-      },
-      {
-        "speaker": "Receptionist",
-        "text": "Very well, thanks. Your name, please?",
-        "translation": "Muito bem, obrigado. Seu nome, por favor?"
-      },
-      {
-        "speaker": "Ana",
-        "text": "Ana Souza. S-O-U-Z-A.",
-        "translation": "Ana Souza. S-O-U-Z-A."
-      },
-      {
-        "speaker": "Receptionist",
-        "text": "Thank you, Ms. Souza. Welcome!",
-        "translation": "Obrigado, Sra. Souza. Bem-vinda!"
-      },
-      {
-        "speaker": "Ana",
-        "text": "Thanks! … Oh — hey, Ju! How are you?",
-        "translation": "Obrigada! … Ah — oi, Ju! Como você está?"
-      },
-      {
-        "speaker": "Ju",
-        "text": "Hey, Ana! I'm good. You?",
-        "translation": "Oi, Ana! Estou bem. E você?"
-      },
-      {
-        "speaker": "Ana",
-        "text": "Great! See you tonight?",
-        "translation": "Ótima! Nos vemos hoje à noite?"
-      },
-      {
-        "speaker": "Ju",
-        "text": "Sure. See you!",
-        "translation": "Claro. Até!"
+  "objective": "Cumprimentar do jeito certo: formal ou informal.",
+  "steps": [
+    {
+      "type": "learn",
+      "text": "Good morning!",
+      "translation": "Bom dia!",
+      "rule": "morning = manhã · afternoon = tarde · evening = noite, ao chegar"
+    },
+    {
+      "type": "learn",
+      "text": "Good night!",
+      "translation": "Boa noite! (ao ir embora ou dormir)",
+      "rule": "Good night é só para se despedir.",
+      "avoid": {
+        "wrong": "Good night, everyone! Let's start.",
+        "right": "Good evening, everyone! Let's start."
       }
-    ]
-  },
-  "explanation": {
-    "title": "Registro: com quem você fala muda o que você diz",
-    "body": "**[[registro]]** é o grau de formalidade: com quem você fala muda o que você diz.\n\n**Regra 1 — saudação pela hora do dia:** *Good morning* (até o meio-dia), *Good afternoon* (tarde), *Good evening* (a partir do fim da tarde, ao chegar). **Good night** é só para se despedir ou ir dormir — nunca para cumprimentar ao chegar.\n\n**Regra 2 — formal** (trabalho, atendimento, desconhecidos): *Good morning*, *Mr./Ms.* + **sobrenome**, *thank you*, *How are you?* → *I'm fine / very well, thank you.*\n\n**Regra 3 — informal** (amigos, família): *Hi*, *Hey*, primeiro nome, *thanks*, *How are you?* ou *How's it going?* → *I'm good* / *Not bad* / *Great!*\n\n**Mr.** = homem. **Ms.** = qualquer mulher, casada ou não (é a forma segura). **Mrs.** = só mulher casada. Sempre com o sobrenome: *Ms. Souza*, nunca \"Ms. Ana\".\n\n**[[contração]]** (*I'm, you're, it's*) é normal na fala e em mensagens informais. Em texto formal ou para dar ênfase, use a forma completa: *I am*.\n\n**Soletrar** o nome é comum em hotel, aeroporto e telefone. Treine as letras do seu nome em inglês.",
-    "examples": [
-      {
-        "text": "Good morning, Ms. Souza. How are you?",
-        "translation": "Bom dia, Sra. Souza. Como a senhora está?"
-      },
-      {
-        "text": "I'm fine, thank you. And you?",
-        "translation": "Estou bem, obrigada. E o senhor?"
-      },
-      {
-        "text": "Hey, Ju! How's it going?",
-        "translation": "Oi, Ju! Como vai?"
-      },
-      {
-        "text": "Good evening, everyone.",
-        "translation": "Boa noite a todos (ao chegar)."
-      },
-      {
-        "text": "Good night! Sleep well.",
-        "translation": "Boa noite! Durma bem (ao se despedir)."
-      }
-    ]
-  },
-  "guided": [
+    },
     {
       "id": "en-w01-l3-g1",
       "type": "choice",
       "skill": "reading",
-      "prompt": "São 15h e você entra numa reunião formal. O que diz?",
+      "prompt": "15h, reunião. O que você diz?",
       "options": [
         "Good night.",
         "Good afternoon.",
         "Good morning."
       ],
       "answer": 1,
-      "explanation": "À tarde é *Good afternoon*. *Good night* é só despedida."
+      "explanation": "À tarde: Good afternoon."
     },
     {
       "id": "en-w01-l3-g2",
-      "type": "choice",
-      "skill": "reading",
-      "prompt": "Qual dessas frases é informal?",
-      "options": [
-        "Good evening, Mr. Smith.",
-        "Hey, Tom! How's it going?",
-        "How are you, Ms. Lee?"
+      "type": "gap",
+      "skill": "writing",
+      "prompt": "Good ___! Sleep well.",
+      "answers": [
+        "night"
       ],
-      "answer": 1,
-      "explanation": "*Hey*, primeiro nome e *How's it going?* são marcas de [[registro]] informal."
+      "explanation": "Para dormir: Good night."
+    },
+    {
+      "type": "learn",
+      "text": "Good morning, Ms. Lee. How are you?",
+      "translation": "Bom dia, Sra. Lee. Como vai?",
+      "rule": "Formal: Mr. (homem) ou Ms. (mulher) + sobrenome.",
+      "avoid": {
+        "wrong": "Good morning, Mr. John.",
+        "right": "Good morning, Mr. Smith."
+      }
+    },
+    {
+      "type": "learn",
+      "text": "I'm fine, thank you. And you?",
+      "translation": "Estou bem, obrigada. E você?"
     },
     {
       "id": "en-w01-l3-g3",
@@ -123,10 +67,75 @@
       "answers": [
         "are"
       ],
-      "explanation": "Com *you* o verbo to be é *are*."
+      "explanation": "Como vai? = How are you?"
+    },
+    {
+      "type": "learn",
+      "text": "Hey, Ju! How's it going?",
+      "translation": "Oi, Ju! Como vai?",
+      "rule": "Informal: Hi ou Hey + primeiro nome."
     },
     {
       "id": "en-w01-l3-g4",
+      "type": "choice",
+      "skill": "reading",
+      "prompt": "Qual é informal?",
+      "options": [
+        "Good evening, Mr. Smith.",
+        "Hey, Tom! How's it going?",
+        "How are you, Ms. Lee?"
+      ],
+      "answer": 1,
+      "explanation": "Hey + primeiro nome = informal."
+    },
+    {
+      "id": "en-w01-l3-g5",
+      "type": "transform",
+      "skill": "writing",
+      "prompt": "You are welcome.",
+      "instruction": "Use a forma curta.",
+      "answers": [
+        "You're welcome."
+      ],
+      "explanation": "You are → You're. Quer dizer \"de nada\"."
+    },
+    {
+      "type": "dialogue",
+      "lines": [
+        {
+          "speaker": "Receptionist",
+          "text": "Good morning. How are you today?",
+          "translation": "Bom dia. Como vai hoje?"
+        },
+        {
+          "speaker": "Ana",
+          "text": "I'm fine, thank you. And you?",
+          "translation": "Estou bem, obrigada. E você?"
+        },
+        {
+          "speaker": "Receptionist",
+          "text": "Very well, thanks. Welcome!",
+          "translation": "Muito bem, obrigado. Bem-vinda!"
+        },
+        {
+          "speaker": "Ana",
+          "text": "Thanks! … Hey, Ju! How's it going?",
+          "translation": "Obrigada! … Oi, Ju! Como vai?"
+        },
+        {
+          "speaker": "Ju",
+          "text": "Hey, Ana! I'm good. You?",
+          "translation": "Oi, Ana! Tudo bem. E você?"
+        },
+        {
+          "speaker": "Ana",
+          "text": "Great! See you!",
+          "translation": "Ótima! Até!"
+        }
+      ]
+    },
+    {
+      "id": "en-w01-l3-g6",
       "type": "dictation",
       "skill": "listening",
       "text": "Good evening, Ms. Lee. How are you?",
@@ -134,65 +143,22 @@
         "Good evening, Ms. Lee. How are you?",
         "Good evening, Ms Lee. How are you?"
       ],
-      "explanation": "*Ms.* soa \"miz\", com z no final.",
+      "explanation": "Ms. soa \"miz\".",
       "lang": "en"
-    },
-    {
-      "id": "en-w01-l3-g5",
-      "type": "transform",
-      "skill": "writing",
-      "prompt": "You are welcome.",
-      "instruction": "Reescreva com a [[contração]].",
-      "answers": [
-        "You're welcome."
-      ],
-      "explanation": "*You are* → *You're*. \"De nada\" em inglês é *You're welcome*."
-    },
-    {
-      "id": "en-w01-l3-g6",
-      "type": "gap",
-      "skill": "writing",
-      "prompt": "Good ___! Sleep well.",
-      "answers": [
-        "night"
-      ],
-      "explanation": "Para dormir ou se despedir à noite: *Good night*."
     }
   ],
   "production": {
     "id": "en-w01-l3-p",
     "type": "free",
     "skill": "writing",
-    "prompt": "Escreva duas mensagens curtas (2 linhas cada): uma formal para uma professora chamada Ms. Lee, e uma informal para um amigo chamado Ju. Nas duas, cumprimente de acordo com a hora e pergunte como a pessoa está.",
+    "prompt": "Escreva um oi formal para Ms. Lee e um informal para o amigo Ju.",
     "model": "Good morning, Ms. Lee. How are you today?\n\nHey Ju! How's it going?",
     "checklist": [
-      "Na formal usei *Good morning/afternoon/evening* + *Ms. Lee*",
-      "Na formal perguntei *How are you?* (sem gírias)",
-      "Na informal usei *Hi* ou *Hey* + primeiro nome",
-      "Não usei *Good night* para cumprimentar",
-      "Não escrevi \"Ms. + primeiro nome\""
+      "Formal: Good morning/afternoon + Ms. Lee",
+      "Informal: Hi ou Hey + Ju",
+      "Não usei Good night para cumprimentar"
     ]
   },
-  "feedback": {
-    "commonErrors": [
-      {
-        "wrong": "Good night, everyone! Let's start the meeting.",
-        "right": "Good evening, everyone! Let's start the meeting.",
-        "why": "*Good night* é despedida. Ao chegar à noite, é *Good evening*."
-      },
-      {
-        "wrong": "Good morning, Mr. John.",
-        "right": "Good morning, Mr. Smith.",
-        "why": "*Mr./Ms.* vai com o sobrenome, não com o primeiro nome."
-      },
-      {
-        "wrong": "I am fine, thank you, and you? (para um amigo, no WhatsApp)",
-        "right": "I'm good, you?",
-        "why": "Não está errado gramaticalmente, mas soa robótico. Com amigos, use contrações e frases curtas."
-      }
-    ]
-  },
-  "task": "Amanhã de manhã, pense em três pessoas que você vai encontrar (por exemplo: chefe, colega, amigo). Para cada uma, decida como cumprimentaria em inglês — hora do dia e formalidade — e anote as três frases no bloco de notas do celular.",
   "vocabulary": [
     {
       "id": "en-w01-l3-goodmorning",

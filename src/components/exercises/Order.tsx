@@ -30,7 +30,7 @@ export function OrderEx({ ex, disabled, onSubmit }: { ex: Ex; lang: Language; di
     <Card>
       <p className="mb-3">{ex.prompt}</p>
       <div className="min-h-12 p-2 rounded-lg flex flex-wrap gap-2 mb-3" style={{ border: '1px dashed var(--border)' }} aria-label="Sua frase">
-        {sentence.length === 0 && <span className="muted text-sm">Toque nas palavras na ordem certa.</span>}
+        {sentence.length === 0 && <span className="muted text-sm">Toque nas palavras.</span>}
         {picked.map((i, pos) => (
           <button key={`${i}-${pos}`} type="button" className="chip text-base" disabled={disabled} onClick={() => setPicked(picked.filter((_, p) => p !== pos))} aria-label={`Remover ${ex.tokens[i]}`}>
             {ex.tokens[i]}

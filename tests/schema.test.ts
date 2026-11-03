@@ -56,19 +56,24 @@ describe('validateLesson', () => {
   it('accepts a minimal valid lesson', () => {
     expect(validateLesson(minimalLesson(), 'f').id).toBe('en-w01-l1')
   })
+  it('rejects a lesson that starts with an exercise or has free production among the steps', () => {
+    const lesson = minimalLesson()
+    expect(() => validateLesson({ ...lesson, steps: lesson.steps.slice(1) }, 'f')).toThrow(/learn/)
+    expect(() => validateLesson({ ...lesson, steps: [...lesson.steps, lesson.production] }, 'f')).toThrow(/production/)
+  })
 })
 
 function minimalLesson() {
   const ex = (id: string) => ({ id, type: 'choice', skill: 'reading', prompt: 'Q?', options: ['a', 'b'], answer: 0, explanation: 'a' })
   return {
     id: 'en-w01-l1', weekId: 'en-w01', language: 'en', title: 'T', objective: 'O',
-    warmup: { prompt: 'p', items: ['i'] },
-    dialogue: { context: 'c', lines: [{ speaker: 'A', text: 'Hi', translation: 'Oi' }, { speaker: 'B', text: 'Hello', translation: 'Olá' }] },
-    explanation: { title: 't', body: 'b', examples: [{ text: 'x', translation: 'y' }] },
-    guided: [ex('e1'), ex('e2'), ex('e3')],
+    steps: [
+      { type: 'learn', text: "I'm Ana.", translation: 'Eu sou a Ana.', rule: "Eu sou = I'm", avoid: { wrong: 'I Ana.', right: "I'm Ana." } },
+      ex('e1'),
+      ex('e2'),
+      { type: 'dialogue', lines: [{ speaker: 'A', text: 'Hi', translation: 'Oi' }, { speaker: 'B', text: 'Hello', translation: 'Olá' }] },
+    ] as unknown[],
     production: { id: 'p1', type: 'free', skill: 'speaking', prompt: 'x', model: 'y', checklist: ['z'] },
-    feedback: { commonErrors: [{ wrong: 'w', right: 'r', why: 'y' }] },
-    task: 'Faça algo fora do app hoje.',
     vocabulary: [
       { id: 'v1', term: 'hi', translation: 'oi', example: 'Hi!', exampleTranslation: 'Oi!' },
       { id: 'v2', term: 'bye', translation: 'tchau', example: 'Bye!', exampleTranslation: 'Tchau!' },

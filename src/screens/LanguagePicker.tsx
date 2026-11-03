@@ -5,7 +5,7 @@ import { db } from '../lib/db'
 import { lessonsFor } from '../lib/content'
 import { currentWeek } from '../lib/course'
 import { LANGUAGE_NAMES, type Language } from '../lib/types'
-import { useEnrollments, setActiveEnrollment, markLanguageChosen } from '../state/useEnrollments'
+import { useEnrollments, setActiveEnrollment, startLanguage } from '../state/useEnrollments'
 import { Screen, Spinner } from '../components/ui'
 
 // Um idioma por vez. Esta tela é a única em que os dois aparecem juntos —
@@ -28,7 +28,7 @@ export function LanguagePicker() {
           const done = mine.filter((c) => c.completedAt).length
           return (
             <button key={e.id} type="button" className="card flex items-center gap-3 text-left" data-lang={e.language}
-              onClick={() => { setActiveEnrollment(e.id!); markLanguageChosen(); nav('/', { replace: true }) }}>
+              onClick={() => { setActiveEnrollment(e.id!); nav('/', { replace: true }) }}>
               <span className="chip chip-accent font-mono text-base px-3 py-1">{e.language.toUpperCase()}</span>
               <span className="grow">
                 <span className="text-xl font-bold">{LANGUAGE_NAMES[e.language]}</span>
@@ -39,7 +39,7 @@ export function LanguagePicker() {
           )
         })}
         {missing.map((l) => (
-          <button key={l} type="button" className="card-flat flex items-center gap-3 text-left" style={{ borderStyle: 'dashed' }} onClick={() => nav(`/onboarding?add=${l}`)}>
+          <button key={l} type="button" className="card-flat flex items-center gap-3 text-left" style={{ borderStyle: 'dashed' }} onClick={() => startLanguage(l).then(() => nav('/', { replace: true }))}>
             <span className="grid place-items-center rounded-xl shrink-0" style={{ width: 40, height: 40, background: 'var(--accent-soft)', color: 'var(--accent)' }}><Plus size={20} /></span>
             <span className="grow"><span className="text-lg font-bold">Adicionar {LANGUAGE_NAMES[l]}</span><span className="block text-sm muted">Plano e progresso separados do outro idioma.</span></span>
           </button>

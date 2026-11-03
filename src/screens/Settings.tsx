@@ -8,6 +8,7 @@ import { voicesFor, isNeural, speak, ttsSupported } from '../lib/tts'
 import { LANGUAGE_NAMES, type Language } from '../lib/types'
 import { Button, Card, Choice, Notice, Screen } from '../components/ui'
 import { RemindersCard } from '../components/Reminders'
+import { BackupDownload, BackupRestore } from '../components/Backup'
 
 function isIosSafariNotInstalled(): boolean {
   const ua = navigator.userAgent
@@ -71,12 +72,21 @@ export function Settings() {
         </Card>
 
         <Card>
+          <h2 className="font-semibold mb-2">Cópia de segurança</h2>
+          <p className="text-sm muted mb-3">Seu progresso fica salvo neste aparelho. Para trocar de celular ou limpar o navegador sem perder nada, baixe uma cópia e restaure depois.</p>
+          <div className="grid gap-2">
+            <BackupDownload />
+            <BackupRestore label="Restaurar (substitui o progresso atual)" onDone={() => nav('/', { replace: true })} />
+          </div>
+        </Card>
+
+        <Card>
           <h2 className="font-semibold mb-2">Seus dados</h2>
           <p className="text-sm muted mb-3">Tudo fica apenas neste aparelho. Não há conta, servidor nem gravações. Excluir apaga tudo de forma imediata e irreversível.</p>
           {confirm === 0 && <Button variant="secondary" block onClick={() => setConfirm(1)}>Excluir todos os meus dados</Button>}
           {confirm === 1 && (
             <div className="grid gap-2">
-              <Notice kind="warn">Tem certeza? Antes, você pode baixar o kit na tela de Conclusão.</Notice>
+              <Notice kind="warn">Tem certeza? Antes, baixe uma cópia de segurança acima.</Notice>
               <Button block onClick={wipe} style={{ background: 'var(--err)', color: '#fff' }}>Sim, excluir tudo</Button>
               <Button variant="secondary" block onClick={() => setConfirm(0)}>Cancelar</Button>
             </div>

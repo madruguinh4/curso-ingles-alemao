@@ -20,7 +20,7 @@ export default defineConfig({
       manifest: {
         name: 'Curso de Inglês e Alemão',
         short_name: 'Curso',
-        description: 'Curso estruturado de 6 meses de inglês e alemão para brasileiros.',
+        description: 'Curso de um ano de inglês e alemão para brasileiros.',
         lang: 'pt-BR',
         start_url: base,
         scope: base,

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { skillScores, demonstratedObjectives, needsReview, completedCount } from '../src/lib/progress'
-import { lessonsForWeek, getLesson } from '../src/lib/content'
+import { lessonsForWeek, getLesson, exercisesOf } from '../src/lib/content'
 import { weeksFor } from '../src/content/curriculum'
 import type { Attempt, Completion, ErrorLog } from '../src/lib/db'
 
@@ -33,7 +33,7 @@ describe('skillScores', () => {
 describe('demonstratedObjectives', () => {
   const weeks = weeksFor('en')
   const w1 = lessonsForWeek('en-w01')
-  const goodAttempts = w1.flatMap((l) => l.guided.map((e, i) => attempt({ lessonId: l.id, exerciseId: e.id, correct: i !== 0 })))
+  const goodAttempts = w1.flatMap((l) => exercisesOf(l).map((e, i) => attempt({ lessonId: l.id, exerciseId: e.id, correct: i !== 0 })))
   it('marks a week when all its lessons are complete with production and accuracy >= 0.7', () => {
     const comps = w1.map((l) => done(l.id))
     expect(demonstratedObjectives(weeks, comps, goodAttempts, lessonsForWeek).map((w) => w.id)).toEqual(['en-w01'])

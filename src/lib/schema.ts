@@ -44,6 +44,20 @@ export const ExerciseSchema = z.discriminatedUnion('type', [
 
 export const DialogueLineSchema = z.object({ speaker: z.string().min(1), text: z.string().min(1), translation: z.string().min(1) })
 
+// Uma ideia por tela: o cartão "aprender" mostra uma frase com áudio e, no
+// máximo, uma regra de uma linha (sem jargão) e um par errado → certo.
+export const LearnStepSchema = z.object({
+  type: z.literal('learn'),
+  text: z.string().min(1),
+  translation: z.string().min(1),
+  rule: z.string().min(1).optional(),
+  avoid: z.object({ wrong: z.string().min(1), right: z.string().min(1) }).optional(),
+})
+
+export const DialogueStepSchema = z.object({ type: z.literal('dialogue'), lines: z.array(DialogueLineSchema).min(2) })
+
+export const StepSchema = z.union([LearnStepSchema, DialogueStepSchema, ExerciseSchema])
+
 export const LessonSchema = z
   .object({
     id: z.string().regex(/^(en|de)-w\d{2}-l\d$/),
@@ -51,22 +65,17 @@ export const LessonSchema = z
     language: LanguageSchema,
     title: z.string().min(1),
     objective: z.string().min(1),
-    warmup: z.object({ prompt: z.string().min(1), items: z.array(z.string().min(1)).min(1) }),
-    dialogue: z.object({ context: z.string().min(1), lines: z.array(DialogueLineSchema).min(2) }),
-    explanation: z.object({
-      title: z.string().min(1),
-      body: z.string().min(1),
-      examples: z.array(z.object({ text: z.string().min(1), translation: z.string().min(1) })).min(1),
-    }),
-    guided: z.array(ExerciseSchema).min(3),
+    steps: z.array(StepSchema).min(4),
     production: ExerciseSchema.refine((e) => e.type === 'free', { message: 'production deve ser type free' }),
-    feedback: z.object({ commonErrors: z.array(z.object({ wrong: z.string().min(1), right: z.string().min(1), why: z.string().min(1) })).min(1) }),
-    task: z.string().min(10),
     vocabulary: z.array(VocabItemSchema).min(3),
   })
   .superRefine((l, ctx) => {
     if (!l.id.startsWith(l.weekId + '-')) ctx.addIssue({ code: 'custom', path: ['weekId'], message: 'weekId não bate com id' })
     if (l.language !== l.id.slice(0, 2)) ctx.addIssue({ code: 'custom', path: ['language'], message: 'language não bate com id' })
+    if (l.steps[0]?.type !== 'learn') ctx.addIssue({ code: 'custom', path: ['steps', 0], message: 'a aula começa com um cartão learn' })
+    l.steps.forEach((s, i) => {
+      if (s.type === 'free') ctx.addIssue({ code: 'custom', path: ['steps', i], message: 'produção livre fica em production' })
+    })
   })
 
 export const WeekSchema = z.object({

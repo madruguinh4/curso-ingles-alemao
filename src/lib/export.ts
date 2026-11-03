@@ -1,11 +1,11 @@
 import type { ErrorLog } from './db'
-import type { Exercise, Language, Lesson, VocabItem, Week } from './types'
+import type { Exercise, Language, LearnStep, Lesson, VocabItem, Week } from './types'
 import { LANGUAGE_NAMES, SKILL_NAMES } from './types'
 import type { SkillScore } from './progress'
 import { CONTINUITY } from '../content/continuity'
 import { MONTH_TITLES } from '../content/curriculum'
 import { formatBR } from './dates'
-import { getTerm, termsIn } from '../content/glossary'
+import { exercisesOf } from './content'
 
 // Kit de encerramento: gerado localmente a partir do que já está no aparelho.
 // Não depende de assinatura, servidor nem link temporário.
@@ -38,23 +38,14 @@ export interface KitInput {
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
-export type TermMode = 'button' | 'abbr'
-
-/** Ênfase inline (**negrito**, *itálico*) e termos [[glossário]] ou [[termo|texto]]. Escapa HTML antes. */
-export function inlineMarkdown(s: string, terms: TermMode = 'button'): string {
-  const withTerms = esc(s).replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_m, key: string, text?: string) => {
-    const k = key.trim()
-    const label = (text ?? k).trim()
-    const t = getTerm(k)
-    if (terms === 'abbr') return `<abbr title="${esc(t?.definition ?? '')}">${label}</abbr>`
-    return `<button type="button" class="term" data-term="${esc(k)}">${label}</button>`
-  })
-  return withTerms.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>')
+/** Ênfase inline (**negrito**, *itálico*). Escapa HTML antes. */
+export function inlineMarkdown(s: string): string {
+  return esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>')
 }
 
-/** Markdown mínimo usado nas explicações: ênfase, termos, parágrafos e listas com "- ". */
-export function miniMarkdown(md: string, terms: TermMode = 'button'): string {
-  const inline = (s: string) => inlineMarkdown(s, terms)
+/** Markdown mínimo: ênfase, parágrafos e listas com "- ". */
+export function miniMarkdown(md: string): string {
+  const inline = inlineMarkdown
   return md
     .split(/\n\s*\n/)
     .map((p) => {
@@ -99,14 +90,10 @@ export function kitHtml(k: KitInput): string {
     <ul>${weeksWithLessons.map((w) => `<li><b>Semana ${w.number}</b> (${MONTH_TITLES[w.month]}, ${w.level}) — ${esc(w.title)}: <i>${esc(w.canDo)}</i>${objectiveIds.has(w.id) ? ' ✔ objetivo demonstrado' : ''}</li>`).join('')}</ul>
     <p class="note">Este resumo é uma verificação interna do curso. Não é um nível oficial nem substitui um exame reconhecido.</p>`
 
+  const learnOf = (l: Lesson) => l.steps.filter((s): s is LearnStep => s.type === 'learn')
   const grammar = k.lessons.map((l) => `
     <article><h3>${esc(l.title)} <small>(${l.id})</small></h3>
-    <h4>${esc(l.explanation.title)}</h4>${miniMarkdown(l.explanation.body, 'abbr')}
-    <ul>${l.explanation.examples.map((x) => `<li><b>${esc(x.text)}</b> — ${esc(x.translation)}</li>`).join('')}</ul></article>`).join('')
-  const usedTerms = [...new Set(k.lessons.flatMap((l) => termsIn(l.explanation.body)).map((t) => t.toLowerCase()))].map(getTerm).filter((t) => !!t)
-  const glossary = usedTerms.length
-    ? `<h3>Termos de gramática usados no curso</h3><dl>${usedTerms.map((t) => `<dt><b>${esc(t.title)}</b></dt><dd>${esc(t.definition)}<br><small><i>${esc(t.example)}</i></small></dd>`).join('')}</dl>`
-    : ''
+    <ul>${learnOf(l).map((s) => `<li><b>${esc(s.text)}</b> — ${esc(s.translation)}${s.rule ? `<br><small>${inlineMarkdown(s.rule)}</small>` : ''}</li>`).join('')}</ul></article>`).join('')
 
   const vocab = k.lessons.map((l) => `
     <h3>${esc(l.title)}</h3><table><thead><tr><th>${langName}</th><th>Português</th><th>Exemplo</th></tr></thead><tbody>
@@ -115,14 +102,17 @@ export function kitHtml(k: KitInput): string {
 
   const errors = k.errors.length
     ? `<table><thead><tr><th>Data</th><th>Pergunta</th><th>Você escreveu</th><th>Correto</th><th>Por quê</th></tr></thead><tbody>
-       ${k.errors.map((e) => `<tr><td>${formatBR(e.at.slice(0, 10))}</td><td>${esc(e.prompt)}</td><td class="wrong">${esc(e.given)}</td><td class="right">${esc(e.expected)}</td><td>${inlineMarkdown(e.explanation, 'abbr')}</td></tr>`).join('')}
+       ${k.errors.map((e) => `<tr><td>${formatBR(e.at.slice(0, 10))}</td><td>${esc(e.prompt)}</td><td class="wrong">${esc(e.given)}</td><td class="right">${esc(e.expected)}</td><td>${inlineMarkdown(e.explanation)}</td></tr>`).join('')}
        </tbody></table>`
     : '<p>Nenhum erro registrado ainda. Erros são a parte mais útil deste relatório — continue praticando.</p>'
-  const commonErrors = k.lessons.map((l) => `<h4>${esc(l.title)}</h4><ul>${l.feedback.commonErrors.map((c) => `<li><span class="wrong">${esc(c.wrong)}</span> → <span class="right">${esc(c.right)}</span><br><small>${inlineMarkdown(c.why, 'abbr')}</small></li>`).join('')}</ul>`).join('')
+  const commonErrors = k.lessons.map((l) => {
+    const pairs = learnOf(l).flatMap((s) => (s.avoid ? [s.avoid] : []))
+    return pairs.length ? `<h4>${esc(l.title)}</h4><ul>${pairs.map((c) => `<li><span class="wrong">${esc(c.wrong)}</span> → <span class="right">${esc(c.right)}</span></li>`).join('')}</ul>` : ''
+  }).join('')
 
   const exercises = k.lessons.map((l) => `
     <h3>${esc(l.title)}</h3><ol>
-    ${[...l.guided, l.production].map((e) => `<li>${inlineMarkdown(exercisePrompt(e), 'abbr')}<br><b>Resposta:</b> ${esc(exerciseAnswer(e))}${'explanation' in e ? `<br><small>${inlineMarkdown(e.explanation, 'abbr')}</small>` : ''}</li>`).join('')}
+    ${[...exercisesOf(l), l.production].map((e) => `<li>${inlineMarkdown(exercisePrompt(e))}<br><b>Resposta:</b> ${esc(exerciseAnswer(e))}${'explanation' in e ? `<br><small>${inlineMarkdown(e.explanation)}</small>` : ''}</li>`).join('')}
     </ol>`).join('')
 
   const skills = `<table><thead><tr><th>Habilidade</th><th>Tentativas</th><th>Acerto</th></tr></thead><tbody>
@@ -150,7 +140,7 @@ export function kitHtml(k: KitInput): string {
 <p>Gerado pelo app em ${formatBR(new Date().toISOString().slice(0, 10))}. Este arquivo é seu: funciona sem o app, sem conta e sem internet. Imprima ou salve como PDF pelo navegador.</p>
 <nav><a href="#s1">Resumo</a><a href="#s2">Gramática</a><a href="#s3">Vocabulário</a><a href="#s4">Erros</a><a href="#s5">Exercícios</a><a href="#s6">Habilidades</a><a href="#s7">90 dias</a><a href="#s8">Continuar</a></nav>
 <div id="s1">${section(1, 'Resumo do que você estudou', summary)}</div>
-<div id="s2">${section(2, 'Guia de gramática', glossary + grammar)}</div>
+<div id="s2">${section(2, 'Guia de gramática', grammar)}</div>
 <div id="s3">${section(3, 'Vocabulário e expressões', vocab)}</div>
 <div id="s4">${section(4, 'Erros e correções', `<h3>Seus erros registrados</h3>${errors}<h3>Erros comuns de brasileiros vistos no curso</h3>${commonErrors}`)}</div>
 <div id="s5">${section(5, 'Exercícios com respostas', exercises)}</div>

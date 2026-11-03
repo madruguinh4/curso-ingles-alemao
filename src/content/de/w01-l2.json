@@ -3,185 +3,181 @@
   "weekId": "de-w01",
   "language": "de",
   "title": "Woher kommst du?",
-  "objective": "Perguntar e dizer de onde alguém vem e onde mora.",
-  "warmup": {
-    "prompt": "Revisão rápida da aula anterior:",
-    "items": [
-      "Complete em voz alta: \"Hallo! Ich ___ [seu nome].\"",
-      "Como se pergunta o nome de forma formal? E informal?",
-      "Diga *ich* três vezes com o *ch* soprado."
-    ]
-  },
-  "dialogue": {
-    "context": "Na cantina do curso, Paula e Lucas conversam com Ahmet, um colega, e depois com a professora.",
-    "lines": [
-      {
-        "speaker": "Paula",
-        "text": "Ahmet, woher kommst du?",
-        "translation": "Ahmet, de onde você vem?"
-      },
-      {
-        "speaker": "Ahmet",
-        "text": "Ich komme aus der Türkei, aus Izmir. Und du?",
-        "translation": "Eu venho da Turquia, de Izmir. E você?"
-      },
-      {
-        "speaker": "Paula",
-        "text": "Ich komme aus Brasilien. Ich wohne in Curitiba.",
-        "translation": "Eu venho do Brasil. Moro em Curitiba."
-      },
-      {
-        "speaker": "Ahmet",
-        "text": "Schön! Und Sie, Frau Weber? Woher kommen Sie?",
-        "translation": "Legal! E a senhora, Sra. Weber? De onde a senhora vem?"
-      },
-      {
-        "speaker": "Frau Weber",
-        "text": "Ich komme aus Deutschland, aus Köln. Aber ich wohne jetzt in Brasilien.",
-        "translation": "Eu venho da Alemanha, de Colônia. Mas agora moro no Brasil."
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Köln! Ist Köln schön?",
-        "translation": "Colônia! Colônia é bonita?"
-      },
-      {
-        "speaker": "Frau Weber",
-        "text": "Ja, sehr schön.",
-        "translation": "Sim, muito bonita."
-      }
-    ]
-  },
-  "explanation": {
-    "title": "Woher? Aus! — origem, moradia e os umlauts",
-    "body": "**Woher kommst du?** / **Woher kommen Sie?** = \"De onde você vem?\". *Woher* é *wo* (onde) + *her* (para cá).\n\n**Regra 1 — origem é *aus*.** A [[preposição]] *aus* = \"de\" (origem): **Ich komme aus** + país ou cidade. Nunca \"von\".\n\n**Regra 2 — a maioria dos países não tem [[artigo]]:** *Brasilien, Deutschland, Portugal, Österreich, Japan*. **Poucos têm** (e são frequentes): *die Schweiz, die Türkei, die USA*. Depois de *aus*, esses ficam: **aus der Schweiz**, **aus der Türkei**, **aus den USA**. Memorize a forma pronta — na semana 8 você vai entender por que o artigo muda (é o [[caso]] [[dativo]]).\n\n**Regra 3 — morar é *wohnen in*:** *Ich wohne in Curitiba.* *Kommen aus* = origem; *wohnen in* = onde mora agora.\n\n**[[conjugação]] no presente** (verbos regulares): a [[terminação]] muda com a pessoa:\n- ich komm**e** / wohn**e**\n- du komm**st** / wohn**st**\n- Sie komm**en** / wohn**en**\n\n**[[umlaut]]** — não é enfeite, muda a palavra:\n- **ä** (*Länder*): como um \"é\" aberto.\n- **ö** (*schön, Köln*): diga \"ê\" com os lábios arredondados como para \"o\".\n- **ü** (*fünf, Türkei*): diga \"i\" com os lábios arredondados como para \"u\".\n\n*schon* (já) ≠ *schön* (bonito). Um pontinho muda o sentido.",
-    "examples": [
-      {
-        "text": "Woher kommst du? — Ich komme aus Brasilien.",
-        "translation": "De onde você vem? — Venho do Brasil."
-      },
-      {
-        "text": "Woher kommen Sie? — Aus Deutschland.",
-        "translation": "De onde o senhor vem? — Da Alemanha."
-      },
-      {
-        "text": "Ich komme aus der Schweiz.",
-        "translation": "Venho da Suíça."
-      },
-      {
-        "text": "Ich wohne in Curitiba.",
-        "translation": "Moro em Curitiba."
-      },
-      {
-        "text": "Köln ist schön.",
-        "translation": "Colônia é bonita."
-      }
-    ]
-  },
-  "guided": [
+  "objective": "Dizer de onde você vem e onde mora.",
+  "steps": [
     {
-      "id": "de-w01-l2-g1",
-      "type": "choice",
-      "skill": "reading",
-      "prompt": "Como perguntar formalmente de onde alguém vem?",
-      "options": [
-        "Woher kommst du?",
-        "Woher kommen Sie?",
-        "Wo kommen Sie?"
-      ],
-      "answer": 1,
-      "explanation": "Formal = *Sie* + *kommen*. E \"de onde\" é *woher*, não *wo* (que é só \"onde\")."
+      "type": "learn",
+      "text": "Woher kommst du?",
+      "translation": "De onde você vem?",
+      "rule": "De onde? = Woher?",
+      "avoid": {
+        "wrong": "Wo kommst du?",
+        "right": "Woher kommst du?"
+      }
     },
     {
-      "id": "de-w01-l2-g2",
+      "type": "learn",
+      "text": "Ich komme aus Brasilien.",
+      "translation": "Eu venho do Brasil.",
+      "rule": "Venho de… = Ich komme aus…",
+      "avoid": {
+        "wrong": "Ich komme von Brasilien.",
+        "right": "Ich komme aus Brasilien."
+      }
+    },
+    {
+      "id": "de-w01-l2-g1",
       "type": "gap",
       "skill": "writing",
       "prompt": "Ich komme ___ Brasilien.",
       "answers": [
         "aus"
       ],
-      "explanation": "Origem = *aus*."
+      "explanation": "Origem = aus."
     },
     {
-      "id": "de-w01-l2-g3",
+      "type": "learn",
+      "text": "Ich komme aus der Schweiz.",
+      "translation": "Eu venho da Suíça.",
+      "rule": "Poucos países levam der: aus der Schweiz, aus der Türkei. Decore assim.",
+      "avoid": {
+        "wrong": "Ich komme aus Schweiz.",
+        "right": "Ich komme aus der Schweiz."
+      }
+    },
+    {
+      "id": "de-w01-l2-g2",
       "type": "gap",
       "skill": "writing",
       "prompt": "Ich komme aus ___ Schweiz.",
       "answers": [
         "der"
       ],
-      "explanation": "*Die Schweiz* tem [[artigo]]; depois de *aus* vira *der* (é o [[dativo]] — você vai entender na semana 8). Memorize: *aus der Schweiz*."
+      "explanation": "Decore: aus der Schweiz."
+    },
+    {
+      "type": "learn",
+      "text": "Ich wohne in Curitiba.",
+      "translation": "Eu moro em Curitiba.",
+      "rule": "Moro em… = Ich wohne in…"
+    },
+    {
+      "type": "learn",
+      "text": "Woher kommen Sie?",
+      "translation": "De onde o(a) senhor(a) vem?",
+      "rule": "ich komme · du kommst · Sie kommen"
+    },
+    {
+      "id": "de-w01-l2-g3",
+      "type": "choice",
+      "skill": "reading",
+      "prompt": "Pergunta formal: de onde a pessoa vem?",
+      "options": [
+        "Woher kommst du?",
+        "Woher kommen Sie?",
+        "Wo kommen Sie?"
+      ],
+      "answer": 1,
+      "explanation": "Formal: Sie kommen. De onde = woher."
     },
     {
       "id": "de-w01-l2-g4",
-      "type": "dictation",
-      "skill": "listening",
-      "text": "Ich komme aus Brasilien und wohne in Curitiba.",
+      "type": "transform",
+      "skill": "writing",
+      "prompt": "Ich komme aus Deutschland.",
+      "instruction": "Troque ich por du.",
       "answers": [
-        "Ich komme aus Brasilien und wohne in Curitiba."
+        "Du kommst aus Deutschland."
       ],
-      "explanation": "Repare no *w* de *wohne*, que soa como \"v\".",
-      "lang": "de"
+      "explanation": "ich komme → du kommst."
     },
     {
       "id": "de-w01-l2-g5",
       "type": "order",
       "skill": "writing",
-      "prompt": "Coloque na ordem certa a pergunta informal.",
+      "prompt": "Monte a pergunta.",
       "tokens": [
         "Woher",
         "kommst",
         "du"
       ],
       "answer": "Woher kommst du",
-      "explanation": "Palavra interrogativa + verbo + sujeito."
+      "explanation": "Woher + verbo + du."
+    },
+    {
+      "type": "learn",
+      "text": "Köln ist schön.",
+      "translation": "Colônia é bonita.",
+      "rule": "ö: diga \"ê\" com a boca de \"o\".",
+      "avoid": {
+        "wrong": "Köln ist schon.",
+        "right": "Köln ist schön."
+      }
+    },
+    {
+      "type": "dialogue",
+      "lines": [
+        {
+          "speaker": "Paula",
+          "text": "Ahmet, woher kommst du?",
+          "translation": "Ahmet, de onde você vem?"
+        },
+        {
+          "speaker": "Ahmet",
+          "text": "Ich komme aus der Türkei. Und du?",
+          "translation": "Eu venho da Turquia. E você?"
+        },
+        {
+          "speaker": "Paula",
+          "text": "Ich komme aus Brasilien. Ich wohne in Curitiba.",
+          "translation": "Eu venho do Brasil. Moro em Curitiba."
+        },
+        {
+          "speaker": "Ahmet",
+          "text": "Und Sie, Frau Weber?",
+          "translation": "E a senhora, Sra. Weber?"
+        },
+        {
+          "speaker": "Frau Weber",
+          "text": "Ich komme aus Deutschland, aus Köln.",
+          "translation": "Eu venho da Alemanha, de Colônia."
+        },
+        {
+          "speaker": "Lucas",
+          "text": "Ist Köln schön?",
+          "translation": "Colônia é bonita?"
+        },
+        {
+          "speaker": "Frau Weber",
+          "text": "Ja, sehr schön!",
+          "translation": "Sim, muito bonita!"
+        }
+      ]
     },
     {
       "id": "de-w01-l2-g6",
-      "type": "transform",
-      "skill": "writing",
-      "prompt": "Ich komme aus Deutschland.",
-      "instruction": "Reescreva a frase para \"du\" (você, informal).",
+      "type": "dictation",
+      "skill": "listening",
+      "text": "Ich komme aus Brasilien und wohne in Curitiba.",
       "answers": [
-        "Du kommst aus Deutschland."
+        "Ich komme aus Brasilien und wohne in Curitiba."
       ],
-      "explanation": "*ich komme* → *du kommst*: a [[terminação]] de *du* é *-st*."
+      "explanation": "O w de wohne soa como \"v\".",
+      "lang": "de"
     }
   ],
   "production": {
     "id": "de-w01-l2-p",
     "type": "free",
     "skill": "speaking",
-    "prompt": "Grave uns 20 segundos: diga seu nome, de onde você vem (país e cidade), onde mora, e pergunte a um colega imaginário de onde ele vem. Ouça e confira a lista.",
-    "model": "Hallo! Ich heiße Paula. Ich komme aus Brasilien, aus Curitiba. Ich wohne in Curitiba. Woher kommst du?",
+    "prompt": "Fale: de onde você vem, onde mora e pergunte de onde a pessoa vem.",
+    "model": "Hallo! Ich heiße Paula. Ich komme aus Brasilien. Ich wohne in Curitiba. Woher kommst du?",
     "checklist": [
-      "Disse *Ich komme aus* + país",
-      "Disse *Ich wohne in* + cidade",
-      "Fiz a pergunta *Woher kommst du?* com o verbo na segunda posição",
-      "Se falei de um país com artigo (Schweiz, Türkei), usei *aus der*",
-      "Tentei os umlauts com os lábios arredondados"
+      "Disse Ich komme aus + país",
+      "Disse Ich wohne in + cidade",
+      "Perguntei Woher kommst du?"
     ]
   },
-  "feedback": {
-    "commonErrors": [
-      {
-        "wrong": "Ich komme von Brasilien.",
-        "right": "Ich komme aus Brasilien.",
-        "why": "Origem (país, cidade) é sempre *aus*. *Von* é usado em outros contextos (\"de alguém\", \"a partir de\")."
-      },
-      {
-        "wrong": "Ich komme aus Schweiz.",
-        "right": "Ich komme aus der Schweiz.",
-        "why": "Alguns países têm artigo obrigatório: *die Schweiz, die Türkei, die USA*. Depois de *aus*: *der* / *den*."
-      },
-      {
-        "wrong": "Köln ist schon.",
-        "right": "Köln ist schön.",
-        "why": "*Schon* = já; *schön* = bonito. O umlaut faz parte da palavra — sem ele, é outra palavra."
-      }
-    ]
-  },
-  "task": "Abra o mapa do celular e escolha três cidades da Alemanha, Áustria ou Suíça (por exemplo: Köln, München, Zürich). Diga em voz alta \"Ich komme aus [cidade]\" para cada uma, exagerando os umlauts. Ouça a pronúncia no tradutor se tiver dúvida.",
   "vocabulary": [
     {
       "id": "de-w01-l2-woher",

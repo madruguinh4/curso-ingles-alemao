@@ -12,11 +12,11 @@ export function More() {
   const missing = (['en', 'de'] as Language[]).filter((l) => !all?.some((e) => e.language === l))
   const links = [
     { to: `/plan/${id}`, label: `Plano de um ano — ${lang}`, desc: 'As 52 semanas e o que cada uma ensina', Icon: CalendarRange },
-    { to: `/library/${id}`, label: `Biblioteca — ${lang}`, desc: 'Vocabulário, gramática e termos', Icon: Library },
+    { to: `/library/${id}`, label: `Biblioteca — ${lang}`, desc: 'Vocabulário e regras', Icon: Library },
     { to: `/talk/${id}`, label: `Conversação — ${lang}`, desc: 'Prática oral e o que não está nesta versão', Icon: MessageCircle },
     { to: `/finish/${id}`, label: `Kit de continuidade — ${lang}`, desc: 'Baixar o kit (HTML) e os cartões (CSV)', Icon: Download },
     { to: '/language', label: (all?.length ?? 0) > 1 ? 'Trocar idioma' : 'Idiomas', desc: 'Escolher o que estudar agora', Icon: Languages },
-    ...missing.map((l) => ({ to: `/onboarding?add=${l}`, label: `Adicionar ${LANGUAGE_NAMES[l]}`, desc: 'Plano separado, com progresso próprio', Icon: Plus })),
+    ...missing.map((l) => ({ to: '/language', label: `Adicionar ${LANGUAGE_NAMES[l]}`, desc: 'Plano separado, com progresso próprio', Icon: Plus })),
     { to: '/settings', label: 'Perfil e configurações', desc: 'Nome, voz, tema, tamanho do texto, dados', Icon: Settings },
     { to: '/about', label: 'Sobre o curso', desc: 'O que ele é, o que não é, metas realistas', Icon: Info },
   ]

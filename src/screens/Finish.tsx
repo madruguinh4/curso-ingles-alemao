@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../lib/db'
 import { lessonsFor, lessonsForWeek, contentStats } from '../lib/content'
-import { weeksFor } from '../content/curriculum'
+import { TOTAL_WEEKS, weeksFor } from '../content/curriculum'
 import { CONTINUITY } from '../content/continuity'
 import { skillScores, demonstratedObjectives, completedCount } from '../lib/progress'
 import { cardsCsv, kitHtml, download } from '../lib/export'
@@ -39,7 +39,7 @@ export function Finish() {
       <div className="grid gap-4">
         <Card>
           <p>Você concluiu <b>{done} de {stats.lessons}</b> aulas existentes e demonstrou <b>{objectives.length}</b> objetivo(s) comunicativo(s).</p>
-          <p className="text-sm muted mt-1">O curso completo prevê 26 semanas; hoje existem aulas em {stats.weeksWithLessons}. Esta tela nunca fica bloqueada: o kit é seu a qualquer momento.</p>
+          <p className="text-sm muted mt-1">O curso completo prevê {TOTAL_WEEKS} semanas; hoje existem aulas em {stats.weeksWithLessons}. Esta tela nunca fica bloqueada: o kit é seu a qualquer momento.</p>
         </Card>
 
         <Card>

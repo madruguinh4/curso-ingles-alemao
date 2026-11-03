@@ -1,5 +1,6 @@
 import { Flame, CalendarDays } from 'lucide-react'
-import type { StudyStats } from '../lib/study'
+import { studyMessage, type StudyStats } from '../lib/study'
+import { Coach } from './mascots/Coach'
 import { formatBR } from '../lib/dates'
 
 /** Calendário de dias estudados (12 semanas) + totais. Informação, não cobrança. */
@@ -24,7 +25,7 @@ export function StudyCalendar({ stats }: { stats: StudyStats }) {
         <span className="muted">esta semana: <b>{stats.thisWeek}</b></span>
         <span className="muted">recorde: <b>{stats.longestStreak}</b></span>
       </div>
-      <p className="text-xs muted mt-2">O app registra automaticamente cada dia em que você estuda. Não há meta obrigatória nem punição por pausar.</p>
+      <div className="mt-3"><Coach who="dudu" size={44} mood={stats.studiedToday ? 'cheer' : 'happy'}>{studyMessage(stats)}</Coach></div>
     </div>
   )
 }

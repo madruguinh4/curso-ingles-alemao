@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { CheckCircle2, XCircle, RotateCcw, ArrowRight } from 'lucide-react'
+import { RotateCcw, ArrowRight } from 'lucide-react'
+import { Coach } from '../mascots/Coach'
 import { db, recordStudyDay } from '../../lib/db'
 import { todayISO } from '../../lib/dates'
 import type { Exercise, Language, Skill } from '../../lib/types'
@@ -13,13 +14,87 @@ import { TransformEx } from './Transform'
 import { DictationEx } from './Dictation'
 import { FreeEx } from './Free'
 
-// Roda uma lista de exercícios. A PRIMEIRA tentativa vira evidência
-// (attempt) e, se errada, entra no histórico de erros com a explicação.
-// Tentar de novo destrava sem contar como acerto.
+// Um exercício por vez. A PRIMEIRA tentativa vira evidência (attempt) e, se
+// errada, entra no histórico de erros com a explicação. Tentar de novo
+// destrava sem contar como acerto.
 
 export interface ExerciseResult { exerciseId: string; skill: Skill; correct: boolean }
 export interface SubmitInfo { given: string; correct: boolean; expected: string; skill?: Skill }
 
+export function ExerciseStep({ ex, lang, enrollmentId, lessonId, mode, last, onDone }: {
+  ex: Exercise
+  lang: Language
+  enrollmentId: number
+  lessonId: string
+  mode: 'lesson' | 'assessment'
+  /** muda o rótulo do botão final para "Concluir" */
+  last?: boolean
+  onDone: (result: ExerciseResult) => void
+}) {
+  const [attemptNo, setAttemptNo] = useState(0)
+  const [feedback, setFeedback] = useState<SubmitInfo | null>(null)
+  const [first, setFirst] = useState<ExerciseResult | null>(null)
+
+  async function submit(info: SubmitInfo) {
+    const skill = info.skill ?? ex.skill
+    if (attemptNo === 0) {
+      const at = new Date().toISOString()
+      await db.attempts.add({ enrollmentId, lessonId, exerciseId: ex.id, skill, correct: info.correct, answer: info.given, at })
+      if (!info.correct) {
+        const prompt = 'prompt' in ex ? ex.prompt : 'text' in ex ? 'Ditado' : ''
+        const explanation = 'explanation' in ex ? ex.explanation : ''
+        await db.errors.add({ enrollmentId, lessonId, exerciseId: ex.id, prompt, given: info.given, expected: info.expected, explanation, at })
+      }
+      await recordStudyDay(enrollmentId, todayISO())
+      setFirst({ exerciseId: ex.id, skill, correct: info.correct })
+    }
+    setFeedback(info)
+  }
+
+  function retry() {
+    setFeedback(null)
+    setAttemptNo((n) => n + 1)
+  }
+
+  const key = `${ex.id}-${attemptNo}`
+  const props = { lang, disabled: !!feedback, onSubmit: submit }
+  return (
+    <div className="grid gap-3">
+      {ex.type === 'choice' && <ChoiceEx key={key} {...props} ex={ex} />}
+      {ex.type === 'gap' && <GapEx key={key} {...props} ex={ex} />}
+      {ex.type === 'order' && <OrderEx key={key} {...props} ex={ex} />}
+      {ex.type === 'transform' && <TransformEx key={key} {...props} ex={ex} />}
+      {ex.type === 'dictation' && <DictationEx key={key} {...props} ex={ex} />}
+      {ex.type === 'free' && <FreeEx key={key} {...props} ex={ex} />}
+
+      {feedback && (
+        <div className="grid gap-3" role="status">
+          {ex.type === 'free' ? (
+            <Coach who="rafa" mood={feedback.correct ? 'cheer' : 'calm'} tone={feedback.correct ? 'ok' : undefined}>
+              <p className="font-bold">{feedback.correct ? 'Boa! Registrado.' : 'Registrado. Vale repetir amanhã, olhando o exemplo.'}</p>
+            </Coach>
+          ) : feedback.correct ? (
+            <Coach who="zeca" mood="cheer" tone="ok">
+              <p className="font-bold">Certo!</p>
+              {'explanation' in ex && <Md block className="text-sm" text={ex.explanation} />}
+            </Coach>
+          ) : (
+            <Coach who="bia" mood="calm" tone="err">
+              <p className="font-bold">Quase. Certo: <span className="font-mono">{feedback.expected}</span></p>
+              {'explanation' in ex && <Md block className="text-sm" text={ex.explanation} />}
+            </Coach>
+          )}
+          <div className="flex gap-2">
+            {!feedback.correct && mode === 'lesson' && ex.type !== 'free' && <Button variant="secondary" icon={<RotateCcw size={16} />} onClick={retry}>Tentar de novo</Button>}
+            <Button onClick={() => onDone(first!)} icon={<ArrowRight size={16} />}>{last ? 'Concluir' : 'Continuar'}</Button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/** Lista de exercícios com barra de progresso (verificação da semana). */
 export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, lessonIdOf, mode, onFinish }: {
   exercises: Exercise[]
   lang: Language
@@ -31,78 +106,21 @@ export function ExerciseRunner({ exercises, lang, enrollmentId, lessonId, lesson
   onFinish: (results: ExerciseResult[]) => void
 }) {
   const [idx, setIdx] = useState(0)
-  const [attemptNo, setAttemptNo] = useState(0)
-  const [feedback, setFeedback] = useState<SubmitInfo | null>(null)
   const [results, setResults] = useState<ExerciseResult[]>([])
   const ex = exercises[idx]
   if (!ex) return null
 
-  async function submit(info: SubmitInfo) {
-    const skill = info.skill ?? ex.skill
-    if (attemptNo === 0) {
-      const at = new Date().toISOString()
-      const lid = lessonIdOf?.(ex) ?? lessonId
-      await db.attempts.add({ enrollmentId, lessonId: lid, exerciseId: ex.id, skill, correct: info.correct, answer: info.given, at })
-      if (!info.correct) {
-        const prompt = 'prompt' in ex ? ex.prompt : 'text' in ex ? 'Ditado' : ''
-        const explanation = 'explanation' in ex ? ex.explanation : ''
-        await db.errors.add({ enrollmentId, lessonId: lid, exerciseId: ex.id, prompt, given: info.given, expected: info.expected, explanation, at })
-      }
-      await recordStudyDay(enrollmentId, todayISO())
-      setResults((r) => [...r, { exerciseId: ex.id, skill, correct: info.correct }])
-    }
-    setFeedback(info)
-  }
-
-  function next() {
-    setFeedback(null)
-    setAttemptNo(0)
-    if (idx + 1 >= exercises.length) onFinish(results)
+  function done(r: ExerciseResult) {
+    const all = [...results, r]
+    setResults(all)
+    if (idx + 1 >= exercises.length) onFinish(all)
     else setIdx(idx + 1)
   }
 
-  function retry() {
-    setFeedback(null)
-    setAttemptNo((n) => n + 1)
-  }
-
-  const key = `${ex.id}-${attemptNo}`
-  const props = { lang, disabled: !!feedback, onSubmit: submit }
-  const last = idx + 1 >= exercises.length
   return (
     <div className="grid gap-3">
-      <ProgressBar value={idx / exercises.length} label={`Exercício ${idx + 1} de ${exercises.length} · ${SKILL_NAMES[ex.skill]}`} />
-      {ex.type === 'choice' && <ChoiceEx key={key} {...props} ex={ex} />}
-      {ex.type === 'gap' && <GapEx key={key} {...props} ex={ex} />}
-      {ex.type === 'order' && <OrderEx key={key} {...props} ex={ex} />}
-      {ex.type === 'transform' && <TransformEx key={key} {...props} ex={ex} />}
-      {ex.type === 'dictation' && <DictationEx key={key} {...props} ex={ex} />}
-      {ex.type === 'free' && <FreeEx key={key} {...props} ex={ex} />}
-
-      {feedback && (
-        <div className={`fade-in ${feedback.correct ? 'feedback-ok' : 'feedback-err'}`} role="status">
-          <div className="flex items-start gap-2">
-            {feedback.correct ? <CheckCircle2 size={22} style={{ color: 'var(--ok)', flex: 'none' }} /> : <XCircle size={22} style={{ color: 'var(--err)', flex: 'none' }} />}
-            <div className="grow">
-              {ex.type === 'free' ? (
-                <p><b>Registrado.</b> {feedback.correct ? 'Você marcou a maior parte da lista — boa produção.' : 'Você marcou poucos itens. Vale repetir esta produção amanhã, com o modelo ao lado.'}</p>
-              ) : feedback.correct ? (
-                <div><p className="font-bold">Certo!</p>{'explanation' in ex && <Md block className="text-sm mt-1" text={ex.explanation} />}</div>
-              ) : (
-                <div>
-                  <p className="font-bold">Ainda não. A resposta esperada era: <span className="font-mono">{feedback.expected}</span></p>
-                  {'explanation' in ex && <Md block className="text-sm mt-1" text={ex.explanation} />}
-                  {attemptNo === 0 && mode === 'lesson' && <p className="text-xs muted mt-1">Este erro ficou no seu histórico — ele volta em outros contextos e aparece no kit final.</p>}
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="flex gap-2 mt-3">
-            {!feedback.correct && mode === 'lesson' && ex.type !== 'free' && <Button variant="secondary" icon={<RotateCcw size={16} />} onClick={retry}>Tentar de novo</Button>}
-            <Button onClick={next} icon={<ArrowRight size={16} />}>{last ? 'Concluir' : 'Continuar'}</Button>
-          </div>
-        </div>
-      )}
+      <ProgressBar value={idx / exercises.length} label={`${idx + 1} de ${exercises.length} · ${SKILL_NAMES[ex.skill]}`} />
+      <ExerciseStep key={ex.id} ex={ex} lang={lang} enrollmentId={enrollmentId} lessonId={lessonIdOf?.(ex) ?? lessonId} mode={mode} last={idx + 1 >= exercises.length} onDone={done} />
     </div>
   )
 }

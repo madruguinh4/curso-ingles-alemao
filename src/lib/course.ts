@@ -55,3 +55,12 @@ export function pendingAssessments(lang: Language, completions: Completion[], do
 export function lessonsBefore(lang: Language, weekNumber: number): Lesson[] {
   return lessonsFor(lang).filter((l) => Number(l.weekId.slice(-2)) < weekNumber)
 }
+
+/** Chaves das telas de uma aula, na ordem: s0, s1… e "production". */
+export const screenKeys = (l: Lesson): string[] => [...l.steps.map((_, i) => `s${i}`), 'production']
+
+/** Onde a aula reabre: a primeira tela ainda não feita (aula pulada ou já concluída recomeça do início). */
+export function resumeIndex(l: Lesson, c: Completion | null | undefined): number {
+  const done = new Set(c && !c.skipped ? c.blocksDone : [])
+  return Math.max(0, screenKeys(l).findIndex((k) => !done.has(k)))
+}

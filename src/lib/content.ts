@@ -1,6 +1,6 @@
 import { validateLesson } from './schema'
 import { CURRICULUM } from '../content/curriculum'
-import type { Language, Lesson, Week } from './types'
+import type { Exercise, Language, Lesson, Step, Week } from './types'
 
 // Todo o conteúdo é validado na carga: JSON quebrado quebra o app (e a suíte
 // de testes) cedo e com mensagem apontando arquivo e campo.
@@ -25,3 +25,7 @@ export function contentStats(language: Language) {
 
 const vocabById = new Map(LESSONS.flatMap((l) => l.vocabulary.map((v) => [v.id, { ...v, lessonId: l.id, language: l.language }] as const)))
 export const getVocab = (id: string) => vocabById.get(id)
+
+export const isExercise = (s: Step): s is Exercise => s.type !== 'learn' && s.type !== 'dialogue'
+/** Exercícios guiados da aula, na ordem em que aparecem (sem a produção final). */
+export const exercisesOf = (l: Lesson): Exercise[] => l.steps.filter(isExercise)

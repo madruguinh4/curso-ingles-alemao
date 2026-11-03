@@ -3,99 +3,32 @@
   "weekId": "en-w01",
   "language": "en",
   "title": "Olá! Eu sou…",
-  "objective": "Cumprimentar alguém, dizer seu nome e se despedir.",
-  "warmup": {
-    "prompt": "Antes de começar, ative o que você já sabe:",
-    "items": [
-      "Você conhece alguma palavra em inglês para \"oi\" ou \"tchau\"? Diga em voz alta.",
-      "Como você se apresenta em português? Pense na frase inteira.",
-      "Quais palavras em inglês você já usa no dia a dia? (ok, hello, sorry, please…)"
-    ]
-  },
-  "dialogue": {
-    "context": "Primeiro dia de um grupo de conversação em São Paulo. Ana chega e Tom, um canadense, se apresenta.",
-    "lines": [
-      {
-        "speaker": "Tom",
-        "text": "Hi! I'm Tom.",
-        "translation": "Oi! Eu sou o Tom."
-      },
-      {
-        "speaker": "Ana",
-        "text": "Hello, Tom. I'm Ana.",
-        "translation": "Olá, Tom. Eu sou a Ana."
-      },
-      {
-        "speaker": "Tom",
-        "text": "Nice to meet you, Ana.",
-        "translation": "Prazer em conhecer você, Ana."
-      },
-      {
-        "speaker": "Ana",
-        "text": "Nice to meet you too. Are you from here?",
-        "translation": "Prazer também. Você é daqui?"
-      },
-      {
-        "speaker": "Tom",
-        "text": "No, I'm from Canada. And you?",
-        "translation": "Não, eu sou do Canadá. E você?"
-      },
-      {
-        "speaker": "Ana",
-        "text": "I'm from Brazil — from São Paulo.",
-        "translation": "Eu sou do Brasil — de São Paulo."
-      },
-      {
-        "speaker": "Tom",
-        "text": "Cool! Well, see you later, Ana.",
-        "translation": "Legal! Bom, até mais, Ana."
-      },
-      {
-        "speaker": "Ana",
-        "text": "Bye, Tom!",
-        "translation": "Tchau, Tom!"
-      }
-    ]
-  },
-  "explanation": {
-    "title": "I am / You are — o verbo que o português deixa cair",
-    "body": "Para se apresentar em inglês você usa o [[verbo]] **to be** (ser/estar). Ele muda conforme o [[sujeito]] — quem faz a ação:\n\n- **I am** Ana. (eu sou)\n- **You are** Tom. (você é)\n\n**Regra 1 — o sujeito e o verbo são obrigatórios.** Em português dá para dizer \"Eu, Ana\" ou \"Sou a Ana\". Em inglês, não: \"I Ana\" e \"Am Ana\" estão errados. Sempre [[pronome]] + verbo: *I am*.\n\n**Regra 2 — na fala, use a [[contração]].** *I am* vira **I'm**; *you are* vira **you're**. O [[apóstrofo]] (') marca a letra que caiu. A forma completa (*I am*) fica para textos formais ou para dar ênfase.\n\n**Cumprimentos:** *Hi* é informal, *Hello* serve para qualquer situação. *Bye* é a despedida do dia a dia; *See you later* = \"até mais\". *Nice to meet you* (\"prazer\") só se usa na primeira vez que você conhece alguém.\n\n**Sons novos:** o **h** de *hi* e *hello* é soprado, como um suspiro — não é mudo como o \"h\" do português. O **th** de *thanks* é feito com a ponta da língua entre os dentes.",
-    "examples": [
-      {
-        "text": "I'm Ana.",
-        "translation": "Eu sou a Ana."
-      },
-      {
-        "text": "You're Tom.",
-        "translation": "Você é o Tom."
-      },
-      {
-        "text": "I'm from Brazil.",
-        "translation": "Eu sou do Brasil."
-      },
-      {
-        "text": "Nice to meet you.",
-        "translation": "Prazer em conhecer você."
-      },
-      {
-        "text": "See you later!",
-        "translation": "Até mais!"
-      }
-    ]
-  },
-  "guided": [
+  "objective": "Dizer oi, seu nome e tchau.",
+  "steps": [
+    {
+      "type": "learn",
+      "text": "Hi! I'm Tom.",
+      "translation": "Oi! Eu sou o Tom.",
+      "rule": "Eu sou = I'm"
+    },
     {
       "id": "en-w01-l1-g1",
       "type": "choice",
       "skill": "reading",
-      "prompt": "Qual frase está correta para se apresentar?",
+      "prompt": "Qual está certo?",
       "options": [
         "I Ana.",
-        "I am Ana.",
-        "Am I Ana."
+        "I'm Ana.",
+        "Am Ana."
       ],
       "answer": 1,
-      "explanation": "O [[verbo]] *am* é obrigatório e vem depois do [[sujeito]] *I*. \"Am I…?\" é a ordem de pergunta."
+      "explanation": "Em inglês o \"sou\" não some: I'm Ana."
+    },
+    {
+      "type": "learn",
+      "text": "Hello! I'm Ana.",
+      "translation": "Olá! Eu sou a Ana.",
+      "rule": "O h de hello é soprado, como um suspiro."
     },
     {
       "id": "en-w01-l1-g2",
@@ -106,13 +39,36 @@
         "am",
         "'m"
       ],
-      "explanation": "Com *I* o verbo to be é *am* (ou a contração *'m*)."
+      "explanation": "Eu sou = I am (ou I'm)."
+    },
+    {
+      "type": "learn",
+      "text": "I am Tom.",
+      "translation": "Eu sou o Tom.",
+      "rule": "I am e I'm são iguais. Na conversa, use I'm."
     },
     {
       "id": "en-w01-l1-g3",
+      "type": "transform",
+      "skill": "writing",
+      "prompt": "I am Tom.",
+      "instruction": "Use a forma curta.",
+      "answers": [
+        "I'm Tom."
+      ],
+      "explanation": "I am → I'm."
+    },
+    {
+      "type": "learn",
+      "text": "Nice to meet you.",
+      "translation": "Prazer em conhecer você.",
+      "rule": "Só no primeiro encontro."
+    },
+    {
+      "id": "en-w01-l1-g4",
       "type": "order",
       "skill": "writing",
-      "prompt": "Coloque na ordem certa a frase de \"prazer em conhecer você\".",
+      "prompt": "Monte: \"prazer em conhecer você\".",
       "tokens": [
         "Nice",
         "to",
@@ -120,10 +76,69 @@
         "you"
       ],
       "answer": "Nice to meet you",
-      "explanation": "*Nice to meet you* é uma expressão fixa — memorize inteira."
+      "explanation": "Decore inteira: Nice to meet you."
     },
     {
-      "id": "en-w01-l1-g4",
+      "id": "en-w01-l1-g5",
+      "type": "choice",
+      "skill": "reading",
+      "prompt": "2º encontro com o Tom. O que NÃO dizer?",
+      "options": [
+        "Hi, Tom!",
+        "Nice to meet you, Tom.",
+        "Hello, Tom!"
+      ],
+      "answer": 1,
+      "explanation": "Nice to meet you é só no primeiro encontro."
+    },
+    {
+      "type": "learn",
+      "text": "I'm from Brazil.",
+      "translation": "Eu sou do Brasil.",
+      "rule": "Sou de… = I'm from…"
+    },
+    {
+      "type": "learn",
+      "text": "See you later! Bye!",
+      "translation": "Até mais! Tchau!"
+    },
+    {
+      "type": "dialogue",
+      "lines": [
+        {
+          "speaker": "Tom",
+          "text": "Hi! I'm Tom.",
+          "translation": "Oi! Eu sou o Tom."
+        },
+        {
+          "speaker": "Ana",
+          "text": "Hello, Tom. I'm Ana.",
+          "translation": "Olá, Tom. Eu sou a Ana."
+        },
+        {
+          "speaker": "Tom",
+          "text": "Nice to meet you, Ana.",
+          "translation": "Prazer, Ana."
+        },
+        {
+          "speaker": "Ana",
+          "text": "Nice to meet you too. I'm from Brazil.",
+          "translation": "Prazer também. Eu sou do Brasil."
+        },
+        {
+          "speaker": "Tom",
+          "text": "Cool! See you later!",
+          "translation": "Legal! Até mais!"
+        },
+        {
+          "speaker": "Ana",
+          "text": "Bye, Tom!",
+          "translation": "Tchau, Tom!"
+        }
+      ]
+    },
+    {
+      "id": "en-w01-l1-g6",
       "type": "dictation",
       "skill": "listening",
       "text": "Hi! I'm Ana. Nice to meet you.",
@@ -132,68 +147,22 @@
         "Hi, I'm Ana. Nice to meet you.",
         "Hi! I am Ana. Nice to meet you."
       ],
-      "explanation": "Repare no *h* soprado de *Hi* e na contração *I'm*.",
+      "explanation": "Repare no h soprado de Hi.",
       "lang": "en"
-    },
-    {
-      "id": "en-w01-l1-g5",
-      "type": "transform",
-      "skill": "writing",
-      "prompt": "I am Tom.",
-      "instruction": "Reescreva usando a [[contração]].",
-      "answers": [
-        "I'm Tom."
-      ],
-      "explanation": "*I am* → *I'm*. Na fala, a [[contração]] é o normal."
-    },
-    {
-      "id": "en-w01-l1-g6",
-      "type": "choice",
-      "skill": "reading",
-      "prompt": "Você encontra o Tom pela segunda vez. O que NÃO faz sentido dizer?",
-      "options": [
-        "Hi, Tom!",
-        "Nice to meet you, Tom.",
-        "Hello, Tom. How are you?"
-      ],
-      "answer": 1,
-      "explanation": "*Nice to meet you* é só para o primeiro encontro. Depois, use *Good to see you* ou simplesmente *Hi*."
     }
   ],
   "production": {
     "id": "en-w01-l1-p",
     "type": "free",
     "skill": "speaking",
-    "prompt": "Grave no gravador do seu celular uma apresentação de uns 15 segundos: cumprimente, diga seu nome e de onde você é, e se despeça. Depois ouça a gravação e confira a lista abaixo.",
+    "prompt": "Fale em voz alta: oi, seu nome, de onde você é e tchau.",
     "model": "Hi! I'm Ana. I'm from Brazil. Nice to meet you. Bye!",
     "checklist": [
-      "Usei *Hi* ou *Hello* no começo",
-      "Disse *I'm* + meu nome (com o verbo!)",
-      "Disse de onde sou com *I'm from*",
-      "O *h* de *hi/hello* saiu soprado",
-      "Me despedi com *Bye* ou *See you*"
+      "Disse I'm + meu nome",
+      "Disse I'm from + país",
+      "Soprei o h de Hi ou Hello"
     ]
   },
-  "feedback": {
-    "commonErrors": [
-      {
-        "wrong": "I Ana.",
-        "right": "I'm Ana.",
-        "why": "Em português o verbo pode sumir (\"Eu, Ana\"); em inglês o *am* é obrigatório."
-      },
-      {
-        "wrong": "I am call Ana.",
-        "right": "My name is Ana. / I'm Ana.",
-        "why": "\"Eu me chamo\" não se traduz palavra por palavra. Use *My name is* ou *I'm*."
-      },
-      {
-        "wrong": "'ello, 'i!",
-        "right": "Hello, hi!",
-        "why": "O *h* inicial é pronunciado, com sopro. Sem ele, o falante nativo pode não entender."
-      }
-    ]
-  },
-  "task": "Hoje, diga em voz alta três vezes, olhando no espelho ou para alguém de casa: \"Hi, I'm [seu nome]. Nice to meet you. Bye!\" Preste atenção no sopro do *h*. Se tiver alguém que fale inglês, mande um áudio com essa frase.",
   "vocabulary": [
     {
       "id": "en-w01-l1-hello",

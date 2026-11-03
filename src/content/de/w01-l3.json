@@ -3,135 +3,157 @@
   "weekId": "de-w01",
   "language": "de",
   "title": "du oder Sie?",
-  "objective": "Cumprimentar de acordo com a hora e a formalidade, e perguntar como a pessoa está.",
-  "warmup": {
-    "prompt": "Revisão das duas aulas anteriores:",
-    "items": [
-      "Apresente-se em voz alta: nome, origem e onde mora, em três frases.",
-      "Pergunte formalmente a alguém de onde ele vem.",
-      "Em português, você usa \"senhor/senhora\" com quem? Pense em três pessoas."
-    ]
-  },
-  "dialogue": {
-    "context": "De manhã, Lucas compra um café na padaria (tratamento formal). Depois, encontra Paula na rua (informal).",
-    "lines": [
-      {
-        "speaker": "Verkäuferin",
-        "text": "Guten Morgen! Wie geht es Ihnen?",
-        "translation": "Bom dia! Como o senhor está?"
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Guten Morgen. Gut, danke. Und Ihnen?",
-        "translation": "Bom dia. Bem, obrigado. E a senhora?"
-      },
-      {
-        "speaker": "Verkäuferin",
-        "text": "Auch gut, danke.",
-        "translation": "Também bem, obrigada."
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Einen Kaffee, bitte.",
-        "translation": "Um café, por favor."
-      },
-      {
-        "speaker": "Verkäuferin",
-        "text": "Bitte schön. Auf Wiedersehen!",
-        "translation": "Aqui está. Até logo!"
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Danke! Auf Wiedersehen!",
-        "translation": "Obrigado! Até logo!"
-      },
-      {
-        "speaker": "Paula",
-        "text": "Hey, Lucas! Wie geht's?",
-        "translation": "Ei, Lucas! Como vai?"
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Hallo, Paula! Gut, und dir?",
-        "translation": "Oi, Paula! Bem, e você?"
-      },
-      {
-        "speaker": "Paula",
-        "text": "Sehr gut! Bis morgen!",
-        "translation": "Muito bem! Até amanhã!"
-      },
-      {
-        "speaker": "Lucas",
-        "text": "Tschüss!",
-        "translation": "Tchau!"
+  "objective": "Cumprimentar do jeito certo: du ou Sie.",
+  "steps": [
+    {
+      "type": "learn",
+      "text": "Guten Morgen!",
+      "translation": "Bom dia! (de manhã)",
+      "rule": "Morgen = manhã · Tag = dia · Abend = noite, ao chegar"
+    },
+    {
+      "type": "learn",
+      "text": "Gute Nacht!",
+      "translation": "Boa noite! (só ao ir dormir)",
+      "rule": "Gute Nacht é só para se despedir à noite.",
+      "avoid": {
+        "wrong": "Gute Nacht, Frau Weber! (ao chegar)",
+        "right": "Guten Abend, Frau Weber!"
       }
-    ]
-  },
-  "explanation": {
-    "title": "Registro em alemão: hora do dia, du/Sie e o poder do \"bitte\"",
-    "body": "[[registro]] em alemão: hora do dia, du/Sie e o poder do *bitte*.\n\n**Regra 1 — saudação pela hora:**\n- *Guten Morgen* — de manhã (até umas 10–11h)\n- *Guten Tag* — durante o dia\n- *Guten Abend* — a partir do fim da tarde, ao chegar\n- *Gute Nacht* — **só** ao ir dormir ou se despedir tarde da noite\n\n**Regra 2 — perguntar como está muda com du/Sie:**\n- Formal: **Wie geht es Ihnen?** → *Danke, gut. Und Ihnen?*\n- Informal: **Wie geht's?** (ou *Wie geht es dir?*) → *Gut, und dir?*\n\nRespostas: *sehr gut* (muito bem), *gut* (bem), *es geht* (mais ou menos), *nicht so gut* (não muito bem).\n\n**Regra 3 — quem é du, quem é Sie:**\n- **Sie:** atendentes, médicos, professores, colegas de trabalho mais velhos, qualquer adulto desconhecido.\n- **du:** amigos, família, crianças, colegas de curso, e quando alguém oferece: *\"Wir können uns duzen\"* (podemos nos tratar por du).\n\n**Regra 4 — Frau / Herr + sobrenome:** *Frau Weber*, *Herr Silva*. Nunca com o primeiro nome. *Fräulein* não se usa mais.\n\n**bitte** tem três usos: \"por favor\" (*Einen Kaffee, bitte*), \"de nada\" (*Danke! — Bitte!*) e \"aqui está\" (*Bitte schön*).",
-    "examples": [
-      {
-        "text": "Guten Morgen, Frau Weber! Wie geht es Ihnen?",
-        "translation": "Bom dia, Sra. Weber! Como a senhora está?"
-      },
-      {
-        "text": "Danke, gut. Und Ihnen?",
-        "translation": "Bem, obrigado. E a senhora?"
-      },
-      {
-        "text": "Hallo, Paula! Wie geht's?",
-        "translation": "Oi, Paula! Como vai?"
-      },
-      {
-        "text": "Guten Abend!",
-        "translation": "Boa noite! (ao chegar)"
-      },
-      {
-        "text": "Gute Nacht!",
-        "translation": "Boa noite! (ao ir dormir)"
-      }
-    ]
-  },
-  "guided": [
+    },
     {
       "id": "de-w01-l3-g1",
       "type": "choice",
       "skill": "reading",
-      "prompt": "Você entra num consultório médico às 9h da manhã. O que diz?",
+      "prompt": "Consultório, 9h da manhã. O que dizer?",
       "options": [
         "Gute Nacht!",
         "Guten Morgen!",
         "Hey, wie geht's?"
       ],
       "answer": 1,
-      "explanation": "De manhã, e em situação formal: *Guten Morgen*. *Hey, wie geht's?* é para amigos."
+      "explanation": "De manhã e formal: Guten Morgen."
+    },
+    {
+      "type": "learn",
+      "text": "Wie geht es Ihnen?",
+      "translation": "Como o(a) senhor(a) está?",
+      "rule": "Formal: Wie geht es Ihnen? → Gut, danke. Und Ihnen?"
     },
     {
       "id": "de-w01-l3-g2",
+      "type": "gap",
+      "skill": "writing",
+      "prompt": "Gut, danke. Und ___? (formal)",
+      "answers": [
+        "Ihnen"
+      ],
+      "explanation": "Formal: Und Ihnen?"
+    },
+    {
+      "type": "learn",
+      "text": "Hallo, Paula! Wie geht's?",
+      "translation": "Oi, Paula! Como vai?",
+      "rule": "Informal: Wie geht's? → Gut, und dir?",
+      "avoid": {
+        "wrong": "Wie geht's, Herr Weber? (1º encontro de trabalho)",
+        "right": "Wie geht es Ihnen, Herr Weber?"
+      }
+    },
+    {
+      "id": "de-w01-l3-g3",
       "type": "choice",
       "skill": "reading",
-      "prompt": "Qual das frases é informal?",
+      "prompt": "Qual é informal?",
       "options": [
         "Wie geht es Ihnen?",
         "Wie geht's?",
         "Guten Tag, Frau Weber."
       ],
       "answer": 1,
-      "explanation": "*Wie geht's?* é a forma curta e informal. *Ihnen* marca o formal."
-    },
-    {
-      "id": "de-w01-l3-g3",
-      "type": "gap",
-      "skill": "writing",
-      "prompt": "Guten Tag, ___ Weber! (a professora, uma mulher)",
-      "answers": [
-        "Frau"
-      ],
-      "explanation": "Mulher = *Frau* + sobrenome. Homem = *Herr* + sobrenome."
+      "explanation": "Wie geht's? é para amigos."
     },
     {
       "id": "de-w01-l3-g4",
+      "type": "transform",
+      "skill": "writing",
+      "prompt": "Wie geht es Ihnen?",
+      "instruction": "Diga para um amigo.",
+      "answers": [
+        "Wie geht's?",
+        "Wie geht es dir?",
+        "Wie gehts?"
+      ],
+      "explanation": "Para amigos: Wie geht's?"
+    },
+    {
+      "type": "learn",
+      "text": "Guten Tag, Frau Weber!",
+      "translation": "Bom dia, Sra. Weber!",
+      "rule": "Frau (mulher) ou Herr (homem) + sobrenome.",
+      "avoid": {
+        "wrong": "Guten Tag, Frau Anna!",
+        "right": "Guten Tag, Frau Weber!"
+      }
+    },
+    {
+      "id": "de-w01-l3-g5",
+      "type": "gap",
+      "skill": "writing",
+      "prompt": "Guten Tag, ___ Weber! (uma mulher)",
+      "answers": [
+        "Frau"
+      ],
+      "explanation": "Mulher = Frau + sobrenome."
+    },
+    {
+      "type": "learn",
+      "text": "Einen Kaffee, bitte.",
+      "translation": "Um café, por favor.",
+      "rule": "bitte = por favor · de nada · aqui está"
+    },
+    {
+      "type": "dialogue",
+      "lines": [
+        {
+          "speaker": "Verkäuferin",
+          "text": "Guten Morgen! Wie geht es Ihnen?",
+          "translation": "Bom dia! Como o senhor está?"
+        },
+        {
+          "speaker": "Lucas",
+          "text": "Gut, danke. Und Ihnen?",
+          "translation": "Bem, obrigado. E a senhora?"
+        },
+        {
+          "speaker": "Verkäuferin",
+          "text": "Auch gut, danke.",
+          "translation": "Também bem, obrigada."
+        },
+        {
+          "speaker": "Lucas",
+          "text": "Einen Kaffee, bitte.",
+          "translation": "Um café, por favor."
+        },
+        {
+          "speaker": "Paula",
+          "text": "Hey, Lucas! Wie geht's?",
+          "translation": "Ei, Lucas! Como vai?"
+        },
+        {
+          "speaker": "Lucas",
+          "text": "Gut, und dir?",
+          "translation": "Bem, e você?"
+        },
+        {
+          "speaker": "Paula",
+          "text": "Sehr gut! Tschüss!",
+          "translation": "Muito bem! Tchau!"
+        }
+      ]
+    },
+    {
+      "id": "de-w01-l3-g6",
       "type": "dictation",
       "skill": "listening",
       "text": "Guten Abend! Wie geht es Ihnen?",
@@ -139,67 +161,22 @@
         "Guten Abend! Wie geht es Ihnen?",
         "Guten Abend, wie geht es Ihnen?"
       ],
-      "explanation": "*Ihnen* soa \"í-nen\". Repare que *geht* tem um *e* longo.",
+      "explanation": "Ihnen soa \"í-nen\".",
       "lang": "de"
-    },
-    {
-      "id": "de-w01-l3-g5",
-      "type": "transform",
-      "skill": "writing",
-      "prompt": "Wie geht es Ihnen?",
-      "instruction": "Reescreva na versão informal.",
-      "answers": [
-        "Wie geht's?",
-        "Wie geht es dir?",
-        "Wie gehts?"
-      ],
-      "explanation": "Formal *Ihnen* → informal *dir*, ou a forma curta *Wie geht's?* — uma [[contração]] de *geht es*."
-    },
-    {
-      "id": "de-w01-l3-g6",
-      "type": "gap",
-      "skill": "writing",
-      "prompt": "Gut, danke. Und ___? (formal)",
-      "answers": [
-        "Ihnen"
-      ],
-      "explanation": "Devolver a pergunta formalmente: *Und Ihnen?* Informal seria *Und dir?*"
     }
   ],
   "production": {
     "id": "de-w01-l3-p",
     "type": "free",
     "skill": "writing",
-    "prompt": "Escreva duas mensagens curtas (2 linhas cada): uma formal para a professora Frau Weber e uma informal para a colega Paula. Nas duas, cumprimente de acordo com a hora e pergunte como a pessoa está.",
+    "prompt": "Escreva um oi formal para Frau Weber e um informal para Paula.",
     "model": "Guten Morgen, Frau Weber! Wie geht es Ihnen?\n\nHallo Paula! Wie geht's? Bis später!",
     "checklist": [
-      "Na formal usei *Guten Morgen/Tag/Abend* + *Frau Weber*",
-      "Na formal perguntei *Wie geht es Ihnen?*",
-      "Na informal usei *Hallo* ou *Hey* + primeiro nome",
-      "Na informal perguntei *Wie geht's?* ou *Wie geht es dir?*",
-      "Não usei *Gute Nacht* para cumprimentar"
+      "Formal: Guten Morgen/Tag + Frau Weber",
+      "Informal: Hallo + Paula + Wie geht's?",
+      "Não usei Gute Nacht para cumprimentar"
     ]
   },
-  "feedback": {
-    "commonErrors": [
-      {
-        "wrong": "Gute Nacht, Frau Weber! (ao chegar às 20h)",
-        "right": "Guten Abend, Frau Weber!",
-        "why": "*Gute Nacht* é só para ir dormir ou se despedir. Ao chegar à noite: *Guten Abend*."
-      },
-      {
-        "wrong": "Wie geht's, Herr Weber? (primeiro encontro de trabalho)",
-        "right": "Wie geht es Ihnen, Herr Weber?",
-        "why": "Com *Herr/Frau* + sobrenome, o tratamento é *Sie* — e a pergunta é *Wie geht es Ihnen?*"
-      },
-      {
-        "wrong": "Guten Tag, Frau Anna!",
-        "right": "Guten Tag, Frau Weber!",
-        "why": "*Frau/Herr* vai com o sobrenome. Com o primeiro nome só se usa *du*, sem *Frau/Herr*."
-      }
-    ]
-  },
-  "task": "Durante o dia de hoje, cada vez que cumprimentar alguém, pergunte-se: em alemão, seria *du* ou *Sie*? E qual saudação pela hora? Anote no celular três casos com as frases que usaria.",
   "vocabulary": [
     {
       "id": "de-w01-l3-gutenmorgen",

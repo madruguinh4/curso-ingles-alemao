@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { nextLesson, upcomingLessons, weekComplete, currentWeek, pendingAssessments, lessonStatus, lessonsBefore } from '../src/lib/course'
+import { nextLesson, upcomingLessons, weekComplete, currentWeek, pendingAssessments, lessonStatus, lessonsBefore, resumeIndex, screenKeys } from '../src/lib/course'
 import { lessonsFor } from '../src/lib/content'
 import { weeksFor } from '../src/content/curriculum'
 import { completedCount, demonstratedObjectives } from '../src/lib/progress'
@@ -52,5 +52,22 @@ describe('course progression', () => {
     const all = en.map((l) => done(l.id))
     expect(pendingAssessments('en', all, []).map((w) => w.number)).toEqual([1])
     expect(pendingAssessments('en', all, [{ enrollmentId: 1, weekNumber: 1, results: [], doneAt: 'x' }])).toEqual([])
+  })
+})
+
+describe('resuming a lesson', () => {
+  const l = en[0]
+  const keys = screenKeys(l)
+  const at = (blocksDone: string[], extra: Partial<Completion> = {}): Completion => ({ enrollmentId: 1, lessonId: l.id, blocksDone, completedAt: null, ...extra })
+  it('reopens on the first screen not done yet', () => {
+    expect(resumeIndex(l, undefined)).toBe(0)
+    expect(resumeIndex(l, at(keys.slice(0, 3)))).toBe(3)
+    expect(resumeIndex(l, at(['s0', 's1', 's3']))).toBe(2)
+    expect(resumeIndex(l, at(keys.slice(0, -1)))).toBe(keys.length - 1)
+  })
+  it('restarts finished, skipped or old-format lessons from the start', () => {
+    expect(resumeIndex(l, at(keys, { completedAt: 'x' }))).toBe(0)
+    expect(resumeIndex(l, at(keys.slice(0, 4), { skipped: true }))).toBe(0)
+    expect(resumeIndex(l, at(['warmup', 'dialogue']))).toBe(0)
   })
 })

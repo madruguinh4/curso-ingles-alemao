@@ -10,7 +10,7 @@ import { MONTH_TITLES, TOTAL_WEEKS } from '../content/curriculum'
 import { nextLesson, upcomingLessons, currentWeek, pendingAssessments, lessonStatus } from '../lib/course'
 import { studyStats } from '../lib/study'
 import { LANGUAGE_NAMES } from '../lib/types'
-import { useActiveEnrollment, languageChosen } from '../state/useEnrollments'
+import { useActiveEnrollment } from '../state/useEnrollments'
 import { useProfile } from '../state/useTheme'
 import { Button, Card, Ring, Screen, SectionTitle, Spinner } from '../components/ui'
 import { StudyCalendar } from '../components/StudyCalendar'
@@ -21,7 +21,6 @@ export function Home() {
   const p = useProfile()
   if (loading) return <Spinner />
   if (!all?.length || !e) return <Navigate to="/welcome" replace />
-  if (all.length > 1 && !languageChosen()) return <Navigate to="/language" replace />
   return (
     <Screen>
       <Today e={e} name={p.name} canSwitch={all.length > 1} />

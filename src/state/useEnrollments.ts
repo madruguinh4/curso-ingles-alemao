@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, type Enrollment } from '../lib/db'
+import { db, requestPersistentStorage, type Enrollment } from '../lib/db'
+import { todayISO } from '../lib/dates'
+import type { Language } from '../lib/types'
 
 const ACTIVE_KEY = 'activeEnrollmentId'
-const CHOSEN_KEY = 'languageChosen'
 
 export function useEnrollments(): Enrollment[] | undefined {
   return useLiveQuery(() => db.enrollments.toArray(), [])
@@ -26,18 +27,16 @@ function readActive(): number | null {
   }
 }
 
-/** Com dois idiomas, o app pede a escolha uma vez por sessão (aba aberta). */
-export function markLanguageChosen(): void {
-  try { sessionStorage.setItem(CHOSEN_KEY, '1') } catch { /* ignore */ }
-}
-export function languageChosen(): boolean {
-  try { return sessionStorage.getItem(CHOSEN_KEY) === '1' } catch { return true }
-}
-export function clearLanguageChoice(): void {
-  try { sessionStorage.removeItem(CHOSEN_KEY) } catch { /* ignore */ }
+/** Sem cadastro: um toque no idioma já abre o curso. Reaproveita a matrícula se ela existir. */
+export async function startLanguage(language: Language): Promise<number> {
+  const existing = await db.enrollments.where('language').equals(language).first()
+  const id = existing?.id ?? ((await db.enrollments.add({ language, level: 'zero', goal: 'pessoal', startDate: todayISO(), createdAt: new Date().toISOString() })) as number)
+  setActiveEnrollment(id)
+  void requestPersistentStorage()
+  return id
 }
 
-/** Resolve a matrícula ativa: parâmetro da rota → última usada → primeira. */
+/** Resolve a matrícula ativa: parâmetro da rota → última usada → primeira. Ao voltar ao app, cai direto no idioma em que parou. */
 export function useActiveEnrollment(paramId?: string): { enrollment: Enrollment | undefined; all: Enrollment[] | undefined; loading: boolean } {
   const all = useEnrollments()
   if (!all) return { enrollment: undefined, all, loading: true }

@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { MONTH_TITLES, TOTAL_MONTHS, TOTAL_WEEKS, weeksForMonth } from '../content/curriculum'
 import { contentStats, lessonsForWeek } from '../lib/content'
-import { GOAL_NAMES, LANGUAGE_NAMES } from '../lib/types'
-import { LEVEL_NAMES } from '../content/diagnostic'
+import { LANGUAGE_NAMES } from '../lib/types'
 import { useActiveEnrollment } from '../state/useEnrollments'
 import { Card, Notice, Screen, Spinner } from '../components/ui'
 
@@ -14,7 +13,7 @@ export function Plan() {
   if (!e) return <Screen title="Plano"><Notice kind="warn">Nenhuma matrícula encontrada.</Notice></Screen>
   const stats = contentStats(e.language)
   return (
-    <Screen title={`Plano de ${LANGUAGE_NAMES[e.language]}`} back="/more" subtitle={`${TOTAL_WEEKS} semanas · ponto de partida: ${LEVEL_NAMES[e.level]} · objetivo: ${GOAL_NAMES[e.goal]}`}>
+    <Screen title={`Plano de ${LANGUAGE_NAMES[e.language]}`} back="/more" subtitle={`${TOTAL_WEEKS} semanas · todas as aulas abertas`}>
       <div className="grid gap-3">
         <Notice kind="warn"><b>Conteúdo disponível:</b> {stats.lessons} aula(s) em {stats.weeksWithLessons} de {TOTAL_WEEKS} semanas. O restante está planejado abaixo e chega em atualizações.</Notice>
         {Array.from({ length: TOTAL_MONTHS }, (_, i) => i + 1).map((m) => {

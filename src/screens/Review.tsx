@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { RefreshCw, PartyPopper } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
+import { Coach } from '../components/mascots/Coach'
+import { Mascot } from '../components/mascots/Mascots'
 import { db, recordStudyDay, type CardRow } from '../lib/db'
 import { dueCards, gradeCard, nextDue, GRADE_LABELS, type Grade } from '../lib/srs'
 import { getVocab } from '../lib/content'
@@ -49,7 +51,7 @@ export function Review() {
     return (
       <Screen title="Revisão concluída">
         <div className="hero text-center fade-in">
-          <PartyPopper size={36} className="mx-auto" aria-hidden="true" />
+          <Mascot id="nina" mood="cheer" size={88} className="mx-auto" decorative />
           <p className="text-lg mt-2">Você revisou <b>{queue.length}</b> cartão(ões) de {LANGUAGE_NAMES[lang]}.</p>
           <p className="text-sm opacity-90 mt-1">Cada um foi reagendado conforme a sua resposta.</p>
         </div>
@@ -75,9 +77,9 @@ export function Review() {
       <NoVoiceNotice lang={lang} />
       {!v ? (
         <Notice kind="warn">Cartão de um vocabulário que não existe mais ({card.vocabId}). <Button variant="ghost" size="sm" onClick={() => grade('good')}>Pular</Button></Notice>
-      ) : (
+      ) : (<>
+        <div className="mt-3"><Coach who="nina" mood={flipped ? 'happy' : 'think'}>{flipped ? 'Seja sincero na nota: é ela que decide quando o cartão volta.' : 'Você lembra o que significa?'}</Coach></div>
         <Card className="mt-3 text-center">
-          <p className="text-xs muted uppercase tracking-wide">{flipped ? 'Resposta' : 'Você lembra o que significa?'}</p>
           <p className="text-3xl font-bold my-4">{vocabFront(v, lang)} <Say text={v.term} lang={lang} /></p>
           {flipped ? (
             <div className="grid gap-2 text-left fade-in">
@@ -99,7 +101,7 @@ export function Review() {
           ) : (
             <Button block onClick={() => setFlipped(true)}>Mostrar resposta</Button>
           )}
-        </Card>
+        </Card></>
       )}
     </Screen>
   )

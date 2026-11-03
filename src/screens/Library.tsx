@@ -4,13 +4,11 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { Search } from 'lucide-react'
 import { db } from '../lib/db'
 import { lessonsFor } from '../lib/content'
-import { GLOSSARY } from '../content/glossary'
 import { vocabFront } from '../lib/export'
-import { LANGUAGE_NAMES } from '../lib/types'
+import { LANGUAGE_NAMES, type LearnStep } from '../lib/types'
 import { useActiveEnrollment } from '../state/useEnrollments'
 import { Card, Screen, SectionTitle, Spinner } from '../components/ui'
 import { Say, NoVoiceNotice } from '../components/Say'
-import { Md } from '../components/Md'
 
 export function Library() {
   const { enrollmentId } = useParams()
@@ -25,13 +23,12 @@ export function Library() {
   const norm = (s: string) => s.toLowerCase()
   const query = norm(q.trim())
   const hit = (...fields: string[]) => !query || fields.some((f) => norm(f).includes(query))
-  const terms = GLOSSARY.filter((t) => hit(t.key, t.title, t.definition))
 
   return (
     <Screen title="Biblioteca" subtitle={LANGUAGE_NAMES[lang]}>
       <div className="relative mb-3">
         <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 muted" aria-hidden="true" />
-        <input className="input pl-10" placeholder="Buscar palavra, tradução ou termo…" value={q} onChange={(ev) => setQ(ev.target.value)} aria-label="Buscar" />
+        <input className="input pl-10" placeholder="Buscar palavra ou tradução…" value={q} onChange={(ev) => setQ(ev.target.value)} aria-label="Buscar" />
       </div>
       <NoVoiceNotice lang={lang} />
 
@@ -56,26 +53,25 @@ export function Library() {
         })}
       </div>
 
-      <SectionTitle>Gramática</SectionTitle>
+      <SectionTitle>Regras</SectionTitle>
       <div className="grid gap-3">
-        {lessons.filter((l) => hit(l.explanation.title, l.explanation.body, l.title)).map((l) => (
-          <details key={l.id} className="card">
-            <summary className="font-semibold cursor-pointer">{l.explanation.title} <span className="muted text-sm">({l.title})</span></summary>
-            <Md block className="mt-2" text={l.explanation.body} />
-          </details>
-        ))}
-      </div>
-
-      <SectionTitle>Termos de gramática</SectionTitle>
-      <p className="text-sm muted mb-2">Tudo o que o curso usa para explicar, em português simples. Estes termos aparecem sublinhados nas aulas.</p>
-      <div className="grid gap-2">
-        {terms.map((t) => (
-          <details key={t.key} className="card-flat">
-            <summary className="font-semibold cursor-pointer">{t.title}</summary>
-            <p className="text-sm mt-1">{t.definition}</p>
-            <p className="text-sm muted mt-1"><i>{t.example}</i></p>
-          </details>
-        ))}
+        {lessons.map((l) => {
+          const rules = l.steps.filter((st): st is LearnStep => st.type === 'learn' && !!st.rule && hit(st.rule, st.text, st.translation))
+          if (!rules.length) return null
+          return (
+            <Card key={l.id}>
+              <p className="text-sm muted mb-2">{l.title}</p>
+              <ul className="grid gap-2">
+                {rules.map((r) => (
+                  <li key={r.text} className="flex items-start gap-2">
+                    <div className="grow"><b>{r.rule}</b><br /><span className="text-sm">{r.text}</span> <span className="text-sm muted">— {r.translation}</span></div>
+                    <Say text={r.text} lang={lang} />
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          )
+        })}
       </div>
     </Screen>
   )

@@ -1,4 +1,5 @@
 import { Card, Screen } from '../components/ui'
+import { Mascot, MASCOTS, MASCOT_ORDER } from '../components/mascots/Mascots'
 import { TOTAL_MONTHS, TOTAL_WEEKS } from '../content/curriculum'
 
 export function About() {
@@ -9,11 +10,22 @@ export function About() {
           <h2 className="font-bold mb-2">O que este curso é</h2>
           <ul className="list-disc pl-5 grid gap-1 text-sm">
             <li>{TOTAL_WEEKS} semanas em {TOTAL_MONTHS} etapas, com um objetivo prático por semana (“pedir uma refeição”, “resolver um check-in”).</li>
-            <li>Aulas com diálogo, explicação em português, exercícios, produção própria e uma tarefa fora do app.</li>
-            <li>Todo termo de gramática é explicado quando aparece — toque nas palavras sublinhadas.</li>
+            <li>Aulas curtas, uma ideia por tela: uma frase com áudio, a regra em uma linha e logo um exercício.</li>
+            <li>Gramática sem jargão: padrões simples como “Eu sou = I'm”.</li>
             <li>Revisão espaçada do vocabulário e acompanhamento por habilidade: ouvir, ler, escrever, falar.</li>
             <li>Você estuda quando pode. O app registra os dias de estudo, sem cobrar.</li>
             <li>No fim, um kit exportável para continuar sozinho — o objetivo é você não precisar mais do app.</li>
+          </ul>
+        </Card>
+        <Card>
+          <h2 className="font-bold mb-3">A turma</h2>
+          <ul className="grid gap-3">
+            {MASCOT_ORDER.map((id) => (
+              <li key={id} className="flex items-center gap-3">
+                <Mascot id={id} size={48} decorative />
+                <span><b>{MASCOTS[id].name}</b>, {MASCOTS[id].animal}<span className="block text-sm muted">{MASCOTS[id].role}</span></span>
+              </li>
+            ))}
           </ul>
         </Card>
         <Card>
